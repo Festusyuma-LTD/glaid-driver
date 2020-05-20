@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Glaid Driver</string>
+    <string name="i_know_my_email">I know my Email</string>
+    <string name="if_you_cannot_remember_your_password_we_can_help_to_get_started_choose_an_option_below">If you cannot remember your password, we can help. To get started, choose an option below</string>
+    <string name="continue_text">Continue</string>
+    <string name="i_know_my_phone_number">I know my Phone Number</string>
+    <string name="chevron_icon">chevron</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="email_address">Email Address</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="backgroud_layout">backgroud layout</string>
+    <string name="forgot_password_image">forgot password image</string>
+    <string name="email_recovery_text">Please enter the email address associated with your account below</string>
+    <string name="phone_recovery_text">Please enter the phone number associated with your account below</string>
+    <string name="otp">OTP</string>
+    <string name="otp_recovery_text">A one-time pin has been sent to your phone number. Please enter it below</string>
 </resources>
