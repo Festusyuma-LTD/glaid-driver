@@ -7,16 +7,16 @@ android:layout_height="match_parent"
 android:background="@color/colorPrimary"
 tools:context=".controller.ProblemsLoginActivity">
 
-<ImageView
-    android:id="@+id/imageView10"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:scaleType="centerCrop"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:srcCompat="@drawable/driverbackground" />
+    <ImageView
+        android:id="@+id/imageView10"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/driverbackground" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -152,7 +152,7 @@ tools:context=".controller.ProblemsLoginActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="50dp"
             android:text="Remembered?"
             android:textColor="#808080"
             android:textSize="14sp"
@@ -168,6 +168,8 @@ tools:context=".controller.ProblemsLoginActivity">
             android:id="@+id/reSigninbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
             android:clickable="true"
             android:onClick="reSigninbtnClick"
             android:text="Sign in"

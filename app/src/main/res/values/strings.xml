@@ -14,4 +14,5 @@
     <string name="phone_recovery_text">Please enter the phone number associated with your account below</string>
     <string name="otp">OTP</string>
     <string name="otp_recovery_text">A one-time pin has been sent to your phone number. Please enter it below</string>
+    <string name="get_started_button">get started button</string>
 </resources>
