@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="festusyuma.com.glaiddriver">
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -9,17 +17,79 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeIntroScreen">
-        <activity android:name=".controller.ResetPasswordActivity"></activity>
-        <activity android:name=".controller.ProblemsLoginActivity" />
-        <activity android:name=".controller.RecoveryActivity" />
-        <activity android:name=".controller.ForgotPasswordActivity" />
-        <activity android:name=".controller.SignupOtpActivity" />
-        <activity android:name=".controller.LoginActivity" />
-        <activity android:name=".controller.SignUpActivity" />
-        <activity android:name=".controller.GetStartedActivity" /> <!-- The below is for the splash screen and we need no action bar and the default theme -->
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".controller.MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
+        <activity
+            android:name=".controller.DriverMapActivity"
+            android:label="@string/title_activity_driver_map"
+            android:theme="@style/AppThemeIntroScreen.NoActionBar" />
+        <activity
+            android:name=".controller.ResetPasswordActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="sensorPortrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.ProblemsLoginActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.RecoveryActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.ForgotPasswordActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.SignupOtpActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="sensorPortrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.LoginActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="sensorPortrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.SignUpActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="sensorPortrait"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.GetStartedActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" /> <!-- The below is for the splash screen and we need no action bar and the default theme -->
         <activity
             android:name=".controller.MainActivity"
-            android:theme="@style/AppThemeIntroScreen">
+            android:configChanges="orientation"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppThemeIntroScreen"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
 
                 <!-- MAIN represents that it is the Main Activity -->
@@ -30,7 +100,10 @@
         </activity>
         <activity
             android:name=".controller.CarouselActivity"
-            android:theme="@style/AppTheme" />
+            android:configChanges="orientation"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppTheme"
+            tools:ignore="LockedOrientationActivity" />
     </application>
 
 </manifest>

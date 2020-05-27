@@ -9,11 +9,20 @@
     </style>
     <!-- intro screen theme -->
     <style name="AppThemeIntroScreen" parent="AppTheme">
-<!--        <item name="android:windowBackground">@</item>-->
+        <!--        <item name="android:windowBackground">@</item>-->
         <!-- Customize your theme here. -->
         <item name="android:windowDisablePreview">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
-<!--        <item name="colorAccent">@color/colorAccent</item>-->
+        <!--        <item name="colorAccent">@color/colorAccent</item>-->
     </style>
+
+    <style name="AppThemeIntroScreen.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppThemeIntroScreen.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppThemeIntroScreen.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

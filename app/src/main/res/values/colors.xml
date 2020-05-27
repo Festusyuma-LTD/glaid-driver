@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FEDCBF</color>
+    <color name="mapFillColor">#6C348D</color>
     <color name="colorPrimaryDark">#4E007C</color>
-    <color name="colorAccent">#FC7400</color></resources>
+    <color name="colorAccent">#FC7400</color>
+</resources>

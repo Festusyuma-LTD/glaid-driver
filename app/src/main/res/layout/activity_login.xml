@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    android:fitsSystemWindows="true"
     tools:context=".controller.LoginActivity">
 
     <ImageView
@@ -86,18 +87,20 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/ic_yellow_btn_bar"
-            android:ems="10"
+            android:ems="15"
             android:hint="Email"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:paddingStart="20dp"
-            android:paddingLeft="20dp"
+            android:padding="20dp"
             android:textColor="@android:color/black"
             android:textColorHint="#808080"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9"
+            app:layout_constraintVertical_bias="0.0" />
         <TextView
             android:id="@+id/textViewPassword"
             android:layout_width="wrap_content"
@@ -116,18 +119,22 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/ic_yellow_btn_bar"
-            android:ems="10"
+            android:ems="15"
             android:hint="Password"
             android:inputType="textPassword"
             android:maxLines="1"
+            android:padding="20dp"
             android:paddingStart="20dp"
             android:paddingLeft="20dp"
             android:textColor="@android:color/black"
             android:textColorHint="#808080"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/editTextEmail"
             app:layout_constraintStart_toStartOf="@+id/editTextEmail"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
+            app:layout_constraintVertical_bias="0.0" />
 
 
         <ImageView
@@ -160,7 +167,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="100dp"
             android:background="@drawable/ic_glaidbtnbanner"
             android:onClick="loginBtnClick"
             app:layout_constraintBottom_toBottomOf="parent"

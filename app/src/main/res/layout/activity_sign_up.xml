@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    android:fitsSystemWindows="true"
     tools:context=".controller.SignUpActivity">
 
 
@@ -36,7 +37,8 @@
                 app:layout_constraintStart_toStartOf="@+id/constraintLayout1"
                 app:layout_constraintTop_toTopOf="@+id/constraintLayout1"
                 app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@drawable/driverbackground" />
+                app:srcCompat="@drawable/driverbackground"
+                android:contentDescription="@string/todo" />
 
             <ImageView
                 android:id="@+id/imageView18"
@@ -48,7 +50,8 @@
                 app:layout_constraintHorizontal_bias="0.496"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/signupimage" />
+                app:srcCompat="@drawable/signupimage"
+                android:contentDescription="@string/todo" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -99,18 +102,23 @@
                 android:layout_marginTop="70dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                android:autofillHints="name"
                 android:background="@drawable/ic_yellow_btn_bar"
-                android:ems="10"
+                android:ems="15"
+                android:gravity="center_vertical"
                 android:hint="Full Name"
                 android:inputType="textPersonName"
                 android:maxLines="1"
-                android:paddingStart="20dp"
                 android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="#808080"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textView11"
@@ -130,36 +138,46 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                android:autofillHints="emailAddress"
                 android:background="@drawable/ic_yellow_btn_bar"
-                android:ems="10"
+                android:ems="15"
+                android:gravity="center_vertical"
                 android:hint="Email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:paddingStart="20dp"
                 android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="#808080"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/editText"
                 app:layout_constraintStart_toStartOf="@+id/editText"
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
+                app:layout_constraintTop_toBottomOf="@+id/editText"
+                app:layout_constraintVertical_bias="0.0" />
 
             <EditText
                 android:id="@+id/phoneNosId"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                android:autofillHints="phone"
                 android:background="@drawable/ic_yellow_btn_bar"
-                android:ems="10"
+                android:ems="15"
+                android:gravity="center_vertical"
                 android:hint="Phone Number"
                 android:inputType="phone"
                 android:maxLines="1"
-                android:paddingStart="20dp"
                 android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="#808080"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/editText2"
                 app:layout_constraintStart_toStartOf="@+id/editText2"
-                app:layout_constraintTop_toBottomOf="@+id/editText2" />
+                app:layout_constraintTop_toBottomOf="@+id/editText2"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textView16"
@@ -192,18 +210,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
+                android:layout_marginBottom="100dp"
+                android:autofillHints="password"
                 android:background="@drawable/ic_yellow_btn_bar"
-                android:ems="10"
+                android:ems="15"
+                android:gravity="center_vertical"
                 android:hint="Password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:paddingStart="20dp"
                 android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="#808080"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/phoneNosId"
                 app:layout_constraintStart_toStartOf="@+id/phoneNosId"
-                app:layout_constraintTop_toBottomOf="@+id/phoneNosId" />
+                app:layout_constraintTop_toBottomOf="@+id/phoneNosId"
+                app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
                 android:id="@+id/passwordEye"
@@ -236,18 +259,23 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
+                android:layout_marginBottom="10dp"
+                android:autofillHints="password"
                 android:background="@drawable/ic_yellow_btn_bar"
-                android:ems="10"
+                android:ems="15"
+                android:gravity="center_vertical"
                 android:hint="Re-enter Password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:paddingStart="20dp"
                 android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:textColor="@android:color/black"
                 android:textColorHint="#808080"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/editText3"
                 app:layout_constraintStart_toStartOf="@+id/editText3"
-                app:layout_constraintTop_toBottomOf="@+id/editText3" />
+                app:layout_constraintTop_toBottomOf="@+id/editText3"
+                app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
                 android:id="@+id/rePasswordEye"
@@ -278,8 +306,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="50dp"
+                android:layout_marginBottom="100dp"
                 android:background="@drawable/ic_glaidbtnbanner"
+                android:gravity="center_vertical"
                 android:onClick="submitSignUpBtnClick"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/editText4"
@@ -310,7 +339,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/submitSignUpBtn"
                 app:layout_constraintEnd_toEndOf="@+id/submitSignUpBtn"
                 app:layout_constraintTop_toTopOf="@+id/submitSignUpBtn"
-                app:srcCompat="@drawable/ic_enter_chevron" />
+                app:srcCompat="@drawable/ic_enter_chevron"
+                android:contentDescription="@string/todo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
