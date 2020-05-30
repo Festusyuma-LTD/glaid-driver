@@ -6,3 +6,4 @@ package festusyuma.com.glaiddriver.utilities
  * Email: okebugwuchidozie@gmail.com
  */
 const val EXTRA_RECOVERY_TYPE = "recoverType";
+const val EXTRA_QUESTION = "question";

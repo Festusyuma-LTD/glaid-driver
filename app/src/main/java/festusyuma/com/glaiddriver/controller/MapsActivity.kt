@@ -1,6 +1,7 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
@@ -153,10 +154,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                             mLastKnownLocation.latitude,
                             mLastKnownLocation.longitude
                         )
-                        mMap.addMarker(
-                            MarkerOptions().position(uLocation).title("Your Location")
-                                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
-                        )
+//                        mMap.addMarker(
+//                            MarkerOptions().position(uLocation).title("Your Location")
+//                                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
+//                        )
                         mMap.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                 uLocation, DEFAULT_ZOOM.toFloat()
@@ -176,10 +177,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                                 .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM.toFloat())
                         )
 
-                        mMap.addMarker(
-                            MarkerOptions().position(mDefaultLocation).title("Your Location")
-                                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
-                        )
+//                        mMap.addMarker(
+//                            MarkerOptions().position(mDefaultLocation).title("Your Location")
+//                                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
+//                        )
                         mMap.uiSettings.isMyLocationButtonEnabled = false
                     }
                 }
@@ -294,6 +295,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         TODO("Not yet implemented")
     }
 
+    private fun henryCloseDrawer() {
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+    }
 
     fun toggleDrawerClick(view: View) {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
@@ -304,80 +312,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
+    fun orderHistoryClick(view: View) {
+        henryCloseDrawer()
+        val intent = Intent(this, OrderHistoryActivity::class.java)
+        startActivity(intent)
+    }
 
-//    override fun onConnectionFailed(p0: ConnectionResult) {
-//        Toast.makeText(applicationContext, "connection failed", Toast.LENGTH_SHORT).show()
-//    }
-//
-//    override fun onConnectionSuspended(p0: Int) {
-//        Toast.makeText(applicationContext, "connection suspended", Toast.LENGTH_SHORT).show()
-//    }
-//
-//    override fun onMyLocationButtonClick(): Boolean {
-//        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-//        // Return false so that we don't consume the event and the default behavior still occurs
-//        // (the camera animates to the user's current position).
-//        return false;
-//    }
-//
-//    override fun onMyLocationClick(p0: Location) {
-//        Toast.makeText(this, "Current location:\n$p0", Toast.LENGTH_LONG).show();
-//    }
+    fun inviteFriendsClick(view: View) {}
+    fun helpClick(view: View) {
+        henryCloseDrawer()
+        val intent = Intent(this, HelpSupportActivity::class.java)
+        startActivity(intent)
 
-//    override fun onConnected(bundle: Bundle?) {
-//
-//        mLocationRequest = LocationRequest()
-//        mLocationCallback = LocationCallback()
-//        mLocationRequest.interval = 1000
-//        mLocationRequest.fastestInterval = 1000
-//        mLocationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-//        if (ContextCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-//            mFusedLocationClient?.requestLocationUpdates(
-//                mLocationRequest,
-//                mLocationCallback,
-//                Looper.myLooper()
-//            )
-//        }
-//    }
+    }
 
-//    override fun onLocationChanged(location: Location) {
-//
-//        mLastKnownLocation = location
-//        if (mCurrLocationMarker != null) {
-//            mCurrLocationMarker!!.remove()
-//        }
-//        //Place current location marker
-//        val latLng = LatLng(location.latitude, location.longitude)
-//
-//        val mapIcon =
-//            AppCompatResources.getDrawable(this, R.drawable.ic_drivermapmarker)!!.toBitmap(50, 100)
-//
-//// Get back the mutable Polyline
-//        mCurrLocationMarker = mMap.addMarker(
-//            MarkerOptions().position(latLng).title("Current Position")
-//                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon)).flat(true)
-//        )
-//
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-////        mMap.animateCamera(CameraUpdateFactory.zoomTo(12f))
-//        mMap.addCircle(
-//            CircleOptions().center(latLng).radius(500.0)
-//                .strokeWidth(1f)
-//                .strokeColor(R.color.colorPrimaryDark)
-//                .fillColor(Color.argb(50, 78, 0, 124))
-//        )
-//
-//
-//        //stop location updates
-//        if (mGoogleApiClient != null) {
-//            mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
-//        }
-//    }
+    fun editProfileClick(view: View) {
+        henryCloseDrawer()
+        val intent = Intent(this, EditProfileActivity::class.java)
+        startActivity(intent)
+    }
 
 
 }
