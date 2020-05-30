@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="festusyuma.com.glaiddriver">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -17,6 +16,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeIntroScreen">
+        <activity android:name=".controller.OrderDetailsActivity"></activity>
+        <activity android:name=".controller.OrderHistoryActivity" />
+        <activity android:name=".controller.SupportFullPageActivity" />
+        <activity android:name=".controller.HelpSupportActivity" />
+        <activity android:name=".controller.EditProfileActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -35,11 +39,7 @@
 
         <activity
             android:name=".controller.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
-        <activity
-            android:name=".controller.DriverMapActivity"
-            android:label="@string/title_activity_driver_map"
-            android:theme="@style/AppThemeIntroScreen.NoActionBar" />
+            android:label="@string/title_activity_maps" />
         <activity
             android:name=".controller.ResetPasswordActivity"
             android:configChanges="orientation"

@@ -30,4 +30,20 @@
 
     <string name="home_second">Home Second</string>
     <string name="title_activity_maps">Map</string>
+    <string name="help_support"><![CDATA[Help & Support]]></string>
+    <string name="order_history">Order History</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="connect_facebook">Connect Facebook</string>
+    <string name="change_password">Change Password</string>
+    <string name="top_questions">Top Questions</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="liters">liters</string>
+    <string name="dot">•</string>
+    <string name="location_time"><![CDATA[Location & Time]]></string>
+    <string name="payment">Payment</string>
+    <string name="rate_customer">Rate Customer</string>
+    <string name="delivered">Delivered</string>
 </resources>

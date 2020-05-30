@@ -51,4 +51,6 @@ class GetStartedActivity : AppCompatActivity() {
     fun termOfUseClick(){
 
     }
+
+    fun termOfUseClick(view: View) {}
 }
