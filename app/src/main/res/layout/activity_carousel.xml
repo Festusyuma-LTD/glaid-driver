@@ -12,11 +12,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="40dp"
+        android:layout_marginBottom="5dp"
         app:layout_constraintBottom_toTopOf="@+id/getStartedBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.25" />
 
     <Button
         android:id="@+id/getStartedBtn"
@@ -29,39 +30,22 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="100dp"
         android:background="@drawable/ic_orangebarbutton"
+        android:drawableEnd="@drawable/ic_tick_text"
+        android:drawableRight="@drawable/ic_tick_text"
+        android:gravity="center|start|left"
         android:onClick="getStartedBtnClick"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Get Started"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/carouselviewpager"
         app:layout_constraintVertical_bias="1.0" />
 
-    <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:contentDescription="@string/get_started_button"
-        app:layout_constraintBottom_toBottomOf="@+id/getStartedBtn"
-        app:layout_constraintStart_toStartOf="@+id/getStartedBtn"
-        app:layout_constraintTop_toTopOf="@+id/getStartedBtn"
-        app:srcCompat="@drawable/ic_get_started_text" />
 
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:contentDescription="@string/get_started_button"
-        app:layout_constraintBottom_toBottomOf="@+id/getStartedBtn"
-        app:layout_constraintEnd_toEndOf="@+id/getStartedBtn"
-        app:layout_constraintTop_toTopOf="@+id/getStartedBtn"
-        app:srcCompat="@drawable/ic_tick_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

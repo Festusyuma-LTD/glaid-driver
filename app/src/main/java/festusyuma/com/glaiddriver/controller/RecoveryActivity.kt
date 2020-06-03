@@ -37,7 +37,7 @@ class RecoveryActivity : AppCompatActivity() {
                 labelText.setText(R.string.phone_number)
                 editTextType.hint = getString(R.string.phone_number)
                 editTextType.inputType = InputType.TYPE_CLASS_PHONE
-                submitText.text = "Send OTP"
+                handleSubmitBtn.text = "Send OTP"
                 resendOtpText.visibility = View.INVISIBLE
                 resendOtpbtn.visibility = View.INVISIBLE
             }
@@ -46,7 +46,7 @@ class RecoveryActivity : AppCompatActivity() {
                 labelText.setText(R.string.email_address)
                 editTextType.hint = getString(R.string.email_address)
                 editTextType.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                submitText.text = "Send Mail"
+                handleSubmitBtn.text = "Send Mail"
                 resendOtpText.visibility = View.INVISIBLE
                 resendOtpbtn.visibility = View.INVISIBLE
 
@@ -56,7 +56,7 @@ class RecoveryActivity : AppCompatActivity() {
                 labelText.setText(R.string.otp)
                 editTextType.hint = getString(R.string.otp)
                 editTextType.inputType = InputType.TYPE_CLASS_NUMBER
-                submitText.setText(R.string.continue_text)
+                handleSubmitBtn.setText(R.string.continue_text)
                 resendOtpText.visibility = View.VISIBLE
                 resendOtpbtn.visibility = View.VISIBLE
 

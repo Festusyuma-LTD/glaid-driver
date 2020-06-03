@@ -12,6 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.adapters.CarouselAdapter
 import festusyuma.com.glaiddriver.utilities.PrefManager
+import kotlinx.android.synthetic.main.activity_carousel.*
 
 
 class CarouselActivity : AppCompatActivity() {
@@ -41,6 +42,10 @@ class CarouselActivity : AppCompatActivity() {
         viewPager.apply {
             (getChildAt(0) as? RecyclerView)?.overScrollMode =
                 RecyclerView.OVER_SCROLL_NEVER
+        }
+        when (viewPager.currentItem) {
+            2 -> getStartedBtn.visibility = View.VISIBLE
+            else -> getStartedBtn.visibility = View.INVISIBLE
         }
 
     }

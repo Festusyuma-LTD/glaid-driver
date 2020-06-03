@@ -46,4 +46,13 @@
     <string name="payment">Payment</string>
     <string name="rate_customer">Rate Customer</string>
     <string name="delivered">Delivered</string>
+    <string name="sign_up_with_email">Sign up with Email</string>
+    <string name="driver">Driver</string>
+    <string name="sign_up_with_google">Sign up with Google</string>
+    <string name="sign_up_with_facebook">Sign up with Facebook</string>
+    <string name="by_signing_up_you_agree_to_our">By signing up you agree to our</string>
+    <string name="or">OR</string>
+    <string name="terms_of_use">Terms of Use</string>
+    <string name="sign_in">Sign in</string>
+    <string name="already_have_an_account">Already have an account?</string>
 </resources>
