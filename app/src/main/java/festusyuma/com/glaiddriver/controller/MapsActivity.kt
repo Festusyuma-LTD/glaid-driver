@@ -355,5 +355,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         startActivity(intent)
     }
 
+    fun previewerClick(view: View) {
+        val intent = Intent(this, OrderInvoiceActivity::class.java)
+        startActivity(intent)}
+
 
 }
