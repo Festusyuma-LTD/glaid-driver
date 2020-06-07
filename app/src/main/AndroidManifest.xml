@@ -16,20 +16,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeIntroScreen">
+        <activity android:name=".controller.OrderInvoiceActivity"></activity>
+        <activity android:name=".controller.InviteFriendsActivity" />
+        <activity android:name=".controller.ChatActivity" />
         <activity
             android:name=".controller.OrderDetailsActivity"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".controller.OrderHistoryActivity"
+        <activity
+            android:name=".controller.OrderHistoryActivity"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".controller.SupportFullPageActivity"
+        <activity
+            android:name=".controller.SupportFullPageActivity"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".controller.HelpSupportActivity"
+        <activity
+            android:name=".controller.HelpSupportActivity"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
-        <activity android:name=".controller.EditProfileActivity"
+        <activity
+            android:name=".controller.EditProfileActivity"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
 
@@ -50,8 +57,8 @@
 
         <activity
             android:name=".controller.MapsActivity"
-            android:screenOrientation="sensorPortrait"
             android:label="@string/title_activity_maps"
+            android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.ResetPasswordActivity"

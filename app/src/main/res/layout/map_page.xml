@@ -9,17 +9,20 @@
     <Button
         android:id="@+id/button"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="40dp"
-        android:background="@drawable/ic_hamburger"
+        android:background="@drawable/h_hamburger"
         android:elevation="1dp"
         android:onClick="toggleDrawerClick"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/map"
-        tools:targetApi="lollipop" />
+        tools:context=".controller.MapsActivity"
+        tools:ignore="UnusedAttribute" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"

@@ -1,28 +1,43 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.utilities.EXTRA_QUESTION
+import festusyuma.com.glaiddriver.utilities.buttonClickAnim
 
 class SupportFullPageActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val w: Window = window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
         }
-        w.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_support_full_page)
         val topic = intent.getStringExtra(EXTRA_QUESTION)
+    }
+
+    fun helpBackClick(view: View) {
+        view.startAnimation(buttonClickAnim)
+        val intent = Intent(this, HelpSupportActivity::class.java)
+        startActivity(intent)}
+
+    fun startChatClick(view: View) {
+        view.startAnimation(buttonClickAnim)
+        val intent = Intent(this, ChatActivity::class.java)
+        startActivity(intent)
     }
 }

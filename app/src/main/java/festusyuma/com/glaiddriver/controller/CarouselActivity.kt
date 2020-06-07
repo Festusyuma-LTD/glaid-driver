@@ -6,12 +6,15 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.view.animation.AlphaAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.adapters.CarouselAdapter
 import festusyuma.com.glaiddriver.utilities.PrefManager
+import festusyuma.com.glaiddriver.utilities.buttonClickAnim
 import kotlinx.android.synthetic.main.activity_carousel.*
 
 
@@ -43,14 +46,19 @@ class CarouselActivity : AppCompatActivity() {
             (getChildAt(0) as? RecyclerView)?.overScrollMode =
                 RecyclerView.OVER_SCROLL_NEVER
         }
-        when (viewPager.currentItem) {
-            2 -> getStartedBtn.visibility = View.VISIBLE
-            else -> getStartedBtn.visibility = View.INVISIBLE
-        }
-
+        viewPager.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                when (position) {
+                    2 -> getStartedBtn.visibility = View.VISIBLE
+                    else -> getStartedBtn.visibility = View.INVISIBLE
+                }
+            }
+        })
     }
 
     fun getStartedBtnClick(view: View) {
+        view.startAnimation(buttonClickAnim)
         val getStartedIntent = Intent(this, GetStartedActivity::class.java)
         startActivity(getStartedIntent)
 

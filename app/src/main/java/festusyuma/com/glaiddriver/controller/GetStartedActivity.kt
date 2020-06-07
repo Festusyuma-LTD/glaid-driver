@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.utilities.PrefManager
+import festusyuma.com.glaiddriver.utilities.buttonClickAnim
 
 
 class GetStartedActivity : AppCompatActivity() {
@@ -23,6 +24,11 @@ class GetStartedActivity : AppCompatActivity() {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             )
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+        }
 
         val prefManager = PrefManager(applicationContext)
         if (prefManager.isFirstTimeLaunch()) {
@@ -32,25 +38,26 @@ class GetStartedActivity : AppCompatActivity() {
         }
     }
     fun emailSignUpBtnClick(view: View){
+        view.startAnimation(buttonClickAnim)
         println("view $view")
         val signUpIntent = Intent(this, SignUpActivity::class.java)
         startActivity(signUpIntent)
 
     }
     fun fbSignUpBtnClick(view: View){
+        view.startAnimation(buttonClickAnim)
 
     }
     fun googleSignUpBtnClick(view: View){
+        view.startAnimation(buttonClickAnim)
 
     }
     fun getStartedSignInBtnClick(view: View){
+        view.startAnimation(buttonClickAnim)
         val signInIntent = Intent(this, LoginActivity::class.java)
         startActivity(signInIntent)
 
     }
-    fun termOfUseClick(){
-
-    }
-
-    fun termOfUseClick(view: View) {}
+    fun termOfUseClick(view: View) {
+        view.startAnimation(buttonClickAnim)}
 }

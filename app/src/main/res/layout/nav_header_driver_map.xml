@@ -53,11 +53,12 @@
     <TextView
         android:id="@+id/editProfileBtn"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="10dp"
         android:alpha="0.8"
         android:clickable="true"
+        android:focusable="true"
         android:onClick="editProfileClick"
         android:text="@string/edit_profile"
         android:textAllCaps="true"
@@ -66,9 +67,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView15"
-        app:layout_constraintTop_toBottomOf="@+id/rating"
-        app:layout_constraintVertical_bias="0.6"
-        android:focusable="true" />
+        app:layout_constraintTop_toBottomOf="@+id/rating" />
 
     <RatingBar
         android:id="@+id/rating"
@@ -92,13 +91,11 @@
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="-10dp"
-        android:layout_marginRight="-10dp"
         android:text="4.6"
         android:textColor="#333333"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@+id/rating"
-        app:layout_constraintEnd_toEndOf="@+id/rating"
+        app:layout_constraintStart_toEndOf="@+id/rating"
         app:layout_constraintTop_toTopOf="@+id/rating"
         app:layout_constraintVertical_bias="0.0"
         tools:text="4.6" />

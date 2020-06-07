@@ -3,6 +3,7 @@ package festusyuma.com.glaiddriver.controller
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,30 +17,33 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import festusyuma.com.glaiddriver.R
+import festusyuma.com.glaiddriver.utilities.buttonClickAnim
 
 class LoginActivity : AppCompatActivity() {
     private val TAG = "PermissionDemo"
     private val RECORD_REQUEST_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
+            window.navigationBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val w: Window = window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
-        }
-        w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        w.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
     }
 
     fun togglePasswordClick(view: View) {
+        view.startAnimation(buttonClickAnim)
 
     }
 
     fun loginBtnClick(view: View) {
+        view.startAnimation(buttonClickAnim)
         val locationPermission =
             ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
         if (locationPermission != PackageManager.PERMISSION_GRANTED) {
@@ -52,6 +56,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun forgotPasswordClick(view: View) {
+        view.startAnimation(buttonClickAnim)
         val signUpIntent = Intent(this, ProblemsLoginActivity::class.java)
         startActivity(signUpIntent)
 

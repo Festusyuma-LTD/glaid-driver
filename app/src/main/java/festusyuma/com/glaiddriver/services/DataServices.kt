@@ -1,6 +1,7 @@
 package festusyuma.com.glaiddriver.services
 
 import festusyuma.com.glaiddriver.models.CarouselModel
+import festusyuma.com.glaiddriver.models.Chat
 import festusyuma.com.glaiddriver.models.OrderHistory
 import festusyuma.com.glaiddriver.models.Question
 
@@ -53,6 +54,99 @@ object DataServices {
                     " Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore" +
                     " eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa " +
                     "qui officia deserunt mollit anim id est laborum", "imageUrl"
+        )
+    )
+    val chatTestBlock = listOf(
+        Chat(
+            "SENDER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:40",
+            "sent"
+        ),
+        Chat(
+            "RECIEVER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:42",
+            ""
+        ),
+        Chat(
+            "RECEIVER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:43",
+            "sent"
+        ),
+        Chat(
+            "SENDER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:45",
+            "sent"
+        ),
+        Chat(
+            "RECEIVER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:47",
+            "sent"
+        ),
+        Chat(
+            "SENDER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:49",
+            "sent"
+        ),
+        Chat(
+            "SENDER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:50",
+            "sent"
+        ),
+        Chat(
+            "RECEIVER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:51",
+            "sent"
+        ),
+        Chat(
+            "SENDER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:51",
+            "sent"
+        ),
+        Chat(
+            "RECEIVER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:40",
+            "sent"
+        ),
+        Chat(
+            "SENDER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:52",
+            "sent"
+        ),
+        Chat(
+            "SENDER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:53",
+            "sent"
+        ),
+        Chat(
+            "RECEIVER",
+            "ic_trucklogo",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
+            "3:55",
+            "pending"
         )
     )
     val orderHistoryList = listOf(
