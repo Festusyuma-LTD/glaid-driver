@@ -29,6 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import festusyuma.com.glaiddriver.R
+import festusyuma.com.glaiddriver.utilities.buttonClickAnim
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
@@ -65,8 +66,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
             )
         }
-        w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        w.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+        }
 
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
@@ -295,6 +299,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         TODO("Not yet implemented")
     }
 
+    override fun onBackPressed() {
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun henryCloseDrawer() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -304,6 +317,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     fun toggleDrawerClick(view: View) {
+        view.startAnimation(buttonClickAnim)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -313,13 +327,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     fun orderHistoryClick(view: View) {
+        view.startAnimation(buttonClickAnim)
         henryCloseDrawer()
         val intent = Intent(this, OrderHistoryActivity::class.java)
         startActivity(intent)
     }
 
-    fun inviteFriendsClick(view: View) {}
+    fun inviteFriendsClick(view: View) {
+        view.startAnimation(buttonClickAnim)
+        henryCloseDrawer()
+        val intent = Intent(this, InviteFriendsActivity::class.java)
+        startActivity(intent)
+    }
+
     fun helpClick(view: View) {
+        view.startAnimation(buttonClickAnim)
         henryCloseDrawer()
         val intent = Intent(this, HelpSupportActivity::class.java)
         startActivity(intent)
@@ -327,10 +349,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     }
 
     fun editProfileClick(view: View) {
+        view.startAnimation(buttonClickAnim)
         henryCloseDrawer()
         val intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
     }
+
+    fun previewerClick(view: View) {
+        val intent = Intent(this, OrderInvoiceActivity::class.java)
+        startActivity(intent)}
 
 
 }

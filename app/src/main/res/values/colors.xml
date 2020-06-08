@@ -4,4 +4,5 @@
     <color name="mapFillColor">#6C348D</color>
     <color name="colorPrimaryDark">#4E007C</color>
     <color name="colorAccent">#FC7400</color>
+    <color name="white">#FFFFFF</color>
 </resources>

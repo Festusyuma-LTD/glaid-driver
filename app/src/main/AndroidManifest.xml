@@ -16,11 +16,29 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeIntroScreen">
-        <activity android:name=".controller.OrderDetailsActivity"></activity>
-        <activity android:name=".controller.OrderHistoryActivity" />
-        <activity android:name=".controller.SupportFullPageActivity" />
-        <activity android:name=".controller.HelpSupportActivity" />
-        <activity android:name=".controller.EditProfileActivity" />
+        <activity android:name=".controller.OrderInvoiceActivity"></activity>
+        <activity android:name=".controller.InviteFriendsActivity" />
+        <activity android:name=".controller.ChatActivity" />
+        <activity
+            android:name=".controller.OrderDetailsActivity"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.OrderHistoryActivity"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.SupportFullPageActivity"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.HelpSupportActivity"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".controller.EditProfileActivity"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -39,54 +57,43 @@
 
         <activity
             android:name=".controller.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.ResetPasswordActivity"
-            android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.ProblemsLoginActivity"
-            android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.RecoveryActivity"
-            android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.ForgotPasswordActivity"
-            android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.SignupOtpActivity"
-            android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.LoginActivity"
-            android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.SignUpActivity"
-            android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="adjustPan|stateHidden"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.GetStartedActivity"
-            android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" /> <!-- The below is for the splash screen and we need no action bar and the default theme -->
         <activity
             android:name=".controller.MainActivity"
-            android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppThemeIntroScreen"
             tools:ignore="LockedOrientationActivity">
@@ -100,7 +107,6 @@
         </activity>
         <activity
             android:name=".controller.CarouselActivity"
-            android:configChanges="orientation"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />

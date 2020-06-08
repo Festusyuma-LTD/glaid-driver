@@ -17,7 +17,7 @@ class PrefManager(context: Context) {
     private var _context: Context = context
 
     // shared pref mode
-    var PRIVATE_MODE = 0
+    private var PRIVATE_MODE = 0
     fun setFirstTimeLaunch(isFirstTime: Boolean) {
         editor.putBoolean(IS_FIRST_TIME_LAUNCH, isFirstTime)
         editor.commit()

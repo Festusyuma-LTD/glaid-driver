@@ -15,7 +15,6 @@ class CarouselFragment(var page: String?) : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("PAGE VALUE", page)
         return when (page) {
             "page1" -> inflater.inflate(R.layout.carousel_view_1, container, false)
             "page2" -> inflater.inflate(R.layout.carousel_view_2, container, false)
