@@ -29,42 +29,51 @@ tools:context=".controller.ProblemsLoginActivity">
 
         <ImageView
             android:id="@+id/imageView11"
-            android:layout_width="255dp"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="100dp"
-            app:layout_constraintDimensionRatio=""
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView3"
+            app:layout_constraintDimensionRatio="w,1:1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_forget_password" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:text="Problems signing in?"
             android:textColor="#333333"
             android:textSize="24sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/textView9"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/textView9"
             android:layout_width="255dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginBottom="60dp"
             android:gravity="center_horizontal"
             android:text="Let’s help you access your account"
             android:textColor="#333333"
             android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/forgotEmailBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
             app:lineHeight="19sp" />
 
 
@@ -75,39 +84,24 @@ tools:context=".controller.ProblemsLoginActivity">
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="50dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/ic_glaidbtnbanner"
+            android:drawableEnd="@drawable/ic_enter_chevron"
+            android:drawableRight="@drawable/ic_enter_chevron"
+            android:gravity="center|start|right"
             android:onClick="forgotEmailBtnClick"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             android:text="Forgot Email"
+            android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/forgotEmailBtn"
-            app:layout_constraintStart_toStartOf="@id/forgotEmailBtn"
-            app:layout_constraintTop_toTopOf="@id/forgotEmailBtn" />
-
-        <ImageView
-            android:id="@+id/imageView19"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            app:layout_constraintBottom_toBottomOf="@id/forgotEmailBtn"
-            app:layout_constraintEnd_toEndOf="@id/forgotEmailBtn"
-            app:layout_constraintTop_toTopOf="@id/forgotEmailBtn"
-            app:srcCompat="@drawable/ic_enter_chevron" />
+            app:layout_constraintBottom_toTopOf="@+id/forgotPasswordBtn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
         <Button
@@ -115,43 +109,31 @@ tools:context=".controller.ProblemsLoginActivity">
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/ic_glaidbtnbanner"
-            android:onClick="forgotPasswordBtnClick"
-            app:layout_constraintEnd_toEndOf="@+id/forgotEmailBtn"
-            app:layout_constraintStart_toStartOf="@+id/forgotEmailBtn"
-            app:layout_constraintTop_toBottomOf="@+id/forgotEmailBtn" />
-
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
-            android:text="@string/forgot_password"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/forgotPasswordBtn"
-            app:layout_constraintStart_toStartOf="@id/forgotPasswordBtn"
-            app:layout_constraintTop_toTopOf="@id/forgotPasswordBtn" />
-
-        <ImageView
-            android:id="@+id/imageView20"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
-            app:layout_constraintBottom_toBottomOf="@id/forgotPasswordBtn"
-            app:layout_constraintEnd_toEndOf="@id/forgotPasswordBtn"
-            app:layout_constraintTop_toTopOf="@id/forgotPasswordBtn"
-            app:srcCompat="@drawable/ic_enter_chevron" />
+            android:layout_marginBottom="40dp"
+            android:background="@drawable/ic_glaidbtnbanner"
+            android:drawableEnd="@drawable/ic_enter_chevron"
+            android:drawableRight="@drawable/ic_enter_chevron"
+            android:gravity="center|start|left"
+            android:onClick="forgotPasswordBtnClick"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/forgot_password"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/resendOtpText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/resendOtpText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:layout_marginBottom="80dp"
             android:text="Remembered?"
             android:textColor="#808080"
@@ -160,22 +142,20 @@ tools:context=".controller.ProblemsLoginActivity">
             app:layout_constraintEnd_toStartOf="@+id/reSigninbtn"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/forgotPasswordBtn"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/reSigninbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
             android:clickable="true"
             android:onClick="reSigninbtnClick"
             android:text="Sign in"
             android:textColor="#4E007C"
             android:textSize="14sp"
-            app:layout_constraintBaseline_toBaselineOf="@id/resendOtpText"
+            app:layout_constraintBaseline_toBaselineOf="@+id/resendOtpText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/resendOtpText" />

@@ -42,16 +42,15 @@
 
             <ImageView
                 android:id="@+id/imageView18"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="100dp"
-                app:layout_constraintDimensionRatio="w,1:1"
+                android:contentDescription="@string/todo"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintHorizontal_bias="0.51"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/signupimage"
-                android:contentDescription="@string/todo" />
+                app:srcCompat="@drawable/signupimage" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -306,41 +305,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="100dp"
+                android:layout_marginBottom="80dp"
                 android:background="@drawable/ic_glaidbtnbanner"
-                android:gravity="center_vertical"
+                android:drawableEnd="@drawable/ic_enter_chevron"
+                android:drawableRight="@drawable/ic_enter_chevron"
+                android:gravity="center|start|left"
                 android:onClick="submitSignUpBtnClick"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:text="@string/continue_text"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/editText4"
                 app:layout_constraintStart_toStartOf="@+id/editText4"
                 app:layout_constraintTop_toBottomOf="@+id/divider"
                 app:layout_constraintVertical_bias="0.0" />
-
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:text="Continue"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/submitSignUpBtn"
-                app:layout_constraintStart_toStartOf="@+id/submitSignUpBtn"
-                app:layout_constraintTop_toTopOf="@+id/submitSignUpBtn" />
-
-            <ImageView
-                android:id="@+id/imageView19"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                app:layout_constraintBottom_toBottomOf="@+id/submitSignUpBtn"
-                app:layout_constraintEnd_toEndOf="@+id/submitSignUpBtn"
-                app:layout_constraintTop_toTopOf="@+id/submitSignUpBtn"
-                app:srcCompat="@drawable/ic_enter_chevron"
-                android:contentDescription="@string/todo" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

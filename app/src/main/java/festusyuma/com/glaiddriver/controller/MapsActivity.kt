@@ -1,6 +1,7 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import festusyuma.com.glaiddriver.R
+import festusyuma.com.glaiddriver.utilities.buttonClickAnim
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
@@ -64,8 +66,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
             )
         }
-        w.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-        w.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            }
+        }
 
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
@@ -153,10 +158,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                             mLastKnownLocation.latitude,
                             mLastKnownLocation.longitude
                         )
-                        mMap.addMarker(
-                            MarkerOptions().position(uLocation).title("Your Location")
-                                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
-                        )
+//                        mMap.addMarker(
+//                            MarkerOptions().position(uLocation).title("Your Location")
+//                                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
+//                        )
                         mMap.moveCamera(
                             CameraUpdateFactory.newLatLngZoom(
                                 uLocation, DEFAULT_ZOOM.toFloat()
@@ -176,10 +181,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                                 .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM.toFloat())
                         )
 
-                        mMap.addMarker(
-                            MarkerOptions().position(mDefaultLocation).title("Your Location")
-                                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
-                        )
+//                        mMap.addMarker(
+//                            MarkerOptions().position(mDefaultLocation).title("Your Location")
+//                                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
+//                        )
                         mMap.uiSettings.isMyLocationButtonEnabled = false
                     }
                 }
@@ -294,8 +299,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         TODO("Not yet implemented")
     }
 
+    override fun onBackPressed() {
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    private fun henryCloseDrawer() {
+        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+
+    }
 
     fun toggleDrawerClick(view: View) {
+        view.startAnimation(buttonClickAnim)
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -304,80 +326,38 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
+    fun orderHistoryClick(view: View) {
+        view.startAnimation(buttonClickAnim)
+        henryCloseDrawer()
+        val intent = Intent(this, OrderHistoryActivity::class.java)
+        startActivity(intent)
+    }
 
-//    override fun onConnectionFailed(p0: ConnectionResult) {
-//        Toast.makeText(applicationContext, "connection failed", Toast.LENGTH_SHORT).show()
-//    }
-//
-//    override fun onConnectionSuspended(p0: Int) {
-//        Toast.makeText(applicationContext, "connection suspended", Toast.LENGTH_SHORT).show()
-//    }
-//
-//    override fun onMyLocationButtonClick(): Boolean {
-//        Toast.makeText(this, "MyLocation button clicked", Toast.LENGTH_SHORT).show();
-//        // Return false so that we don't consume the event and the default behavior still occurs
-//        // (the camera animates to the user's current position).
-//        return false;
-//    }
-//
-//    override fun onMyLocationClick(p0: Location) {
-//        Toast.makeText(this, "Current location:\n$p0", Toast.LENGTH_LONG).show();
-//    }
+    fun inviteFriendsClick(view: View) {
+        view.startAnimation(buttonClickAnim)
+        henryCloseDrawer()
+        val intent = Intent(this, InviteFriendsActivity::class.java)
+        startActivity(intent)
+    }
 
-//    override fun onConnected(bundle: Bundle?) {
-//
-//        mLocationRequest = LocationRequest()
-//        mLocationCallback = LocationCallback()
-//        mLocationRequest.interval = 1000
-//        mLocationRequest.fastestInterval = 1000
-//        mLocationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-//        if (ContextCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-//            mFusedLocationClient?.requestLocationUpdates(
-//                mLocationRequest,
-//                mLocationCallback,
-//                Looper.myLooper()
-//            )
-//        }
-//    }
+    fun helpClick(view: View) {
+        view.startAnimation(buttonClickAnim)
+        henryCloseDrawer()
+        val intent = Intent(this, HelpSupportActivity::class.java)
+        startActivity(intent)
 
-//    override fun onLocationChanged(location: Location) {
-//
-//        mLastKnownLocation = location
-//        if (mCurrLocationMarker != null) {
-//            mCurrLocationMarker!!.remove()
-//        }
-//        //Place current location marker
-//        val latLng = LatLng(location.latitude, location.longitude)
-//
-//        val mapIcon =
-//            AppCompatResources.getDrawable(this, R.drawable.ic_drivermapmarker)!!.toBitmap(50, 100)
-//
-//// Get back the mutable Polyline
-//        mCurrLocationMarker = mMap.addMarker(
-//            MarkerOptions().position(latLng).title("Current Position")
-//                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon)).flat(true)
-//        )
-//
-//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
-////        mMap.animateCamera(CameraUpdateFactory.zoomTo(12f))
-//        mMap.addCircle(
-//            CircleOptions().center(latLng).radius(500.0)
-//                .strokeWidth(1f)
-//                .strokeColor(R.color.colorPrimaryDark)
-//                .fillColor(Color.argb(50, 78, 0, 124))
-//        )
-//
-//
-//        //stop location updates
-//        if (mGoogleApiClient != null) {
-//            mFusedLocationClient?.removeLocationUpdates(mLocationCallback)
-//        }
-//    }
+    }
+
+    fun editProfileClick(view: View) {
+        view.startAnimation(buttonClickAnim)
+        henryCloseDrawer()
+        val intent = Intent(this, EditProfileActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun previewerClick(view: View) {
+        val intent = Intent(this, OrderInvoiceActivity::class.java)
+        startActivity(intent)}
 
 
 }
