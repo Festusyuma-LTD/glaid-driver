@@ -62,7 +62,7 @@
     <string name="bank_account">Bank Account</string>
     <string name="_2356">****2356</string>
     <string name="guarantee_trust_bank">Guarantee Trust Bank</string>
-    <string name="need_futher_assistance">Need futher assistance?</string>
+    <string name="need_futher_assistance">Need further assistance?</string>
     <string name="question">Question</string>
     <string name="jargon">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</string>
     <string name="start_a_live_chat">Start a live chat</string>
@@ -95,4 +95,12 @@
     <string name="_500">500</string>
     <string name="total_outstanding">Total Outstanding</string>
     <string name="billed_to">Billed to</string>
+    <string name="one_last_step">One Last Step</string>
+    <string name="sign_up">Sign up</string>
+    <string name="did_not_receive_an_otp">Did not receive an OTP?</string>
+    <string name="resend">Resend</string>
+    <string name="chat_with_henry">Chat With Henry</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="send_otp">Send OTP</string>
+    <string name="send_mail">Send Mail</string>
 </resources>

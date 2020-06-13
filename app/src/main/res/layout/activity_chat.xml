@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center_vertical"
-        android:text="Chat With Henry"
+        android:text="@string/chat_with_henry"
         android:textColor="#333333"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -39,13 +39,13 @@
         android:id="@+id/btnImg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/todo"
         android:onClick="editBackBtnClick"
         app:layout_constraintBottom_toBottomOf="@+id/defaultBackBtn"
         app:layout_constraintEnd_toEndOf="@+id/defaultBackBtn"
         app:layout_constraintStart_toStartOf="@+id/defaultBackBtn"
         app:layout_constraintTop_toTopOf="@+id/defaultBackBtn"
-        app:srcCompat="@drawable/h_back_btn"
-        android:contentDescription="@string/todo" />
+        app:srcCompat="@drawable/h_back_btn" />
 
     <View
         android:id="@+id/divider"
@@ -79,7 +79,7 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/ic_chat_input"
         android:ems="10"
-        android:hint="Type a message"
+        android:hint="@string/type_a_message"
         android:inputType="textMultiLine"
         android:maxLines="3"
         android:minLines="2"
@@ -90,25 +90,29 @@
         android:paddingRight="40dp"
         android:paddingBottom="1dp"
         android:scrollbars="vertical"
+        android:importantForAutofill="no"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textColorHint="@color/mapFillColor"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/jargon" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/sendBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="5dp"
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:clickable="true"
-        app:backgroundTint="#F2F2F2"
-        app:fabSize="mini"
-        app:layout_constraintBottom_toBottomOf="@+id/chatMessageBox"
+        android:contentDescription="@string/todo"
+        android:focusable="true"
+        android:onClick="sendMessageClick"
         app:layout_constraintEnd_toEndOf="@+id/chatMessageBox"
-        app:maxImageSize="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/ic_send_btn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -26,7 +26,10 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.tasks.Task
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.utilities.buttonClickAnim
@@ -137,8 +140,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
      */
     private fun getDeviceLocation() {
 
-        val mapIcon =
-            AppCompatResources.getDrawable(this, R.drawable.ic_drivermapmarker)!!.toBitmap(50, 100)
+        AppCompatResources.getDrawable(this, R.drawable.ic_drivermapmarker)!!.toBitmap(50, 100)
 
         /*
          * Get the best and most recent location of the device, which may be null in rare
@@ -245,8 +247,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
      * Updates the map's UI settings based on whether the user has granted location permission.
      */
     private fun updateLocationUI() {
-        val mapIcon =
-            AppCompatResources.getDrawable(this, R.drawable.ic_drivermapmarker)!!.toBitmap(50, 100)
+        AppCompatResources.getDrawable(this, R.drawable.ic_drivermapmarker)!!.toBitmap(50, 100)
 
         try {
             if (mLocationPermissionGranted) {
@@ -268,21 +269,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         TODO("Not yet implemented")
     }
 
-    /**
-     * This callback will never be invoked and providers can be considers as always in the
-     * [LocationProvider.AVAILABLE] state.
-     *
-     */
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
         TODO("Not yet implemented")
     }
 
-    /**
-     * Called when the provider is enabled by the user.
-     *
-     * @param provider the name of the location provider associated with this
-     * update.
-     */
     override fun onProviderEnabled(provider: String?) {
         TODO("Not yet implemented")
     }
@@ -354,10 +344,5 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
     }
-
-    fun previewerClick(view: View) {
-        val intent = Intent(this, OrderInvoiceActivity::class.java)
-        startActivity(intent)}
-
 
 }
