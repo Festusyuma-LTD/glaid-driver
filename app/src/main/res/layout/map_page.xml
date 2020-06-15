@@ -30,6 +30,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".controller.MapsActivity">
+
     </androidx.fragment.app.FragmentContainerView>
+
+    <FrameLayout
+        android:id="@+id/frameLayoutId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/userlocation"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        android:contentDescription="@string/todo"
+        android:focusable="true"
+        android:onClick="goToUserLocation"
+        app:layout_constraintBottom_toTopOf="@+id/frameLayoutId"
+        app:layout_constraintEnd_toEndOf="@+id/frameLayoutId"
+        app:srcCompat="@drawable/ic_user_location" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,6 +32,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.tasks.Task
 import festusyuma.com.glaiddriver.R
+import festusyuma.com.glaiddriver.utilities.DashboardFragment
+import festusyuma.com.glaiddriver.utilities.NewOrderFragment
 import festusyuma.com.glaiddriver.utilities.buttonClickAnim
 
 
@@ -71,7 +73,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             }
         }
 
@@ -93,6 +96,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
+        // fragment switching
+        val rootFragment = DashboardFragment()
+        // fragment transaction to set root fragment on create
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_up,
+                R.anim.slide_down,
+                R.anim.slide_up,
+                R.anim.slide_down
+            )
+            .replace(R.id.frameLayoutId, rootFragment)
+            .commit()
 
     }
 
@@ -252,7 +269,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         try {
             if (mLocationPermissionGranted) {
                 mMap.isMyLocationEnabled = true
-                mMap.uiSettings.isMyLocationButtonEnabled = true
+                mMap.uiSettings.isMyLocationButtonEnabled = false
             } else {
                 mMap.isMyLocationEnabled = false
                 mMap.uiSettings.isMyLocationButtonEnabled = false
@@ -343,6 +360,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         henryCloseDrawer()
         val intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
+    }
+
+    fun goToUserLocation(view: View) {
+        view.startAnimation(buttonClickAnim)
+        henryCloseDrawer()// fragment switching
+        val newOrderFragment = NewOrderFragment()
+        // fragment transaction to set root fragment on create
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_up,
+                R.anim.slide_down,
+                R.anim.slide_up,
+                R.anim.slide_down
+            )
+            .replace(R.id.frameLayoutId, newOrderFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
 }

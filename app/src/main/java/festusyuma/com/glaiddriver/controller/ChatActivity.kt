@@ -34,7 +34,7 @@ class ChatActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
 
         //use beloow for chat+
-        layoutManager.reverseLayout = true
+        layoutManager.reverseLayout = false
         layoutManager.stackFromEnd = true
         chatView.layoutManager = layoutManager
         chatView.adapter = chatAdapter

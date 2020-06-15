@@ -97,6 +97,5 @@
         app:layout_constraintBottom_toBottomOf="@+id/rating"
         app:layout_constraintStart_toEndOf="@+id/rating"
         app:layout_constraintTop_toTopOf="@+id/rating"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="4.6" />
+        app:layout_constraintVertical_bias="0.0" />
 </androidx.constraintlayout.widget.ConstraintLayout>
