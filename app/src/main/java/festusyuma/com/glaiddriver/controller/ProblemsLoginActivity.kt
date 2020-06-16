@@ -22,6 +22,7 @@ class ProblemsLoginActivity : AppCompatActivity() {
             }
         }
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_problems_login)
     }
     fun reSigninbtnClick(view: View){
         view.startAnimation(buttonClickAnim)
