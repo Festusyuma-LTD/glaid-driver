@@ -1,19 +1,15 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.adapters.HelpSupportAdapter
 import festusyuma.com.glaiddriver.services.DataServices
-import festusyuma.com.glaiddriver.utilities.EXTRA_QUESTION
 import festusyuma.com.glaiddriver.utilities.buttonClickAnim
 import kotlinx.android.synthetic.main.activity_help_support.*
 
@@ -62,6 +58,12 @@ class HelpSupportActivity : AppCompatActivity() {
     fun helpBackClick(view: View) {
         view.startAnimation(buttonClickAnim)
         val intent = Intent(this, MapsActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun liveChatClick(view: View) {
+        view.startAnimation(buttonClickAnim)
+        val intent = Intent(this, ChatActivity::class.java)
         startActivity(intent)
     }
 }

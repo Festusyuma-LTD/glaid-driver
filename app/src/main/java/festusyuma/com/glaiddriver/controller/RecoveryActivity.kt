@@ -1,7 +1,6 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
@@ -38,7 +37,7 @@ class RecoveryActivity : AppCompatActivity() {
                 labelText.setText(R.string.phone_number)
                 editTextType.hint = getString(R.string.phone_number)
                 editTextType.inputType = InputType.TYPE_CLASS_PHONE
-                handleSubmitBtn.text = "Send OTP"
+                handleSubmitBtn.text = getString(R.string.send_otp)
                 resendOtpText.visibility = View.INVISIBLE
                 resendOtpbtn.visibility = View.INVISIBLE
             }
@@ -47,7 +46,7 @@ class RecoveryActivity : AppCompatActivity() {
                 labelText.setText(R.string.email_address)
                 editTextType.hint = getString(R.string.email_address)
                 editTextType.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                handleSubmitBtn.text = "Send Mail"
+                handleSubmitBtn.text = getString(R.string.send_mail)
                 resendOtpText.visibility = View.INVISIBLE
                 resendOtpbtn.visibility = View.INVISIBLE
 
