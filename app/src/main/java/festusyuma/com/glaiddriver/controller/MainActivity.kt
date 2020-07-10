@@ -18,17 +18,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val w: Window = window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
+        w.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            }
-        }
+
         Handler().postDelayed({
             // This method will be executed once the timer is over
             // Start your app main activity

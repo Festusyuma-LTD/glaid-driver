@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.adapters.OrderHistoryAdapter
 import festusyuma.com.glaiddriver.services.DataServices
-import festusyuma.com.glaiddriver.utilities.buttonClickAnim
+import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 import kotlinx.android.synthetic.main.activity_order_history.*
 
 class OrderHistoryActivity : AppCompatActivity() {

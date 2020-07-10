@@ -7,8 +7,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import festusyuma.com.glaiddriver.R
-import festusyuma.com.glaiddriver.utilities.EXTRA_QUESTION
-import festusyuma.com.glaiddriver.utilities.buttonClickAnim
+import festusyuma.com.glaiddriver.helpers.EXTRA_QUESTION
+import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 
 class SupportFullPageActivity : AppCompatActivity() {
 

@@ -8,8 +8,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import festusyuma.com.glaiddriver.R
-import festusyuma.com.glaiddriver.utilities.EXTRA_RECOVERY_TYPE
-import festusyuma.com.glaiddriver.utilities.buttonClickAnim
+import festusyuma.com.glaiddriver.helpers.EXTRA_RECOVERY_TYPE
+import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 import kotlinx.android.synthetic.main.activity_recovery.*
 
 class RecoveryActivity : AppCompatActivity() {

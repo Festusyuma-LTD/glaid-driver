@@ -1,6 +1,7 @@
-package festusyuma.com.glaiddriver.utilities
+package festusyuma.com.glaiddriver.helpers
 
 import android.view.animation.AlphaAnimation
+import com.google.gson.Gson
 
 
 /**
@@ -9,5 +10,7 @@ import android.view.animation.AlphaAnimation
  */
 const val EXTRA_RECOVERY_TYPE = "recoverType"
 const val EXTRA_QUESTION = "question"
+const val EXTRA_FORGOT_PASSWORD_CHOICE = "email"
 
+val gson = Gson()
 val buttonClickAnim: AlphaAnimation? = AlphaAnimation(1f, 0.8f)

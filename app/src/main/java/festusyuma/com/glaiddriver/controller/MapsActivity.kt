@@ -34,7 +34,7 @@ import com.google.android.gms.tasks.Task
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.utilities.DashboardFragment
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
-import festusyuma.com.glaiddriver.utilities.buttonClickAnim
+import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
@@ -64,13 +64,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val w: Window = window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        w.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 
-            )
-        }
+        )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 window.decorView.systemUiVisibility =
