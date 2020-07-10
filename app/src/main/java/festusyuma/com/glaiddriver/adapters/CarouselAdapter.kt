@@ -4,7 +4,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import androidx.viewpager2.adapter.FragmentViewHolder
 import festusyuma.com.glaiddriver.services.DataServices.fragmentPageDatas
 import festusyuma.com.glaiddriver.utilities.CarouselFragment
 
@@ -25,14 +24,6 @@ class CarouselAdapter(fm: FragmentManager?, lifecycle: Lifecycle) :
             2 -> fragment = CarouselFragment("page3")
         }
         return fragment!!
-    }
-
-    override fun onBindViewHolder(
-        holder: FragmentViewHolder,
-        position: Int,
-        payloads: MutableList<Any>
-    ) {
-        super.onBindViewHolder(holder, position, payloads)
     }
 
     override fun getItemCount(): Int {

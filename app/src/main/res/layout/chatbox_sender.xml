@@ -13,6 +13,7 @@
         android:layout_marginLeft="15dp"
         app:layout_constraintBottom_toBottomOf="@+id/sender_chatbox"
         app:layout_constraintStart_toStartOf="parent"
+        android:contentDescription="@string/todo"
         app:srcCompat="@drawable/forgot_password" />
 
     <TextView
@@ -44,7 +45,7 @@
         android:layout_marginTop="5dp"
         android:alpha="0.4"
         android:gravity="center|start"
-        android:text="12:45"
+        tools:text="12:45"
         android:textColor="#062743"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@+id/sender_chatbox"

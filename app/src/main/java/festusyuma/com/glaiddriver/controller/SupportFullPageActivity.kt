@@ -1,13 +1,10 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.utilities.EXTRA_QUESTION
@@ -27,7 +24,7 @@ class SupportFullPageActivity : AppCompatActivity() {
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_support_full_page)
-        val topic = intent.getStringExtra(EXTRA_QUESTION)
+        intent.getStringExtra(EXTRA_QUESTION)
     }
 
     fun helpBackClick(view: View) {

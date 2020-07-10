@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.models.Question
@@ -26,14 +24,14 @@ class HelpSupportAdapter(
     //Add a view holder
     inner class Holder(itemView: View?, val itemClicked: (Question) -> Unit) :
         RecyclerView.ViewHolder(itemView!!) {
-        private val questionText = itemView?.findViewById<TextView>(R.id.helpQuestionBtn)
+        private val questionText = itemView?.findViewById<Button>(R.id.helpQuestionBtn)
         fun bindData(context: Context, question: Question) {
             //getting a resource id for use
 //            val resourceId =
 //                context.resources.getIdentifier(category.image, "drawable", context.packageName)
 //            categoryImage?.setImageResource(resourceId)
             questionText?.text = question.title
-            itemView.setOnClickListener {
+            questionText?.setOnClickListener {
                 itemClicked(question)
             }
         }

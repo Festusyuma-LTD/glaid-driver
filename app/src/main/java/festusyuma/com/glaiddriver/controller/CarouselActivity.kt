@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
-import android.view.animation.AlphaAnimation
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -24,10 +23,10 @@ class CarouselActivity : AppCompatActivity() {
     private lateinit var prefManager: PrefManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)// Checking for first time launch - before calling setContentView()
-        prefManager = PrefManager(this);
+        prefManager = PrefManager(this)
         if (!prefManager.isFirstTimeLaunch()) {
-            launchHomeScreen();
-            finish();
+            launchHomeScreen()
+            finish()
         }
 
         setContentView(R.layout.activity_carousel)

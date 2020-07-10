@@ -2,65 +2,37 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/help_support_btn"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".controller.HelpSupportActivity">
 
-    <View
-        android:id="@+id/helpQuestion"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#fff"
-        android:clickable="true"
-        android:focusable="true"
+    <Button
+        android:id="@+id/helpQuestionBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white"
+        android:drawableEnd="@drawable/ic_chevron_dark"
+        android:drawableRight="@drawable/ic_chevron_dark"
+        android:gravity="center|start"
+        android:maxLines="1"
+        android:padding="15dp"
+        android:textAllCaps="false"
+        android:textColor="#333333"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <View
-        android:id="@+id/divider5"
-        android:layout_width="0dp"
-        android:layout_height="3dp"
-        android:background="@drawable/ic_glaidline"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/helpQuestion"
-        app:layout_constraintStart_toStartOf="@+id/helpQuestion"
-        app:layout_constraintTop_toBottomOf="@+id/helpQuestion"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <ImageView
-        android:id="@+id/imageView14"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:clickable="true"
-        android:focusable="true"
-        app:layout_constraintBottom_toTopOf="@+id/divider5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/helpQuestion"
-        app:layout_constraintVertical_bias="0.6"
-        app:srcCompat="@drawable/ic_chevron_dark"
-        android:contentDescription="@string/todo" />
-
-    <TextView
-        android:id="@+id/helpQuestionBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:maxLength="45"
-        android:maxLines="1"
-        android:textColor="#333333"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/helpQuestion"
-        app:layout_constraintStart_toStartOf="@+id/helpQuestion"
-        app:layout_constraintTop_toTopOf="@+id/helpQuestion"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:text="Question 1 and some detail about it Question 1 and some detail about it" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,14 +1,11 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.utilities.EXTRA_RECOVERY_TYPE
@@ -35,7 +32,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
     fun resetPasswordBtnClick(view: View) {
         view.startAnimation(buttonClickAnim)
         if( recoveryType !== ""){
-            var finishedPage = Intent(this, RecoveryActivity::class.java)
+            val finishedPage = Intent(this, RecoveryActivity::class.java)
 //            PROPS
             finishedPage.putExtra(EXTRA_RECOVERY_TYPE,recoveryType)
             startActivity(finishedPage)
