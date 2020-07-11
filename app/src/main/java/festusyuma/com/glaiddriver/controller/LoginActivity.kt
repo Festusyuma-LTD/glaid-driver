@@ -162,19 +162,6 @@ class LoginActivity : AppCompatActivity() {
         )
     }
 
-    //function to check user permission//call in the context of needed permission
-    private fun setupPermissions() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        ) {
-            makeRequest()
-        } else {
-            makeRequest()
-        }
-    }
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>, grantResults: IntArray

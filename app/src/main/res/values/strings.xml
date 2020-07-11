@@ -149,4 +149,6 @@
     <string name="complete_registration_intro_image">intro image</string>
     <string name="sign_up_image">sign Up Image</string>
     <string name="chevron_right">gas_type_button_img</string>
+    <string name="reset_password_intro_text">Please enter the %1$s associated with your account below</string>
+    <string name="get_otp_button_label">Send otp</string>
 </resources>
