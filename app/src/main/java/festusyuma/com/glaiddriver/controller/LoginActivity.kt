@@ -103,6 +103,7 @@ class LoginActivity : AppCompatActivity() {
                 Response.ErrorListener {
                         response ->
                     if (response.networkResponse != null) {
+                        showError(getString(R.string.error_occurred))
                         response.printStackTrace()
                     }else showError(getString(R.string.internet_error_msg))
 

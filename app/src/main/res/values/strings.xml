@@ -125,4 +125,28 @@
     <string name="auth_key_name">authorization</string>
     <string name="processing">Processing</string>
     <string name="internet_error_msg">Please check your internet</string>
+    <string name="error_occurred">An error occurred, please try again later</string>
+    <string name="background">background</string>
+
+    <string name="sign_up_agreement">By signing up you agree to our</string>
+    <string name="phone_number_input_label">Phone Number</string>
+    <string name="home_address_input_label">Home Address</string>
+    <string name="full_name_input_label">Full Name</string>
+    <string name="sign_up_intro_text">Let’s get you signed up so you can be a driver</string>
+    <string name="sign_up_intro_title">Hi There!</string>
+    <string name="email_input_label">Email</string>
+    <string name="password_input_label">Password</string>
+    <string name="verify_password_input_label">Re-enter Password</string>
+    <string name="register_button_label">Continue</string>
+    <string name="password_does_not_match">Password does not match</string>
+    <string name="password_invalid">Password must contain at least one number</string>
+    <string name="field_empty">Cannot be empty</string>
+    <string name="invalid_format">Invalid format</string>
+    <string name="did_not_receive_otp">Did not receive an OTP?</string>
+    <string name="otp_input_label">OTP</string>
+    <string name="complete_registration_intro_text">A one-time pin has been sent to your phone number. Please enter it below</string>
+    <string name="complete_registration_intro_title">One Last Step</string>
+    <string name="complete_registration_intro_image">intro image</string>
+    <string name="sign_up_image">sign Up Image</string>
+    <string name="chevron_right">gas_type_button_img</string>
 </resources>
