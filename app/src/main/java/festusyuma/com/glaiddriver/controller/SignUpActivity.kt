@@ -44,7 +44,7 @@ class SignUpActivity : AppCompatActivity() {
         initLoaders()
     }
 
-    fun initLoaders() {
+    private fun initLoaders() {
         loadingCover = findViewById(R.id.loadingCoverConstraint)
         loadingAvi = loadingCover.findViewById(R.id.avi)
         errorMsg = findViewById(R.id.errorMsg)
@@ -52,7 +52,6 @@ class SignUpActivity : AppCompatActivity() {
 
     fun toggleRePasswordClick(view: View) {
         view.startAnimation(buttonClickAnim)
-
     }
 
     fun togglePasswordClick(view: View) {
