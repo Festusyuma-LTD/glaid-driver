@@ -39,7 +39,7 @@ class RecoveryActivity : AppCompatActivity() {
                 editTextType.inputType = InputType.TYPE_CLASS_PHONE
                 handleSubmitBtn.text = getString(R.string.send_otp)
                 resendOtpText.visibility = View.INVISIBLE
-                resendOtpbtn.visibility = View.INVISIBLE
+                resendOtpBtn.visibility = View.INVISIBLE
             }
             "email" -> {
                 recovery_text.setText(R.string.email_recovery_text)
@@ -48,7 +48,7 @@ class RecoveryActivity : AppCompatActivity() {
                 editTextType.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
                 handleSubmitBtn.text = getString(R.string.send_mail)
                 resendOtpText.visibility = View.INVISIBLE
-                resendOtpbtn.visibility = View.INVISIBLE
+                resendOtpBtn.visibility = View.INVISIBLE
 
             }
             "OTP" -> {
@@ -58,7 +58,7 @@ class RecoveryActivity : AppCompatActivity() {
                 editTextType.inputType = InputType.TYPE_CLASS_NUMBER
                 handleSubmitBtn.setText(R.string.continue_text)
                 resendOtpText.visibility = View.VISIBLE
-                resendOtpbtn.visibility = View.VISIBLE
+                resendOtpBtn.visibility = View.VISIBLE
 
             }
             else -> {

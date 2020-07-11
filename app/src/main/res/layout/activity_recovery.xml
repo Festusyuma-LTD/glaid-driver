@@ -167,13 +167,13 @@
             android:textColor="#808080"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/resendOtpbtn"
+            app:layout_constraintEnd_toStartOf="@+id/resendOtpBtn"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/resendOtpbtn"
+            android:id="@+id/resendOtpBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"

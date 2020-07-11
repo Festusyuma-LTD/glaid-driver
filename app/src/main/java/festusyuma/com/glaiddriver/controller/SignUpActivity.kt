@@ -71,10 +71,9 @@ class SignUpActivity : AppCompatActivity() {
                     Request.Method.POST,
                     Api.REGISTER,
                     userJsonObject,
-                    Response.Listener {
-                            response ->
+                    Response.Listener { response ->
                         if (response.getInt("status") == 200) {
-                            val signUpIntent = Intent(this, SignupOtpActivity::class.java)
+                            val signUpIntent = Intent(this, SignUpOtpActivity::class.java)
                             signUpIntent.putExtra("userRequest", userRequest)
 
                             startActivity(signUpIntent)
@@ -82,8 +81,7 @@ class SignUpActivity : AppCompatActivity() {
 
                         setLoading(false)
                     },
-                    Response.ErrorListener {
-                            response ->
+                    Response.ErrorListener { response ->
                         if (response.networkResponse != null) {
                             showError(getString(R.string.error_occurred))
                             response.printStackTrace()

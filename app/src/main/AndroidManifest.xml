@@ -87,7 +87,7 @@
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".controller.SignupOtpActivity"
+            android:name=".controller.SignUpOtpActivity"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
