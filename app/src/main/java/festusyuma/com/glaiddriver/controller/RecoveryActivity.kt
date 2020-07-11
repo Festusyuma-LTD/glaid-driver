@@ -91,8 +91,7 @@ class RecoveryActivity : AppCompatActivity() {
                 Response.Listener {
                         response ->
                     if (response.getInt("status") == 200) {
-                        //todo create otp activity
-                        val signUpIntent = Intent(this, ResetPasswordActivity::class.java)
+                        val signUpIntent = Intent(this, ForgotPasswordFinalOtpActivity::class.java)
                         signUpIntent.putExtra("resetRequest", passwordResetRequest)
 
                         startActivity(signUpIntent)

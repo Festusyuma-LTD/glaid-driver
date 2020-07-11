@@ -151,4 +151,5 @@
     <string name="chevron_right">gas_type_button_img</string>
     <string name="reset_password_intro_text">Please enter the %1$s associated with your account below</string>
     <string name="get_otp_button_label">Send otp</string>
+    <string name="otp_reset_intro_text">Please enter the %1$s associated with your account below</string>
 </resources>
