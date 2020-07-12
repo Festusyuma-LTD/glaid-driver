@@ -150,6 +150,9 @@
     <string name="sign_up_image">sign Up Image</string>
     <string name="chevron_right">gas_type_button_img</string>
     <string name="reset_password_intro_text">Please enter the %1$s associated with your account below</string>
+    <string name="reset_password_intro_image">reset_password_intro_image</string>
     <string name="get_otp_button_label">Send otp</string>
     <string name="otp_reset_intro_text">Please enter the %1$s associated with your account below</string>
+    <string name="reset_password" >Reset Password</string>
+    <string name="set_reset_password_intro_text">Enter your new password below</string>
 </resources>

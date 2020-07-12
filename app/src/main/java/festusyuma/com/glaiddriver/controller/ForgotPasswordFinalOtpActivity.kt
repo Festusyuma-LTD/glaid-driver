@@ -36,7 +36,7 @@ class ForgotPasswordFinalOtpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_forgot_password_final_otp)
 
         queue = Volley.newRequestQueue(this)
-        otpResetIntroText = findViewById(R.id.otpResetIntroText)
+        otpResetIntroText = findViewById(R.id.resetPasswordIntroText)
         passwordResetRequest = intent.getSerializableExtra("resetRequest") as PasswordResetRequest
         val inputLabel = if (passwordResetRequest.email != null) "Email" else "Phone number"
         otpResetIntroText.text = getString(R.string.otp_reset_intro_text).format(inputLabel)
