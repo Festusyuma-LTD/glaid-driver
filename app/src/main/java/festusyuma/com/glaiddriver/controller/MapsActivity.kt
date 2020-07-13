@@ -1,7 +1,9 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Color
@@ -13,6 +15,9 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.RatingBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
@@ -20,27 +25,47 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.utilities.DashboardFragment
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
 import festusyuma.com.glaiddriver.helpers.buttonClickAnim
+import festusyuma.com.glaiddriver.helpers.gson
+import festusyuma.com.glaiddriver.models.Order
+import festusyuma.com.glaiddriver.models.User
+import festusyuma.com.glaiddriver.models.live.PendingOrder
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
-    LocationListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
+
+    private val errorDialogRequest = 9001
+
+    private val requestCode = 42
+    private val permissions = listOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    private var locationPermissionsGranted = false
 
     private lateinit var mMap: GoogleMap
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var userMarker: Marker
+    private lateinit var userLocationBtn: ImageView
+
+    private lateinit var authPref: SharedPreferences
+    private lateinit var dataPref: SharedPreferences
+
+    private lateinit var drawerHeader: View
+
     private val TAG: String = MapsActivity::class.java.simpleName
 
     private lateinit var mCameraPosition: CameraPosition
@@ -63,17 +88,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private val KEY_LOCATION = "location"
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val w: Window = window
-        w.setFlags(
+
+        window.setFlags(
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
 
         // Retrieve location and camera position from saved instance state.
@@ -86,29 +109,81 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         setContentView(R.layout.activity_maps)
 
         // Construct a FusedLocationProviderClient.
+        dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        drawerHeader = findViewById(R.id.nav_header_driver_map)
 
         // Get the SupportMapFragment and register for the callback
         // when the map is ready for use.
 
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
+        initUserDetails()
+        startFragment()
+    }
 
-        // fragment switching
+    private fun initUserDetails() {
+        val userJson = dataPref.getString("userDetails", "null")
+
+        if (userJson != null) {
+            val fullNameTV: TextView = drawerHeader.findViewById(R.id.fullName)
+            val emailTV: TextView = drawerHeader.findViewById(R.id.email)
+            val rating: RatingBar = drawerHeader.findViewById(R.id.rating)
+            val ratingTxt: TextView = drawerHeader.findViewById(R.id.ratingText)
+
+            val user = gson.fromJson(userJson, User::class.java)
+
+            fullNameTV.text = user.fullName
+            emailTV.text = user.email
+            rating.rating = 4.1F
+            ratingTxt.text = "4.1"
+        }
+    }
+
+    private fun startFragment() {
+        if (dataPref.contains(getString(R.string.sh_pending_order))) {
+            val orderJson = dataPref.getString(getString(R.string.sh_pending_order), null)
+            if (orderJson != null) {
+                val order = gson.fromJson(orderJson, Order::class.java)
+                initiateLivePendingOrder(order)
+
+                when(order.statusId) {
+                    1L -> startPendingOrderFragment()
+                    2L -> startPendingOrderFragment()
+                    3L -> startPendingOrderFragment()
+                }
+            }else startRootFragment()
+        }else startRootFragment()
+    }
+
+    private fun startRootFragment() {
         val rootFragment = DashboardFragment()
-        // fragment transaction to set root fragment on create
+
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_up,
-                R.anim.slide_down,
-                R.anim.slide_up,
-                R.anim.slide_down
-            )
+            .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
             .replace(R.id.frameLayoutId, rootFragment)
             .commit()
+    }
 
+    private fun startPendingOrderFragment() {
+        val newOrderFragment = NewOrderFragment()
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+            .replace(R.id.frameLayoutId, newOrderFragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun initiateLivePendingOrder(order: Order) {
+        val livePendingOrder = ViewModelProviders.of(this).get(PendingOrder::class.java)
+        livePendingOrder.amount.value = order.amount
+        livePendingOrder.gasType.value = order.gasType
+        livePendingOrder.gasUnit.value = order.gasUnit
+        livePendingOrder.quantity.value = order.quantity
+        livePendingOrder.statusId.value = order.statusId
+        livePendingOrder.truck.value = order.truck
     }
 
     /**
@@ -313,7 +388,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
     }
 
-    private fun henryCloseDrawer() {
+    private fun closeDrawer() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
@@ -333,21 +408,21 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     fun orderHistoryClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        henryCloseDrawer()
+        closeDrawer()
         val intent = Intent(this, OrderHistoryActivity::class.java)
         startActivity(intent)
     }
 
     fun inviteFriendsClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        henryCloseDrawer()
+        closeDrawer()
         val intent = Intent(this, InviteFriendsActivity::class.java)
         startActivity(intent)
     }
 
     fun helpClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        henryCloseDrawer()
+        closeDrawer()
         val intent = Intent(this, HelpSupportActivity::class.java)
         startActivity(intent)
 
@@ -355,26 +430,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     fun editProfileClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        henryCloseDrawer()
+        closeDrawer()
         val intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
     }
 
     fun goToUserLocation(view: View) {
         view.startAnimation(buttonClickAnim)
-        henryCloseDrawer()// fragment switching
-        val newOrderFragment = NewOrderFragment()
-        // fragment transaction to set root fragment on create
-        supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_up,
-                R.anim.slide_down,
-                R.anim.slide_up,
-                R.anim.slide_down
-            )
-            .replace(R.id.frameLayoutId, newOrderFragment)
-            .addToBackStack(null)
-            .commit()
+        closeDrawer()// fragment switching
     }
 
 }
