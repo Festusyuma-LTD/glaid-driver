@@ -116,13 +116,10 @@
 
     <string name="sh_user_details">userDetails</string>
     <string name="sh_wallet">wallet</string>
-    <string name="sh_payment_cards">cards</string>
-    <string name="sh_preferred_payment">preferred_payment</string>
-    <string name="sh_home_address">home_address</string>
-    <string name="sh_business_address">business_address</string>
     <string name="sh_pending_order">pending_order</string>
     <string name="sh_orders">orders</string>
-    <string name="auth_key_name">authorization</string>
+    <string name="auth_key_name">driver_authorization</string>
+    <string name="cached_data">driver_cached_data</string>
     <string name="processing">Processing</string>
     <string name="internet_error_msg">Please check your internet</string>
     <string name="error_occurred">An error occurred, please try again later</string>
