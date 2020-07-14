@@ -127,6 +127,7 @@
 
     <string name="sign_up_agreement">By signing up you agree to our</string>
     <string name="phone_number_input_label">Phone Number</string>
+    <string name="bank_account_input_label">Bank Account</string>
     <string name="home_address_input_label">Home Address</string>
     <string name="full_name_input_label">Full Name</string>
     <string name="sign_up_intro_text">Let’s get you signed up so you can be a driver</string>
@@ -152,4 +153,5 @@
     <string name="otp_reset_intro_text">Please enter the %1$s associated with your account below</string>
     <string name="reset_password" >Reset Password</string>
     <string name="set_reset_password_intro_text">Enter your new password below</string>
+    <string name="sign_out_btn_label">Sign Out</string>
 </resources>

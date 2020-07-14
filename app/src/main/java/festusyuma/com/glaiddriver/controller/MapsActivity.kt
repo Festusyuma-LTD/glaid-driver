@@ -132,7 +132,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }else {
             locationPermissionsGranted = true
             initUserLocationBtn()
-            getUserLocation { markUserLocation(it) }
         }
     }
 
@@ -200,7 +199,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 locationPermissionsGranted = granted
                 if (locationPermissionsGranted) {
                     initUserLocationBtn()
-                    getUserLocation {markUserLocation(it)}
                 }
             }
         }
@@ -211,6 +209,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         if (locationPermissionsGranted) {
+            getUserLocation {markUserLocation(it)}
+
             mMap.isMyLocationEnabled = true
             mMap.uiSettings.isMyLocationButtonEnabled = false
         }
