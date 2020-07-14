@@ -14,6 +14,7 @@ import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 import festusyuma.com.glaiddriver.helpers.gson
 import festusyuma.com.glaiddriver.models.User
+import kotlinx.android.synthetic.main.activity_login.*
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -43,7 +44,7 @@ class EditProfileActivity : AppCompatActivity() {
                 populateDetails()
                 Log.v("ApiLog", "Response lass: $user")
             }
-        }else startActivity(Intent(applicationContext, MainActivity::class.java))
+        }else logout()
     }
 
     private fun populateDetails() {
@@ -61,8 +62,8 @@ class EditProfileActivity : AppCompatActivity() {
         view.startAnimation(buttonClickAnim)
     }
 
-    fun logout(view: View) {
-        view.startAnimation(buttonClickAnim)
+    fun logout(view: View? = null) {
+        view?.startAnimation(buttonClickAnim)
 
         with(authPref.edit()) {
             clear()
@@ -84,7 +85,6 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     fun editBackBtnClick(view: View) {
-        view.startAnimation(buttonClickAnim)
         finish()
     }
 }
