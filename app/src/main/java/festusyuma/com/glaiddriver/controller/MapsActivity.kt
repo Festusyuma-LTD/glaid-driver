@@ -6,18 +6,17 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.content.res.Resources
-import android.graphics.Color
 import android.location.Location
-import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
@@ -25,7 +24,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -35,16 +36,16 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import festusyuma.com.glaiddriver.R
-import festusyuma.com.glaiddriver.utilities.DashboardFragment
-import festusyuma.com.glaiddriver.utilities.NewOrderFragment
 import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 import festusyuma.com.glaiddriver.helpers.gson
 import festusyuma.com.glaiddriver.models.Order
 import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.live.PendingOrder
+import festusyuma.com.glaiddriver.utilities.DashboardFragment
+import festusyuma.com.glaiddriver.utilities.NewOrderFragment
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private val errorDialogRequest = 9001
 
@@ -64,28 +65,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
     private lateinit var authPref: SharedPreferences
     private lateinit var dataPref: SharedPreferences
 
+    private lateinit var drawerLayout: DrawerLayout
     private lateinit var drawerHeader: View
-
-    private val TAG: String = MapsActivity::class.java.simpleName
-
-    private lateinit var mCameraPosition: CameraPosition
-
-    // The entry point to the Fused Location Provider.
-    private lateinit var mFusedLocationProviderClient: FusedLocationProviderClient
-
-    // A default location (Sydney, Australia) and default zoom to use when location permission is not granted.
-    private val mDefaultLocation = LatLng(-33.8523341, 151.2106085)
-    private val DEFAULT_ZOOM = 15
-    private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
-    private var mLocationPermissionGranted = false
-
-    // The geographical location where the device is currently located. That is, the last-known
-    // location retrieved by the Fused Location Provider.
-    private lateinit var mLastKnownLocation: Location
-
-    // Keys for storing activity state.
-    private val KEY_CAMERA_POSITION = "camera_position"
-    private val KEY_LOCATION = "location"
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -99,28 +80,151 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
                 View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
 
-        // Retrieve location and camera position from saved instance state.
-        if (savedInstanceState != null) {
-            mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION)!!
-            mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION)!!
-        }
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
 
         // Construct a FusedLocationProviderClient.
         dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
-        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+        drawerLayout = findViewById(R.id.drawer_layout)
         drawerHeader = findViewById(R.id.nav_header_driver_map)
 
-        // Get the SupportMapFragment and register for the callback
-        // when the map is ready for use.
-
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-
+        if (isServiceOk()) initMap()
         initUserDetails()
         startFragment()
+    }
+
+    private fun isServiceOk(): Boolean {
+        // check google service
+        val apiAvailabilityInstance = GoogleApiAvailability.getInstance()
+        val availability = apiAvailabilityInstance.isGooglePlayServicesAvailable(this)
+
+        if (availability == ConnectionResult.SUCCESS) {
+            return true
+        }else {
+            if (apiAvailabilityInstance.isUserResolvableError(availability)) {
+                val dialog = apiAvailabilityInstance.getErrorDialog(this, availability, errorDialogRequest)
+                dialog.show()
+            }else {
+                Toast.makeText(this, "You device can't make map request", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        return false
+    }
+
+    private fun initMap() {
+        getLocationPermission()
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
+    private fun getLocationPermission() {
+        val deniedPermissions = mutableListOf<String>()
+
+        for (permission in permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_DENIED) {
+                deniedPermissions.add(permission)
+            }
+        }
+
+        if (deniedPermissions.size > 0) {
+            ActivityCompat.requestPermissions(this, deniedPermissions.toTypedArray(), requestCode)
+        }else {
+            locationPermissionsGranted = true
+            initUserLocationBtn()
+            getUserLocation { markUserLocation(it) }
+        }
+    }
+
+    private fun initUserLocationBtn() {
+        userLocationBtn = findViewById(R.id.userLocationBtn)
+        userLocationBtn.setOnClickListener { getUserLocation { markUserLocation(it) } }
+    }
+
+    private fun getUserLocation(listener: (lc: Location) -> Unit): Task<Location>? {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        try {
+            if (locationPermissionsGranted) {
+                if (isLocationEnabled()) {
+                    return fusedLocationClient.lastLocation
+                        .addOnSuccessListener {lc ->
+                            if (lc != null) {
+                                listener(lc)
+                            }else Toast.makeText(this, "Unable to get location, Please check GPS", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }else Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show()
+        }catch (e: SecurityException) {
+            Log.v("ApiLog", "${e.message}")
+        }
+
+        return null
+    }
+
+    private fun markUserLocation(lc: Location) {
+        val userLocation = LatLng(lc.latitude, lc.longitude)
+
+        val mapIcon = AppCompatResources.getDrawable(this, R.drawable.customlocation)!!.toBitmap()
+        if (!this::userMarker.isInitialized) {
+            userMarker = mMap.addMarker(
+                MarkerOptions()
+                    .position(userLocation).title("Marker in Sydney")
+                    .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
+                    .rotation(lc.bearing)
+            )
+        }else {
+            userMarker.position = userLocation
+            userMarker.rotation = lc.bearing
+        }
+
+        moveCamera(userLocation)
+    }
+
+    private fun moveCamera(location: LatLng) {
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f))
+    }
+
+    // This method is called when a user Allow or Deny our requested permissions. So it will help us to move forward if the permissions are granted
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        if (requestCode == this.requestCode) {
+            if (grantResults.isNotEmpty()) {
+                var granted = true
+
+                for (grants in grantResults) {
+                    if (grants == PackageManager.PERMISSION_DENIED) {
+                        granted = false
+                    }
+                }
+
+                locationPermissionsGranted = granted
+                if (locationPermissionsGranted) {
+                    initUserLocationBtn()
+                    getUserLocation {markUserLocation(it)}
+                }
+            }
+        }
+    }
+
+    // Callback when map ready
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        if (locationPermissionsGranted) {
+            mMap.isMyLocationEnabled = true
+            mMap.uiSettings.isMyLocationButtonEnabled = false
+        }
+
+        try {
+            // Customise the styling
+            googleMap.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    this, R.raw.uber_map_style
+                )
+            )
+        } catch (e: Resources.NotFoundException) {
+            Log.e("FragmentActivity.TAG", "Error parsing style. Error: ", e)
+        }
     }
 
     private fun initUserDetails() {
@@ -177,7 +281,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
     }
 
     private fun initiateLivePendingOrder(order: Order) {
-        val livePendingOrder = ViewModelProviders.of(this).get(PendingOrder::class.java)
+        val livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
         livePendingOrder.amount.value = order.amount
         livePendingOrder.gasType.value = order.gasType
         livePendingOrder.gasUnit.value = order.gasUnit
@@ -186,243 +290,49 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
         livePendingOrder.truck.value = order.truck
     }
 
-    /**
-     * Saves the state of the map when the activity is paused.
-     */
-    override fun onSaveInstanceState(outState: Bundle) {
-        outState.putParcelable(KEY_CAMERA_POSITION, mMap.cameraPosition)
-        outState.putParcelable(KEY_LOCATION, mLastKnownLocation)
-        super.onSaveInstanceState(outState)
-    }
+    // This will check if the user has turned on location from the setting
+    private fun isLocationEnabled(): Boolean {
+        val locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-    override fun onMapReady(googleMap: GoogleMap) {
-
-        mMap = googleMap
-//        mMap.setOnMyLocationButtonClickListener(this)
-//        mMap.setOnMyLocationClickListener(this)
-
-        try {
-            // Customise the styling of the base map using a JSON object defined  in a raw resource file.
-            val success = googleMap.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(
-                    this, R.raw.uber_map_style
-                )
-            )
-            if (!success) {
-                Log.e("FragmentActivity.TAG", "Style parsing failed.")
-            }
-        } catch (e: Resources.NotFoundException) {
-            Log.e("FragmentActivity.TAG", "Can't find style. Error: ", e)
-        }
-
-        // Prompt the user for permission.
-        getLocationPermission()
-
-        // Turn on the My Location layer and the related control on the map.
-        updateLocationUI()
-
-        // Get the current location of the device and set the position of the map.
-        getDeviceLocation()
-    }
-
-    /**
-     * Gets the current location of the device, and positions the map's camera.
-     */
-    private fun getDeviceLocation() {
-
-        AppCompatResources.getDrawable(this, R.drawable.ic_drivermapmarker)!!.toBitmap(50, 100)
-
-        /*
-         * Get the best and most recent location of the device, which may be null in rare
-         * cases when a location is not available.
-         */
-        try {
-            if (mLocationPermissionGranted) {
-                val locationResult: Task<Location> =
-                    mFusedLocationProviderClient.lastLocation
-                locationResult.addOnCompleteListener(
-                    this
-                ) { task ->
-                    if (task.isSuccessful) {
-                        // Set the map's camera position to the current location of the device.
-                        mLastKnownLocation = task.result!!
-                        val uLocation = LatLng(
-                            mLastKnownLocation.latitude,
-                            mLastKnownLocation.longitude
-                        )
-//                        mMap.addMarker(
-//                            MarkerOptions().position(uLocation).title("Your Location")
-//                                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
-//                        )
-                        mMap.moveCamera(
-                            CameraUpdateFactory.newLatLngZoom(
-                                uLocation, DEFAULT_ZOOM.toFloat()
-                            )
-                        )
-                        mMap.addCircle(
-                            CircleOptions().center(uLocation).radius(500.0)
-                                .strokeWidth(1f)
-                                .strokeColor(R.color.colorPrimaryDark)
-                                .fillColor(Color.argb(50, 78, 0, 124))
-                        )
-                    } else {
-                        Log.d(TAG, "Current location is null. Using defaults.")
-                        Log.e(TAG, "Exception: %s", task.exception)
-                        mMap.moveCamera(
-                            CameraUpdateFactory
-                                .newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM.toFloat())
-                        )
-
-//                        mMap.addMarker(
-//                            MarkerOptions().position(mDefaultLocation).title("Your Location")
-//                                .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
-//                        )
-                        mMap.uiSettings.isMyLocationButtonEnabled = false
-                    }
-                }
-            }
-        } catch (e: SecurityException) {
-            Log.e("Exception: %s", e.message)
-        }
-    }
-
-    /**
-     * Prompts the user for permission to use the device location.
-     */
-    private fun getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
-        if (ContextCompat.checkSelfPermission(
-                this.applicationContext,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-            == PackageManager.PERMISSION_GRANTED
-        ) {
-            mLocationPermissionGranted = true
-        } else {
-            ActivityCompat.requestPermissions(
-                this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
-            )
-        }
-    }
-
-    /**
-     * Handles the result of the request for location permissions.
-     */
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String?>,
-        grantResults: IntArray
-    ) {
-        mLocationPermissionGranted = false
-        when (requestCode) {
-            PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION -> {
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty()
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                ) {
-                    mLocationPermissionGranted = true
-                }
-            }
-        }
-        updateLocationUI()
-    }
-
-    /**
-     * Updates the map's UI settings based on whether the user has granted location permission.
-     */
-    private fun updateLocationUI() {
-        AppCompatResources.getDrawable(this, R.drawable.ic_drivermapmarker)!!.toBitmap(50, 100)
-
-        try {
-            if (mLocationPermissionGranted) {
-                mMap.isMyLocationEnabled = true
-                mMap.uiSettings.isMyLocationButtonEnabled = false
-            } else {
-                mMap.isMyLocationEnabled = false
-                mMap.uiSettings.isMyLocationButtonEnabled = false
-
-//                mLastKnownLocation = null
-                getLocationPermission()
-            }
-        } catch (e: SecurityException) {
-            Log.e("Exception: %s", e.message)
-        }
-    }
-
-    override fun onLocationChanged(location: Location?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onProviderEnabled(provider: String?) {
-        TODO("Not yet implemented")
-    }
-
-    /**
-     * Called when the provider is disabled by the user. If requestLocationUpdates
-     * is called on an already disabled provider, this method is called
-     * immediately.
-     *
-     * @param provider the name of the location provider associated with this
-     * update.
-     */
-    override fun onProviderDisabled(provider: String?) {
-        TODO("Not yet implemented")
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+            LocationManager.NETWORK_PROVIDER
+        )
     }
 
     override fun onBackPressed() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+            closeDrawer()
+        } else super.onBackPressed()
     }
 
     private fun closeDrawer() {
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         }
-
     }
 
     fun toggleDrawerClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
+
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
+        } else drawerLayout.openDrawer(GravityCompat.START)
     }
 
     fun orderHistoryClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        closeDrawer()
         val intent = Intent(this, OrderHistoryActivity::class.java)
         startActivity(intent)
     }
 
     fun inviteFriendsClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        closeDrawer()
         val intent = Intent(this, InviteFriendsActivity::class.java)
         startActivity(intent)
     }
 
     fun helpClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        closeDrawer()
         val intent = Intent(this, HelpSupportActivity::class.java)
         startActivity(intent)
 
@@ -430,14 +340,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, LocationListener {
 
     fun editProfileClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        closeDrawer()
         val intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
     }
-
-    fun goToUserLocation(view: View) {
-        view.startAnimation(buttonClickAnim)
-        closeDrawer()// fragment switching
-    }
-
 }

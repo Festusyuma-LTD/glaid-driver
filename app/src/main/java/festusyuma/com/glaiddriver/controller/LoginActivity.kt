@@ -221,15 +221,4 @@ class LoginActivity : AppCompatActivity() {
     fun hideError(view: View) {
         errorMsg.visibility = View.INVISIBLE
     }
-
-    fun logout() {
-        val sharedPref = getSharedPreferences("auth_token", Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            remove(getString(R.string.auth_key_name))
-            commit()
-        }
-
-        startActivity(Intent(this, MainActivity::class.java))
-        finishAffinity()
-    }
 }
