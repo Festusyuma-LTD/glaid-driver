@@ -11,7 +11,7 @@ import festusyuma.com.glaiddriver.models.Question
  * Email: okebugwuchidozie@gmail.com
  */
 object DataServices {
-    val fragmentPageDatas = mutableListOf(
+    val fragmentPageData = mutableListOf(
         CarouselModel("activeIcon1", "inactiveIcon2", "inactiveIcon3", "ic_trucklogo"),
         CarouselModel("activeIcon1", "activeIcon2", "inactiveIcon3", "ic_phoneslogo"),
         CarouselModel("activeIcon1", "activeIcon2", "activeIcon3", "ic_cardslogo")
@@ -174,43 +174,6 @@ object DataServices {
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt",
             "3:55",
             "pending"
-        )
-    )
-    val orderHistoryList = listOf(
-        OrderHistory(
-            1,
-            "1000",
-            "Standard Oil",
-            "8, Ogidi cresent, Lekki Phase 1",
-            "Delivered"
-        ),
-        OrderHistory(
-            2,
-            "2000",
-            "Standard Diesel",
-            "31, Ogidi cresent, Lekki Phase 1",
-            "Delivering..."
-        ),
-        OrderHistory(
-            3,
-            "4000",
-            "Standard Oil",
-            "18, Ogidi cresent, Lekki Phase 1",
-            "Delivery incomplete"
-        ),
-        OrderHistory(
-            4,
-            "1000",
-            "Standard Oil",
-            "38, Ogidi cresent, Lekki Phase 1",
-            "Delivered"
-        ),
-        OrderHistory(
-            1,
-            "5000",
-            "Standard Diesel",
-            "8, Ogidi cresent, Lekki Phase 1",
-            "Delivering..."
         )
     )
 }

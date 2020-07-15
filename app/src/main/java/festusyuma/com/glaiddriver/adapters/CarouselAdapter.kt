@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import festusyuma.com.glaiddriver.services.DataServices.fragmentPageDatas
+import festusyuma.com.glaiddriver.services.DataServices.fragmentPageData
 import festusyuma.com.glaiddriver.utilities.CarouselFragment
 
 
@@ -27,7 +27,7 @@ class CarouselAdapter(fm: FragmentManager?, lifecycle: Lifecycle) :
     }
 
     override fun getItemCount(): Int {
-        return fragmentPageDatas.count()
+        return fragmentPageData.count()
     }
 
 
