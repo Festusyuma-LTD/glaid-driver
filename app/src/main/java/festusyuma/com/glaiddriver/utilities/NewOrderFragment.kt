@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
+import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 
 
 // TODO: Rename parameter arguments, choose names that match

@@ -13,7 +13,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        
         android:layout_marginTop="40dp"
         android:background="@drawable/h_hamburger"
         android:elevation="1dp"
@@ -46,16 +46,14 @@
     </FrameLayout>
 
     <ImageView
-        android:id="@+id/userlocation"
+        android:id="@+id/userLocationBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
         android:layout_marginBottom="10dp"
         android:clickable="true"
         android:contentDescription="@string/todo"
         android:focusable="true"
-        android:onClick="goToUserLocation"
         app:layout_constraintBottom_toTopOf="@+id/frameLayoutId"
         app:layout_constraintEnd_toEndOf="@+id/frameLayoutId"
         app:srcCompat="@drawable/ic_user_location" />

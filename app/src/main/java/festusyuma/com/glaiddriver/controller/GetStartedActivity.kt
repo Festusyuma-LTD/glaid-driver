@@ -9,7 +9,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.utilities.PrefManager
-import festusyuma.com.glaiddriver.utilities.buttonClickAnim
+import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 
 
 class GetStartedActivity : AppCompatActivity() {

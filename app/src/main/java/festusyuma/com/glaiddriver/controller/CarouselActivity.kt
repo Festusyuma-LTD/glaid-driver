@@ -13,7 +13,7 @@ import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.adapters.CarouselAdapter
 import festusyuma.com.glaiddriver.utilities.PrefManager
-import festusyuma.com.glaiddriver.utilities.buttonClickAnim
+import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 import kotlinx.android.synthetic.main.activity_carousel.*
 
 
@@ -31,13 +31,11 @@ class CarouselActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_carousel)
         val w: Window = window
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            w.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-            )
-        }
-//        tabLayout = findViewById<TabLayout>(R.id.tabsC)
+        w.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        )
+        //        tabLayout = findViewById<TabLayout>(R.id.tabsC)
         viewPager = findViewById(R.id.carouselviewpager)
         viewPager.adapter = CarouselAdapter(supportFragmentManager, lifecycle)
         //disable animation

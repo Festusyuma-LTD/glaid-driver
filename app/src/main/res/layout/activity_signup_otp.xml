@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:fitsSystemWindows="true"
-    tools:context=".controller.SignupOtpActivity">
+    tools:context=".controller.SignUpOtpActivity">
 
     <ImageView
         android:id="@+id/imageView10"
@@ -44,7 +44,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView3"
+            app:layout_constraintBottom_toTopOf="@+id/resetPasswordIntroTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -53,7 +53,7 @@
             app:srcCompat="@drawable/otpimage" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/resetPasswordIntroTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -65,12 +65,12 @@
             android:textColor="#333333"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/textView9"
+            app:layout_constraintBottom_toTopOf="@+id/resetPasswordIntroText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/resetPasswordIntroText"
             android:layout_width="255dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="50dp"
@@ -78,47 +78,43 @@
             android:text="@string/otp_recovery_text"
             android:textColor="#333333"
             android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/editTextOtp"
+            app:layout_constraintBottom_toTopOf="@+id/otpInputCover"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:lineHeight="19sp" />
 
-        <TextView
-            android:id="@+id/textViewOtp"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/otpInputCover"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="6dp"
-            android:text="@string/otp"
-            android:textColor="#808080"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/editTextOtp"
-            app:layout_constraintStart_toStartOf="@+id/editTextOtp"
-            app:lineHeight="14sp" />
-
-        <EditText
-            android:id="@+id/editTextOtp"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginHorizontal="24dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/ic_yellow_btn_bar"
-            android:ems="15"
-            android:hint="@string/otp"
-            android:inputType="number"
-            android:maxLines="1"
-            android:paddingStart="20dp"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:textColor="#000000"
-            android:textColorHint="#808080"
             app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintEnd_toEndOf="parent"
-            android:autofillHints="number"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/otpInputLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/sfpro"
+                android:text="@string/otp_input_label" />
+
+            <EditText
+                android:id="@+id/otpInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_yellow_btn_bar"
+                android:ems="10"
+                android:fontFamily="@font/sfpro"
+                android:hint="@string/otp_input_label"
+                android:autofillHints="@string/otp_input_label"
+                android:inputType="number"
+                android:padding="20dp" />
+
+        </LinearLayout>
 
 
         <View
@@ -131,12 +127,12 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="20dp"
             android:background="@drawable/ic_glaidline"
-            app:layout_constraintBottom_toTopOf="@+id/otpSignupBtn"
+            app:layout_constraintBottom_toTopOf="@+id/otpSignUpBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/otpSignupBtn"
+            android:id="@+id/otpSignUpBtn"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -147,9 +143,8 @@
             android:layout_marginBottom="40dp"
             android:background="@drawable/ic_glaidbtnbanner"
             android:drawableEnd="@drawable/ic_enter_chevron"
-            android:drawableRight="@drawable/ic_enter_chevron"
             android:gravity="center|start"
-            android:onClick="otpSignupBtnClick"
+            android:onClick="completeSignUp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="@string/sign_up"
@@ -170,17 +165,16 @@
             android:textColor="#808080"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/resendOtpbtn"
+            app:layout_constraintEnd_toStartOf="@+id/resendOtpBtn"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/resendOtpbtn"
+            android:id="@+id/resendOtpBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
             android:clickable="true"
             android:onClick="resendOtpClick"
             android:focusable="true"
@@ -193,4 +187,7 @@
             app:layout_constraintStart_toEndOf="@+id/resendOtpText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/loading" />
+    <include layout="@layout/error_message" />
 </androidx.constraintlayout.widget.ConstraintLayout>

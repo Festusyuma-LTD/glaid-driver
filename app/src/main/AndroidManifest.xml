@@ -17,6 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeIntroScreen">
+        <activity android:name=".controller.ForgotPasswordFinalOtpActivity"></activity>
         <activity
             android:name=".controller.OrderInvoiceActivity"
             android:screenOrientation="sensorPortrait"
@@ -87,7 +88,7 @@
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".controller.SignupOtpActivity"
+            android:name=".controller.SignUpOtpActivity"
             android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

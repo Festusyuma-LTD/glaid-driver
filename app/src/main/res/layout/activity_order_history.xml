@@ -27,7 +27,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        
         android:onClick="helpBackClick"
         app:layout_constraintBottom_toBottomOf="@+id/orderHistoryText"
         app:layout_constraintEnd_toStartOf="@+id/orderHistoryText"
@@ -85,7 +85,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
+        
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/orderHistoryScroll"
@@ -96,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
+        
         android:text="1"
         android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="@+id/grayBox"
@@ -108,7 +108,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp"
+        
         android:text="order delivering..."
         android:textColor="#fff"
         app:layout_constraintBaseline_toBaselineOf="@+id/deliveringCount"

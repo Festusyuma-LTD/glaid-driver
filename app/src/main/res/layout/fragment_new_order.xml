@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
+            
             android:layout_marginTop="20dp"
             android:text="@string/you_have_a_new_order"
             android:textColor="#9B72B3"
@@ -83,13 +83,13 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
+            
             android:layout_marginTop="3dp"
             android:layout_marginEnd="5dp"
-            android:layout_marginRight="5dp"
+            
             android:background="#4E007C"
             android:drawableStart="@drawable/ic_small_phone_logo"
-            android:drawableLeft="@drawable/ic_small_phone_logo"
+            
             android:drawablePadding="5sp"
             android:paddingLeft="15sp"
             android:paddingRight="15sp"
@@ -109,12 +109,12 @@
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="5dp"
-            android:layout_marginLeft="5dp"
+            
             android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
+            
             android:background="#4E007C"
             android:drawableStart="@drawable/ic_small_mail_logo"
-            android:drawableLeft="@drawable/ic_small_mail_logo"
+            
             android:paddingLeft="15sp"
             android:paddingRight="15sp"
             android:text="Text Customer"
@@ -134,7 +134,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            
             android:elevation="12dp"
             android:innerRadius="0dp"
             android:shape="ring"
@@ -175,7 +175,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
+            
             android:text="4.3"
             android:textColor="@color/white"
             android:textSize="10sp"
@@ -194,7 +194,7 @@
             android:layout_marginBottom="50dp"
             android:background="@drawable/deliver_btn"
             android:drawableEnd="@drawable/ic_gray_tick"
-            android:drawableRight="@drawable/ic_gray_tick"
+            
             android:gravity="center|start"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"

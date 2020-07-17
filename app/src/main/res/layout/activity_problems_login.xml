@@ -37,7 +37,7 @@ tools:context=".controller.ProblemsLoginActivity">
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="50dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView3"
+            app:layout_constraintBottom_toTopOf="@+id/resetPasswordIntroTitle"
             app:layout_constraintDimensionRatio="w,1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,7 +46,7 @@ tools:context=".controller.ProblemsLoginActivity">
             app:srcCompat="@drawable/ic_forget_password" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/resetPasswordIntroTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -58,12 +58,12 @@ tools:context=".controller.ProblemsLoginActivity">
             android:textColor="#333333"
             android:textSize="24sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/textView9"
+            app:layout_constraintBottom_toTopOf="@+id/resetPasswordIntroText"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/resetPasswordIntroText"
             android:layout_width="255dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="60dp"
@@ -89,7 +89,7 @@ tools:context=".controller.ProblemsLoginActivity">
             android:layout_marginBottom="20dp"
             android:background="@drawable/ic_glaidbtnbanner"
             android:drawableEnd="@drawable/ic_enter_chevron"
-            android:drawableRight="@drawable/ic_enter_chevron"
+            
             android:gravity="center|start|right"
             android:onClick="forgotEmailBtnClick"
             android:paddingLeft="20dp"
@@ -116,7 +116,7 @@ tools:context=".controller.ProblemsLoginActivity">
             android:layout_marginBottom="40dp"
             android:background="@drawable/ic_glaidbtnbanner"
             android:drawableEnd="@drawable/ic_enter_chevron"
-            android:drawableRight="@drawable/ic_enter_chevron"
+            
             android:gravity="center|start|left"
             android:onClick="forgotPasswordBtnClick"
             android:paddingLeft="20dp"
@@ -149,9 +149,9 @@ tools:context=".controller.ProblemsLoginActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
+            
             android:clickable="true"
-            android:onClick="reSigninbtnClick"
+            android:onClick="signInBtnClick"
             android:text="Sign in"
             android:textColor="#4E007C"
             android:textSize="14sp"
