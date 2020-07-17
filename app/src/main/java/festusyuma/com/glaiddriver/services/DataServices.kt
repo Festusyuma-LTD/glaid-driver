@@ -1,9 +1,6 @@
 package festusyuma.com.glaiddriver.services
 
-import festusyuma.com.glaiddriver.models.CarouselModel
-import festusyuma.com.glaiddriver.models.Chat
-import festusyuma.com.glaiddriver.models.OrderHistory
-import festusyuma.com.glaiddriver.models.Question
+import festusyuma.com.glaiddriver.models.*
 
 
 /**

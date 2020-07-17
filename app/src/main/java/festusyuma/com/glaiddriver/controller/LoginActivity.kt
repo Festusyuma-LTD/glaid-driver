@@ -13,12 +13,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.utilities.buttonClickAnim
+import kotlinx.android.synthetic.main.activity_login.*
+import kotlin.math.sign
 
 class LoginActivity : AppCompatActivity() {
     private val TAG = "PermissionDemo"
     private val RECORD_REQUEST_CODE = 101
+    lateinit var emailField: String
+    lateinit var passwordField: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -27,11 +33,44 @@ class LoginActivity : AppCompatActivity() {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+                window.decorView.systemUiVisibility =
+                    View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
             }
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        go_to_sign_up.setOnClickListener {
+            //go to sign up intent
+            val signUpIntent = Intent(this, GetStartedActivity::class.java)
+            //code to clear previous activities
+            startActivity(signUpIntent)
+
+        }
+    }
+
+    private fun signinFirebaseAuth() {
+        emailField = editTextEmail.text.toString()
+        passwordField = editTextPassword.text.toString()
+
+        val firebaseauth: FirebaseAuth = FirebaseAuth.getInstance();
+        //code to create new user
+        firebaseauth.signInWithEmailAndPassword(emailField, passwordField)
+            .addOnCompleteListener {
+                if (!it.isSuccessful) return@addOnCompleteListener
+                //else if suscessful
+                Log.d("LoginActivity,", "sucesffully signin user ${it.result?.user?.uid}")
+
+                val signUpIntent = Intent(this, MapsActivity::class.java)
+                //code to clear previous activities
+                signUpIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(signUpIntent)
+            }
+            .addOnFailureListener {
+                Toast.makeText(this,it.message,Toast.LENGTH_LONG).show()
+                Log.d("LoginActivity,", "failed signin user ${it.message}")
+            }
+
+        println(firebaseauth)
     }
 
     fun togglePasswordClick(view: View) {
@@ -47,9 +86,9 @@ class LoginActivity : AppCompatActivity() {
             setupPermissions()
             return
         }
-        val signUpIntent = Intent(this, MapsActivity::class.java)
-        startActivity(signUpIntent)
-
+        //Sign UP
+//        createFirebaseAuth()
+        signinFirebaseAuth()
     }
 
     fun forgotPasswordClick(view: View) {

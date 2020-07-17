@@ -190,14 +190,14 @@
             android:background="@drawable/ic_glaidbtnbanner"
             android:drawableEnd="@drawable/ic_enter_chevron"
             android:drawableRight="@drawable/ic_enter_chevron"
-            android:gravity="center|start|left"
+            android:gravity="center|start"
             android:onClick="loginBtnClick"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="@string/common_signin_button_text"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -211,10 +211,23 @@
             android:clickable="true"
             android:focusable="true"
             android:onClick="forgotPasswordClick"
-            android:text="Problems signing in?"
+            android:text="@string/forgot_password_question"
             android:textColor="@color/colorAccent"
             app:layout_constraintBottom_toTopOf="@+id/divider"
             app:layout_constraintEnd_toEndOf="@+id/divider" />
+
+        <TextView
+            android:id="@+id/go_to_sign_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/don_t_have_an_account"
+            android:clickable="true"
+            android:focusable="true"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="@+id/loginBtn"
+            app:layout_constraintStart_toStartOf="@+id/loginBtn"
+            app:layout_constraintTop_toBottomOf="@+id/loginBtn" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

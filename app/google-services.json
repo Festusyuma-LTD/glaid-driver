@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "55311994746",
+    "firebase_url": "https://glaid-driver.firebaseio.com",
+    "project_id": "glaid-driver",
+    "storage_bucket": "glaid-driver.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55311994746:android:6e6e6b63ad631a251390c3",
+        "android_client_info": {
+          "package_name": "festusyuma.com.glaiddriver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55311994746-ti5tvbauuq3qe4jaepaetn5ut2c29c3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "festusyuma.com.glaiddriver",
+            "certificate_hash": "e1f005416aa33c79c5c0c7db60d2c367cebf882e"
+          }
+        },
+        {
+          "client_id": "55311994746-pgbb429f7qsg4i5e0f9k1v0nt1ro454h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgdGR8gtuTeeBwpB5Q9fsKLDRNrPZPEcQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55311994746-pgbb429f7qsg4i5e0f9k1v0nt1ro454h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

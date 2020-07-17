@@ -112,4 +112,6 @@
     <string name="complete_delivery">Complete Delivery</string>
     <string name="you_have_a_new_order">You have a new order!</string>
     <string name="starting_delivery">Starting Delivery....</string>
+    <string name="don_t_have_an_account">Don\'t have an Account?</string>
+    <string name="forgot_password_question">Forgot Password?</string>
 </resources>

@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.utilities.DashboardFragment
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
@@ -50,7 +51,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
     // A default location (Sydney, Australia) and default zoom to use when location permission is not granted.
     private val mDefaultLocation = LatLng(-33.8523341, 151.2106085)
-    private val DEFAULT_ZOOM = 15
+    private val DEFAULT_ZOOM = 17
     private val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
     private var mLocationPermissionGranted = false
 
@@ -86,6 +87,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
+        //CHECK IF USER LOGGED IN]
+        verifyUserSignedIn()
 
         // Construct a FusedLocationProviderClient.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
@@ -120,6 +123,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         outState.putParcelable(KEY_CAMERA_POSITION, mMap.cameraPosition)
         outState.putParcelable(KEY_LOCATION, mLastKnownLocation)
         super.onSaveInstanceState(outState)
+    }
+
+    //check user signIn firebase auth
+    private fun verifyUserSignedIn() {
+        val uid = FirebaseAuth.getInstance().uid
+        if (uid == null) {
+            val signUpIntent = Intent(this, LoginActivity::class.java)
+            //code to clear previous activities
+            signUpIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(signUpIntent)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -187,7 +201,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                             )
                         )
                         mMap.addCircle(
-                            CircleOptions().center(uLocation).radius(500.0)
+                            CircleOptions().center(uLocation).radius(150.0)
                                 .strokeWidth(1f)
                                 .strokeColor(R.color.colorPrimaryDark)
                                 .fillColor(Color.argb(50, 78, 0, 124))

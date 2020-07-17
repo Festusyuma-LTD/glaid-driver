@@ -28,7 +28,6 @@ class CarouselActivity : AppCompatActivity() {
             launchHomeScreen()
             finish()
         }
-
         setContentView(R.layout.activity_carousel)
         val w: Window = window
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

@@ -88,12 +88,12 @@
                 android:textColor="#808080"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/editText"
-                app:layout_constraintStart_toStartOf="@+id/editText"
+                app:layout_constraintBottom_toTopOf="@+id/sign_up_full_name_iput"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_full_name_iput"
                 app:lineHeight="14sp" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/sign_up_full_name_iput"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -128,12 +128,12 @@
                 android:textColor="#808080"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/editText2"
-                app:layout_constraintStart_toStartOf="@+id/editText2"
+                app:layout_constraintBottom_toTopOf="@+id/sign_up_email_input"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_email_input"
                 app:lineHeight="14sp" />
 
             <EditText
-                android:id="@+id/editText2"
+                android:id="@+id/sign_up_email_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -150,13 +150,13 @@
                 android:textColor="@android:color/black"
                 android:textColorHint="#808080"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/editText"
-                app:layout_constraintStart_toStartOf="@+id/editText"
-                app:layout_constraintTop_toBottomOf="@+id/editText"
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_full_name_iput"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_full_name_iput"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_full_name_iput"
                 app:layout_constraintVertical_bias="0.0" />
 
             <EditText
-                android:id="@+id/phoneNosId"
+                android:id="@+id/sign_up_phone_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -173,9 +173,9 @@
                 android:textColor="@android:color/black"
                 android:textColorHint="#808080"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/editText2"
-                app:layout_constraintStart_toStartOf="@+id/editText2"
-                app:layout_constraintTop_toBottomOf="@+id/editText2"
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_email_input"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_email_input"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_email_input"
                 app:layout_constraintVertical_bias="0.0" />
 
             <TextView
@@ -187,8 +187,8 @@
                 android:textColor="#808080"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/phoneNosId"
-                app:layout_constraintStart_toStartOf="@+id/phoneNosId"
+                app:layout_constraintBottom_toTopOf="@+id/sign_up_phone_input"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_phone_input"
                 app:lineHeight="14sp" />
 
             <TextView
@@ -200,12 +200,12 @@
                 android:textColor="#808080"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/editText3"
-                app:layout_constraintStart_toStartOf="@+id/editText3"
+                app:layout_constraintBottom_toTopOf="@+id/sign_up_password_input"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_password_input"
                 app:lineHeight="14sp" />
 
             <EditText
-                android:id="@+id/editText3"
+                android:id="@+id/sign_up_password_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -222,9 +222,9 @@
                 android:textColor="@android:color/black"
                 android:textColorHint="#808080"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/phoneNosId"
-                app:layout_constraintStart_toStartOf="@+id/phoneNosId"
-                app:layout_constraintTop_toBottomOf="@+id/phoneNosId"
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_phone_input"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_phone_input"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_phone_input"
                 app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
@@ -235,9 +235,9 @@
                 android:layout_marginRight="20dp"
                 android:clickable="true"
                 android:onClick="togglePasswordClick"
-                app:layout_constraintBottom_toBottomOf="@+id/editText3"
-                app:layout_constraintEnd_toEndOf="@+id/editText3"
-                app:layout_constraintTop_toTopOf="@+id/editText3"
+                app:layout_constraintBottom_toBottomOf="@+id/sign_up_password_input"
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_password_input"
+                app:layout_constraintTop_toTopOf="@+id/sign_up_password_input"
                 app:srcCompat="@drawable/ic_password_eye" />
 
             <TextView
@@ -249,12 +249,12 @@
                 android:textColor="#808080"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/editText4"
-                app:layout_constraintStart_toStartOf="@+id/editText4"
+                app:layout_constraintBottom_toTopOf="@+id/sign_up_reenter_password_input"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_reenter_password_input"
                 app:lineHeight="14sp" />
 
             <EditText
-                android:id="@+id/editText4"
+                android:id="@+id/sign_up_reenter_password_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
@@ -271,9 +271,9 @@
                 android:textColor="@android:color/black"
                 android:textColorHint="#808080"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/editText3"
-                app:layout_constraintStart_toStartOf="@+id/editText3"
-                app:layout_constraintTop_toBottomOf="@+id/editText3"
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_password_input"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_password_input"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_password_input"
                 app:layout_constraintVertical_bias="0.0" />
 
             <ImageView
@@ -284,9 +284,9 @@
                 android:layout_marginRight="20dp"
                 android:clickable="true"
                 android:onClick="toggleRePasswordClick"
-                app:layout_constraintBottom_toBottomOf="@+id/editText4"
-                app:layout_constraintEnd_toEndOf="@+id/editText4"
-                app:layout_constraintTop_toTopOf="@+id/editText4"
+                app:layout_constraintBottom_toBottomOf="@+id/sign_up_reenter_password_input"
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_reenter_password_input"
+                app:layout_constraintTop_toTopOf="@+id/sign_up_reenter_password_input"
                 app:srcCompat="@drawable/ic_password_eye" />
 
             <View
@@ -295,9 +295,9 @@
                 android:layout_height="4dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/ic_glaidline"
-                app:layout_constraintEnd_toEndOf="@+id/editText4"
-                app:layout_constraintStart_toStartOf="@+id/editText4"
-                app:layout_constraintTop_toBottomOf="@+id/editText4" />
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_reenter_password_input"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_reenter_password_input"
+                app:layout_constraintTop_toBottomOf="@+id/sign_up_reenter_password_input" />
 
             <Button
                 android:id="@+id/submitSignUpBtn"
@@ -319,8 +319,8 @@
                 android:textSize="18dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/editText4"
-                app:layout_constraintStart_toStartOf="@+id/editText4"
+                app:layout_constraintEnd_toEndOf="@+id/sign_up_reenter_password_input"
+                app:layout_constraintStart_toStartOf="@+id/sign_up_reenter_password_input"
                 app:layout_constraintTop_toBottomOf="@+id/divider"
                 app:layout_constraintVertical_bias="0.0" />
 
