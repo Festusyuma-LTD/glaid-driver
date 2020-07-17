@@ -23,10 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.wang.avi.AVLoadingIndicatorView
 import festusyuma.com.glaiddriver.R
-import festusyuma.com.glaiddriver.helpers.Api
-import festusyuma.com.glaiddriver.helpers.Dashboard
-import festusyuma.com.glaiddriver.helpers.buttonClickAnim
-import festusyuma.com.glaiddriver.helpers.gson
+import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.request.LoginRequest
 import org.json.JSONObject
 
@@ -87,18 +84,28 @@ class LoginActivity : AppCompatActivity() {
                     if (response.getInt("status") == 200) {
                         val sharedPref = getSharedPreferences("auth_token", Context.MODE_PRIVATE)
                         val data = response.getJSONObject("data")
-                        val token = data.getString("token")
+                        val serverToken = data.getString("token")
 
-                        with (sharedPref.edit()) {
-                            putString(getString(R.string.auth_key_name), token)
-                            commit()
-                        }
+                        auth.signInWithCustomToken(serverToken)
+                            .addOnSuccessListener {res->
+                                val user = res.user
 
-                        queue.add(dashboard(token))
-                    }else {
-                        setLoading(false)
-                        showError(response.getString("message"))
-                    }
+                                user?.getIdToken(true)
+                                    ?.addOnSuccessListener {tokenRes ->
+                                        val token = tokenRes.token
+                                        if (token != null) {
+                                            with (sharedPref.edit()) {
+                                                putString(getString(R.string.auth_key_name), token)
+                                                commit()
+                                            }
+
+                                            queue.add(dashboard(token))
+                                        }else errorOccurred()
+                                    }
+                                    ?.addOnFailureListener { errorOccurred() }
+                            }.addOnFailureListener { errorOccurred() }
+
+                    }else { errorOccurred(response.getString("message")) }
                 },
                 Response.ErrorListener {
                         response ->
@@ -115,6 +122,11 @@ class LoginActivity : AppCompatActivity() {
         }
 
         view.startAnimation(buttonClickAnim)
+    }
+
+    private fun errorOccurred(message: String? = null) {
+        setLoading(false)
+        showError(message?: "An error occurred")
     }
 
     private fun dashboard(token: String): JsonObjectRequest {

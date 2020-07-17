@@ -31,7 +31,7 @@
         android:layout_marginBottom="100dp"
         android:background="@drawable/ic_orangebarbutton"
         android:drawableEnd="@drawable/ic_tick_text"
-        android:drawableRight="@drawable/ic_tick_text"
+        
         android:gravity="center|start|left"
         android:onClick="getStartedBtnClick"
         android:paddingLeft="20dp"

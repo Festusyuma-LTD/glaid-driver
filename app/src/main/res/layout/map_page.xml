@@ -13,7 +13,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        
         android:layout_marginTop="40dp"
         android:background="@drawable/h_hamburger"
         android:elevation="1dp"

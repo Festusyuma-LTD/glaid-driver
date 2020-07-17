@@ -46,7 +46,7 @@
                     android:layout_marginRight="5dp"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:drawableStart="@drawable/ic_invite_friends"
-                    android:drawableLeft="@drawable/ic_invite_friends"
+                    
                     android:drawablePadding="20dp"
                     android:gravity="start"
                     android:onClick="inviteFriendsClick"
@@ -69,7 +69,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:drawableStart="@drawable/ic_order_history"
-                    android:drawableLeft="@drawable/ic_order_history"
+                    
                     android:drawablePadding="20dp"
                     android:gravity="start"
                     android:foreground="?android:attr/selectableItemBackground"
@@ -93,7 +93,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:drawableStart="@drawable/ic_help"
-                    android:drawableLeft="@drawable/ic_help"
+                    
                     android:foreground="?android:attr/selectableItemBackground"
                     android:drawablePadding="20dp"
                     android:gravity="start"
@@ -113,7 +113,7 @@
                     android:layout_height="340dp"
                     android:layout_marginTop="12dp"
                     android:layout_marginEnd="112dp"
-                    android:layout_marginRight="112dp"
+                    
                     android:contentDescription="@string/todo"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/guideline3"

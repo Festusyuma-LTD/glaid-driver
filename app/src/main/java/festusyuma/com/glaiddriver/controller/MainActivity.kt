@@ -38,27 +38,22 @@ class MainActivity : AppCompatActivity() {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
 
-        queue = Volley.newRequestQueue(this)
+        val sharedPref = getSharedPreferences("auth_token", Context.MODE_PRIVATE)
+        if (sharedPref.contains(getString(R.string.auth_key_name))) {
 
-        Handler().postDelayed({
-            // This method will be executed once the timer is over
-            // Start your app main activity
-            val sharedPref = getSharedPreferences("auth_token", Context.MODE_PRIVATE)
-            if (sharedPref.contains(getString(R.string.auth_key_name))) {
+            val auth = sharedPref.getString(getString(R.string.auth_key_name), "")
+            if (auth != null) {
 
-                val auth = sharedPref.getString(getString(R.string.auth_key_name), "")
-                if (auth != null) {
-                    val req = dashboard(auth) {response ->
-                        if (response.getInt("status") == 200) {
-                            startMapsActivity(response.getJSONObject("data"))
-                        }else startCarouselActivity()
-                    }
+                queue = Volley.newRequestQueue(this)
+                val req = dashboard(auth) {response ->
+                    if (response.getInt("status") == 200) {
+                        startMapsActivity(response.getJSONObject("data"))
+                    }else startCarouselActivity()
+                }
 
-                    queue.add(req)
-                }else startCarouselActivity()
+                queue.add(req)
             }else startCarouselActivity()
-
-        }, splashDelayTimeZone)
+        }else startCarouselActivity()
     }
 
     private fun startMapsActivity(data: JSONObject) {
@@ -68,8 +63,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startCarouselActivity() {
-        startActivity(Intent(this, CarouselActivity::class.java))
-        finishAffinity()
+        Handler().postDelayed({
+            startActivity(Intent(this, CarouselActivity::class.java))
+            finishAffinity()
+        }, splashDelayTimeZone)
     }
 
     private fun dashboard(token: String, listener: (response: JSONObject) -> Unit): JsonObjectRequest {

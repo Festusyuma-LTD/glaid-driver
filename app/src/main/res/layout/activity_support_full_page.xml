@@ -27,7 +27,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        
         android:onClick="helpBackClick"
         app:layout_constraintBottom_toBottomOf="@+id/editProfileTitle"
         app:layout_constraintEnd_toStartOf="@+id/editProfileTitle"
@@ -78,7 +78,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
+                
                 android:text="@string/question"
                 android:textColor="#4E007C"
                 app:layout_constraintStart_toStartOf="parent"
@@ -142,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
+                
                 android:text="@string/need_futher_assistance"
                 android:textColor="#808080"
                 android:textSize="12sp"
@@ -157,7 +157,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/white"
                 android:drawableEnd="@drawable/ic_chevron_dark"
-                android:drawableRight="@drawable/ic_chevron_dark"
+                
                 android:gravity="center|start"
                 android:onClick="startChatClick"
                 android:paddingLeft="20dp"

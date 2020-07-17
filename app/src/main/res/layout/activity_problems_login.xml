@@ -89,7 +89,7 @@ tools:context=".controller.ProblemsLoginActivity">
             android:layout_marginBottom="20dp"
             android:background="@drawable/ic_glaidbtnbanner"
             android:drawableEnd="@drawable/ic_enter_chevron"
-            android:drawableRight="@drawable/ic_enter_chevron"
+            
             android:gravity="center|start|right"
             android:onClick="forgotEmailBtnClick"
             android:paddingLeft="20dp"
@@ -116,7 +116,7 @@ tools:context=".controller.ProblemsLoginActivity">
             android:layout_marginBottom="40dp"
             android:background="@drawable/ic_glaidbtnbanner"
             android:drawableEnd="@drawable/ic_enter_chevron"
-            android:drawableRight="@drawable/ic_enter_chevron"
+            
             android:gravity="center|start|left"
             android:onClick="forgotPasswordBtnClick"
             android:paddingLeft="20dp"
@@ -149,7 +149,7 @@ tools:context=".controller.ProblemsLoginActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:layout_marginLeft="4dp"
+            
             android:clickable="true"
             android:onClick="signInBtnClick"
             android:text="Sign in"

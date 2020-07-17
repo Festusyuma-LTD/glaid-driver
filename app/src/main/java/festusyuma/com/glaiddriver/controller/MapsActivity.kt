@@ -1,6 +1,7 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -10,6 +11,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -35,9 +37,16 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.buttonClickAnim
+import festusyuma.com.glaiddriver.helpers.FIRE_STORE_LOG_TAG
+import festusyuma.com.glaiddriver.helpers.db
 import festusyuma.com.glaiddriver.helpers.gson
+import festusyuma.com.glaiddriver.models.FSLocation
 import festusyuma.com.glaiddriver.models.Order
 import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.live.PendingOrder
@@ -57,7 +66,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var locationPermissionsGranted = false
 
-    private lateinit var mMap: GoogleMap
+    private lateinit var gMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var userMarker: Marker
     private lateinit var userLocationBtn: ImageView
@@ -87,6 +96,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerHeader = findViewById(R.id.nav_header_driver_map)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (isServiceOk()) initMap()
         initUserDetails()
@@ -137,12 +147,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun initUserLocationBtn() {
         userLocationBtn = findViewById(R.id.userLocationBtn)
-        userLocationBtn.setOnClickListener { getUserLocation { markUserLocation(it) } }
+        userLocationBtn.setOnClickListener {
+            getUserLocation {
+                markUserLocation(it)
+                saveUserLocation(it)
+            }
+        }
     }
 
     private fun getUserLocation(listener: (lc: Location) -> Unit): Task<Location>? {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
         try {
             if (locationPermissionsGranted) {
                 if (isLocationEnabled()) {
@@ -150,7 +163,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         .addOnSuccessListener {lc ->
                             if (lc != null) {
                                 listener(lc)
-                            }else Toast.makeText(this, "Unable to get location, Please check GPS", Toast.LENGTH_SHORT).show()
+                            }else Toast.makeText(this, "Unable to get location", Toast.LENGTH_SHORT).show()
                         }
                 }
             }else Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show()
@@ -166,7 +179,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val mapIcon = AppCompatResources.getDrawable(this, R.drawable.customlocation)!!.toBitmap()
         if (!this::userMarker.isInitialized) {
-            userMarker = mMap.addMarker(
+            userMarker = gMap.addMarker(
                 MarkerOptions()
                     .position(userLocation).title("Marker in Sydney")
                     .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
@@ -180,8 +193,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         moveCamera(userLocation)
     }
 
+    private fun saveUserLocation(lc: Location) {
+        val geoPoint = GeoPoint(lc.latitude, lc.longitude)
+        val location = FSLocation(geoPoint, "festusyuma@gmail.com")
+
+        val locationRef = db.collection(getString(R.string.fs_user_locations))
+
+        locationRef
+            .add(location)
+            .addOnSuccessListener {documentReference ->
+                Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+            }
+            .addOnFailureListener { e ->
+                Log.w(FIRE_STORE_LOG_TAG, "Error adding document", e)
+            }
+    }
+
     private fun moveCamera(location: LatLng) {
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f))
+        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f))
     }
 
     // This method is called when a user Allow or Deny our requested permissions. So it will help us to move forward if the permissions are granted
@@ -206,13 +237,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // Callback when map ready
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+        gMap = googleMap
 
         if (locationPermissionsGranted) {
             getUserLocation {markUserLocation(it)}
 
-            mMap.isMyLocationEnabled = true
-            mMap.uiSettings.isMyLocationButtonEnabled = false
+            /*gMap.isMyLocationEnabled = true*/
+            gMap.uiSettings.isMyLocationButtonEnabled = false
         }
 
         try {
@@ -294,9 +325,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
-            LocationManager.NETWORK_PROVIDER
-        )
+        return if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            true
+        }else {
+            Toast.makeText(this, "Please enable GPS", Toast.LENGTH_SHORT).show()
+            buildAlertMessageNoGps()
+            false
+        }
+    }
+
+    private fun buildAlertMessageNoGps() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setMessage(R.string.enable_gps_msg)
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ -> startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+            .setNegativeButton("No") { dialog, _ -> dialog.cancel() }
+        val alert: AlertDialog = builder.create()
+        alert.show()
     }
 
     override fun onBackPressed() {

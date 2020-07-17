@@ -14,7 +14,7 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="@+id/iconPeople"
         app:layout_constraintEnd_toStartOf="@+id/iconPeople"
@@ -27,7 +27,7 @@
         android:layout_width="36dp"
         android:layout_height="36dp"
         android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
+        
         app:layout_constraintBottom_toBottomOf="@+id/iconPeople"
         app:layout_constraintStart_toEndOf="@+id/iconPeople"
         app:layout_constraintTop_toTopOf="@+id/iconPeople"
@@ -85,7 +85,7 @@
         android:layout_width="265dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal|top"
@@ -103,7 +103,7 @@
         android:layout_width="263dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="24dp"
