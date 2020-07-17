@@ -13,7 +13,6 @@ class Dashboard {
     companion object {
         fun store(context: Context, data: JSONObject) {
             val dashboard = Dashboard()
-            Log.v("ApiLog", "Response lass: $data")
 
             val sharedPref = context.getSharedPreferences(context.getString(R.string.cached_data), Context.MODE_PRIVATE)
             val user = gson.toJson(dashboard.getUser(data.getJSONObject("user")))
