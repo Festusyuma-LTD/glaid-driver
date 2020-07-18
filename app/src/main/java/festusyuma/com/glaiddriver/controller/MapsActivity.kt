@@ -192,17 +192,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun saveUserLocation(lc: Location) {
         val geoPoint = GeoPoint(lc.latitude, lc.longitude)
-        val location = FSLocation(geoPoint, auth.uid)
+        val location = FSLocation(geoPoint, auth.uid, lc.bearing)
 
         if (location.userId != null) {
-            val locationRef = db.collection(getString(R.string.fs_user_locations))
+            val locationRef = db.collection(getString(R.string.fs_user_locations)).document(location.userId)
 
             locationRef
-                .add(location)
-                .addOnSuccessListener {documentReference ->
-                    Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                    Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                    Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                .set(location)
+                .addOnSuccessListener {
+                    Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added")
                 }
                 .addOnFailureListener { e ->
                     Log.w(FIRE_STORE_LOG_TAG, "Error adding document", e)
