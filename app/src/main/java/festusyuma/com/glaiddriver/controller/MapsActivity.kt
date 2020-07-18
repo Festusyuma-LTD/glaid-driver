@@ -42,10 +42,7 @@ import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import festusyuma.com.glaiddriver.R
-import festusyuma.com.glaiddriver.helpers.buttonClickAnim
-import festusyuma.com.glaiddriver.helpers.FIRE_STORE_LOG_TAG
-import festusyuma.com.glaiddriver.helpers.db
-import festusyuma.com.glaiddriver.helpers.gson
+import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.FSLocation
 import festusyuma.com.glaiddriver.models.Order
 import festusyuma.com.glaiddriver.models.User
@@ -195,20 +192,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun saveUserLocation(lc: Location) {
         val geoPoint = GeoPoint(lc.latitude, lc.longitude)
-        val location = FSLocation(geoPoint)
+        val location = FSLocation(geoPoint, auth.uid)
 
-        val locationRef = db.collection(getString(R.string.fs_user_locations))
+        if (location.userId != null) {
+            val locationRef = db.collection(getString(R.string.fs_user_locations))
 
-        /*locationRef
-            .add(location)
-            .addOnSuccessListener {documentReference ->
-                Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w(FIRE_STORE_LOG_TAG, "Error adding document", e)
-            }*/
+            locationRef
+                .add(location)
+                .addOnSuccessListener {documentReference ->
+                    Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                    Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                    Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
+                }
+                .addOnFailureListener { e ->
+                    Log.w(FIRE_STORE_LOG_TAG, "Error adding document", e)
+                }
+        }
     }
 
     private fun moveCamera(location: LatLng) {
