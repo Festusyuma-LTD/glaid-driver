@@ -195,11 +195,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun saveUserLocation(lc: Location) {
         val geoPoint = GeoPoint(lc.latitude, lc.longitude)
-        val location = FSLocation(geoPoint, "festusyuma@gmail.com")
+        val location = FSLocation(geoPoint)
 
         val locationRef = db.collection(getString(R.string.fs_user_locations))
 
-        locationRef
+        /*locationRef
             .add(location)
             .addOnSuccessListener {documentReference ->
                 Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
@@ -208,7 +208,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             .addOnFailureListener { e ->
                 Log.w(FIRE_STORE_LOG_TAG, "Error adding document", e)
-            }
+            }*/
     }
 
     private fun moveCamera(location: LatLng) {
@@ -242,7 +242,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (locationPermissionsGranted) {
             getUserLocation {markUserLocation(it)}
 
-            /*gMap.isMyLocationEnabled = true*/
+            gMap.isMyLocationEnabled = true
             gMap.uiSettings.isMyLocationButtonEnabled = false
         }
 
@@ -328,7 +328,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         return if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             true
         }else {
-            Toast.makeText(this, "Please enable GPS", Toast.LENGTH_SHORT).show()
             buildAlertMessageNoGps()
             false
         }
