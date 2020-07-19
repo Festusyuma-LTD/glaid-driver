@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import festusyuma.com.glaiddriver.R
+import festusyuma.com.glaiddriver.helpers.auth
 import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 import festusyuma.com.glaiddriver.helpers.gson
 import festusyuma.com.glaiddriver.models.User
@@ -76,8 +77,10 @@ class EditProfileActivity : AppCompatActivity() {
             commit()
         }
 
-        startActivity(Intent(this, LoginActivity::class.java))
-        finishAffinity()
+        auth.signOut().let {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finishAffinity()
+        }
     }
 
     fun connectFbClick(view: View) {
