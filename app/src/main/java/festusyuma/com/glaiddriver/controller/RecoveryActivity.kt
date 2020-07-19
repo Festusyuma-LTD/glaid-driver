@@ -5,92 +5,134 @@ import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
+import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.wang.avi.AVLoadingIndicatorView
 import festusyuma.com.glaiddriver.R
-import festusyuma.com.glaiddriver.utilities.EXTRA_RECOVERY_TYPE
-import festusyuma.com.glaiddriver.utilities.buttonClickAnim
+import festusyuma.com.glaiddriver.helpers.*
+import festusyuma.com.glaiddriver.request.PasswordResetRequest
 import kotlinx.android.synthetic.main.activity_recovery.*
+import org.json.JSONObject
 
 class RecoveryActivity : AppCompatActivity() {
-    //    val messageView : String by lazy {
-//        // runs on first access of messageView
-//        findViewById(R.id.message_view) as TextView
-//    }
+    lateinit var otpChoice : String
+    private var operationRunning = false
+
+    private lateinit var loadingCover: ConstraintLayout
+    private lateinit var loadingAvi: AVLoadingIndicatorView
+    private lateinit var errorMsg: TextView
+
+    private lateinit var forgotPasswordIntroText: TextView
+    private lateinit var getOtpInputLabel: TextView
+    private lateinit var getOtpInput: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            }
-        }
+        window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recovery)
-        //
-        println("EXTRA_RECOVERY_TYPE " + intent.getStringExtra(EXTRA_RECOVERY_TYPE))
-        when (intent.getStringExtra(EXTRA_RECOVERY_TYPE)) {
-            "phone" -> {
-                recovery_text.setText(R.string.phone_recovery_text)
-                labelText.setText(R.string.phone_number)
-                editTextType.hint = getString(R.string.phone_number)
-                editTextType.inputType = InputType.TYPE_CLASS_PHONE
-                handleSubmitBtn.text = getString(R.string.send_otp)
-                resendOtpText.visibility = View.INVISIBLE
-                resendOtpbtn.visibility = View.INVISIBLE
-            }
-            "email" -> {
-                recovery_text.setText(R.string.email_recovery_text)
-                labelText.setText(R.string.email_address)
-                editTextType.hint = getString(R.string.email_address)
-                editTextType.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
-                handleSubmitBtn.text = getString(R.string.send_mail)
-                resendOtpText.visibility = View.INVISIBLE
-                resendOtpbtn.visibility = View.INVISIBLE
 
-            }
-            "OTP" -> {
-                recovery_text.setText(R.string.otp_recovery_text)
-                labelText.setText(R.string.otp)
-                editTextType.hint = getString(R.string.otp)
-                editTextType.inputType = InputType.TYPE_CLASS_NUMBER
-                handleSubmitBtn.setText(R.string.continue_text)
-                resendOtpText.visibility = View.VISIBLE
-                resendOtpbtn.visibility = View.VISIBLE
+        loadingCover = findViewById(R.id.loadingCoverConstraint)
+        loadingAvi = loadingCover.findViewById(R.id.avi)
+        errorMsg = findViewById(R.id.errorMsg)
 
-            }
-            else -> {
-            }
+        forgotPasswordIntroText = findViewById(R.id.forgotPasswordIntroText)
+        getOtpInputLabel = findViewById(R.id.getOtpInputLabel)
+        getOtpInput = findViewById(R.id.getOtpInput)
+
+        val choice = intent.getStringExtra(EXTRA_FORGOT_PASSWORD_CHOICE)
+        if (choice == null) finish() else otpChoice = choice
+        formatInput()
+    }
+
+    private fun formatInput() {
+        val inputLabel = if (otpChoice == "email") "Email" else "Phone number"
+        forgotPasswordIntroText.text = getString(R.string.reset_password_intro_text).format(inputLabel)
+        getOtpInputLabel.text = inputLabel
+
+        if (otpChoice == "email") {
+            getOtpInput.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+            getOtpInput.inputType
+            getOtpInput.setHint(R.string.email_input_label)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) getOtpInput.setAutofillHints(getString(R.string.email_input_label))
+        }else {
+            getOtpInput.inputType = InputType.TYPE_CLASS_PHONE
+            getOtpInput.inputType
+            getOtpInput.setHint(R.string.phone_number_input_label)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) getOtpInput.setAutofillHints(getString(R.string.phone_number_input_label))
         }
     }
 
-    fun handleSubmitBtnClick(view: View) {
+    fun getOtpMethod(view: View) {
         view.startAnimation(buttonClickAnim)
-        when (intent.getStringExtra(EXTRA_RECOVERY_TYPE)) {
-            "phone" -> {
-                val signUpIntent = Intent(this, RecoveryActivity::class.java)
-                signUpIntent.putExtra(EXTRA_RECOVERY_TYPE, "OTP")
-                startActivity(signUpIntent)
-            }
-            "email" -> {
-                val signUpIntent = Intent(this, ResetPasswordActivity::class.java)
-                startActivity(signUpIntent)
-            }
-            "OTP" -> {
-                val signUpIntent = Intent(this, ResetPasswordActivity::class.java)
-                startActivity(signUpIntent)
-            }
-            else -> {
-            }
+        if (!operationRunning) {
+            setLoading(true)
 
+            val inp = getOtpInput.text.toString()
+            val passwordResetRequest = PasswordResetRequest()
+            if (otpChoice == "email") passwordResetRequest.email = inp else passwordResetRequest.tel = inp
+
+            val queue = Volley.newRequestQueue(this)
+            val resetJsonObject = JSONObject(gson.toJson(passwordResetRequest))
+
+            val request = JsonObjectRequest(
+                Request.Method.POST,
+                Api.RESET_PASSWORD,
+                resetJsonObject,
+                Response.Listener {
+                        response ->
+                    if (response.getInt("status") == 200) {
+                        val signUpIntent = Intent(this, ForgotPasswordFinalOtpActivity::class.java)
+                        signUpIntent.putExtra("resetRequest", passwordResetRequest)
+
+                        startActivity(signUpIntent)
+                    }else showError(response.getString("message"))
+
+                    setLoading(false)
+                },
+                Response.ErrorListener {
+                        response ->
+                    response.printStackTrace()
+                    showError("An error occurred")
+                    setLoading(false)
+                }
+            )
+
+            queue.add(request)
         }
-
     }
 
     fun resendOtpClick(view: View) {
         view.startAnimation(buttonClickAnim)
+    }
 
+    private fun setLoading(loading: Boolean) {
+        if (loading) {
+            loadingCover.visibility = View.VISIBLE
+            loadingAvi.show()
+            operationRunning = true
+        }else {
+            loadingCover.visibility = View.GONE
+            loadingAvi.hide()
+            operationRunning = false
+        }
+    }
+
+    private fun showError(msg: String) {
+        errorMsg.text = msg
+        errorMsg.visibility = View.VISIBLE
+    }
+
+    fun hideError(view: View) {
+        errorMsg.visibility = View.INVISIBLE
     }
 }

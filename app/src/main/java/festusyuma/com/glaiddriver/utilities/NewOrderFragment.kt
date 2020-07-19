@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
-import festusyuma.com.glaiddriver.models.User
+import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -71,18 +71,7 @@ class NewOrderFragment : Fragment() {
                 startActivity(intent)
             }
             R.id.textCustomerButton -> {
-                //add user object and send as intent to chat
-                val userObject =
-                    User(
-                        "slenzy001@gmail.com",
-                        "okebugwu Chidozie Henry",
-                        "08127736889",
-                        "https://firebasestorage.googleapis.com/v0/b/glaid-driver.appspot.com/o/images%2F2cb91dd1-b041-4888-8891-d88467f123ec?alt=media&token=4f732e54-9db3-43ef-b991-ba53451875b7",
-                        "nwMTvs8IzcMWmuKmYwDHZUUcuoB2",
-                        "chidozie"
-                    )
                 val intent = Intent(activity, ChatActivity::class.java)
-                intent.putExtra(USER_DATA, userObject)
                 startActivity(intent)
             }
             R.id.deliver_button -> {
@@ -105,8 +94,6 @@ class NewOrderFragment : Fragment() {
     }
 
     companion object {
-        const val USER_DATA = "USER_DATA"
-
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.

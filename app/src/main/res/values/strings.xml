@@ -112,6 +112,51 @@
     <string name="complete_delivery">Complete Delivery</string>
     <string name="you_have_a_new_order">You have a new order!</string>
     <string name="starting_delivery">Starting Delivery....</string>
-    <string name="don_t_have_an_account">Don\'t have an Account?</string>
-    <string name="forgot_password_question">Forgot Password?</string>
+    <string name="splash_icon">splash_icon</string>
+
+    <string name="sh_user_details">userDetails</string>
+    <string name="sh_wallet">wallet</string>
+    <string name="sh_pending_order">pending_order</string>
+    <string name="sh_orders">orders</string>
+    <string name="auth_key_name">driver_authorization</string>
+    <string name="cached_data">driver_cached_data</string>
+    <string name="processing">Processing</string>
+    <string name="internet_error_msg">Please check your internet</string>
+    <string name="error_occurred">An error occurred, please try again later</string>
+    <string name="background">background</string>
+
+    <string name="sign_up_agreement">By signing up you agree to our</string>
+    <string name="phone_number_input_label">Phone Number</string>
+    <string name="bank_account_input_label">Bank Account</string>
+    <string name="home_address_input_label">Home Address</string>
+    <string name="full_name_input_label">Full Name</string>
+    <string name="sign_up_intro_text">Let’s get you signed up so you can be a driver</string>
+    <string name="sign_up_intro_title">Hi There!</string>
+    <string name="email_input_label">Email</string>
+    <string name="password_input_label">Password</string>
+    <string name="verify_password_input_label">Re-enter Password</string>
+    <string name="register_button_label">Continue</string>
+    <string name="password_does_not_match">Password does not match</string>
+    <string name="password_invalid">Password must contain at least one number</string>
+    <string name="field_empty">Cannot be empty</string>
+    <string name="invalid_format">Invalid format</string>
+    <string name="did_not_receive_otp">Did not receive an OTP?</string>
+    <string name="otp_input_label">OTP</string>
+    <string name="complete_registration_intro_text">A one-time pin has been sent to your phone number. Please enter it below</string>
+    <string name="complete_registration_intro_title">One Last Step</string>
+    <string name="complete_registration_intro_image">intro image</string>
+    <string name="sign_up_image">sign Up Image</string>
+    <string name="chevron_right">gas_type_button_img</string>
+    <string name="reset_password_intro_text">Please enter the %1$s associated with your account below</string>
+    <string name="reset_password_intro_image">reset_password_intro_image</string>
+    <string name="get_otp_button_label">Send otp</string>
+    <string name="otp_reset_intro_text">Please enter the %1$s associated with your account below</string>
+    <string name="reset_password" >Reset Password</string>
+    <string name="set_reset_password_intro_text">Enter your new password below</string>
+    <string name="sign_out_btn_label">Sign Out</string>
+    <string name="formatted_quantity">%1$.1f %2$s</string>
+    <string name="formatted_amount">&#8358;%1$s</string>
+    <string name="enable_gps_msg" >You need to enable GPS to use this App properly, Do you wish to enable it?</string>
+
+    <string name="fs_user_locations" >User Locations</string>
 </resources>
