@@ -1,22 +1,15 @@
 package festusyuma.com.glaiddriver.controller
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.Response
@@ -185,56 +178,7 @@ class LoginActivity : AppCompatActivity() {
         val signUpIntent = Intent(this, ProblemsLoginActivity::class.java)
         startActivity(signUpIntent)
 
-    }    // make permission request// shows user a dialog scrren
-
-    private fun makeRequest() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            RECORD_REQUEST_CODE
-        )
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>, grantResults: IntArray
-    ) {
-        when (requestCode) {
-            RECORD_REQUEST_CODE -> {
-
-                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    //here you can either end the app or change intent
-
-                    val builder = AlertDialog.Builder(this)
-                    builder.setMessage("Permission to access the device location is required for this app to access your location.")
-                        .setTitle("Permission required")
-                    builder.setPositiveButton(
-                        "OK"
-                    ) { _, _ ->
-                        Log.i(TAG, "Clicked")
-                        makeRequest()
-                    }
-                    builder.setNegativeButton(
-                        "CANCEL"
-                    ) { _, _ ->
-                        Log.i(TAG, "Clicked")
-                        val myToast = Toast.makeText(
-                            applicationContext,
-                            "${resources.getString(R.string.app_name)} requires location to continue",
-                            Toast.LENGTH_SHORT
-                        )
-                        myToast.setGravity(Gravity.BOTTOM or Gravity.CENTER_VERTICAL, 0, -50)
-                        myToast.show()
-                    }
-                    val dialog = builder.create()
-                    dialog.show()
-                    Log.i(TAG, "Permission has been denied by user")
-                } else {
-                    Log.i(TAG, "Permission has been granted by user")
-                }
-            }
-        }
-    }
+    }    // make permission request// shows user a dialog screen
 
     private fun setLoading(loading: Boolean) {
         if (loading) {

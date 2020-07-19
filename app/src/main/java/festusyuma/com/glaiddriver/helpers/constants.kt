@@ -12,7 +12,6 @@ import com.google.gson.Gson
  * Email: okebugwuchidozie@gmail.com
  */
 
-val fr = Firebase
 val db = Firebase.firestore
 val auth = FirebaseAuth.getInstance()
 val gson = Gson()
