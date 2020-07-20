@@ -281,7 +281,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 initiateLivePendingOrder(order)
 
                 when(order.statusId) {
-                    1L -> startPendingOrderFragment()
                     2L -> startPendingOrderFragment()
                     3L -> startPendingOrderFragment()
                 }

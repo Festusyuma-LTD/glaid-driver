@@ -96,13 +96,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun logout() {
-        val sharedPref = getSharedPreferences(getString(R.string.auth_key_name), Context.MODE_PRIVATE)
-        with(sharedPref.edit()) {
-            remove(getString(R.string.auth_key_name))
+        val dataPref = getSharedPreferences(getString(R.string.auth_key_name), Context.MODE_PRIVATE)
+        val authPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
+
+        with(authPref.edit()) {
+            clear()
             commit()
         }
 
-        startActivity(Intent(this, LoginActivity::class.java))
+        with(dataPref.edit()) {
+            clear()
+            commit()
+        }
+
+        startActivity(Intent(this, GetStartedActivity::class.java))
         finishAffinity()
     }
 }
