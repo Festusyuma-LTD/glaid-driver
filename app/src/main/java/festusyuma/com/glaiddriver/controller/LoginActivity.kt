@@ -96,7 +96,10 @@ class LoginActivity : AppCompatActivity() {
                 loginRequestJson,
                 Response.Listener { response ->
                     if (response.getInt("status") == 200) {
-                        val sharedPref = getSharedPreferences("auth_token", Context.MODE_PRIVATE)
+                        val authPref = getSharedPreferences(
+                            getString(R.string.auth_key_name),
+                            Context.MODE_PRIVATE
+                        )
                         val data = response.getJSONObject("data")
                         val serverToken = data.getString("token")
 
@@ -108,8 +111,8 @@ class LoginActivity : AppCompatActivity() {
                                     ?.addOnSuccessListener { tokenRes ->
                                         val token = tokenRes.token
                                         if (token != null) {
-                                            with(sharedPref.edit()) {
-                                                putString(getString(R.string.auth_key_name), token)
+                                            with(authPref.edit()) {
+                                                putString(getString(R.string.sh_token), token)
                                                 commit()
                                             }
 

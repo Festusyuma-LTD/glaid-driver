@@ -118,6 +118,7 @@
     <string name="sh_wallet">wallet</string>
     <string name="sh_pending_order">pending_order</string>
     <string name="sh_orders">orders</string>
+    <string name="sh_token">auth_token</string>
     <string name="auth_key_name">driver_authorization</string>
     <string name="cached_data">driver_cached_data</string>
     <string name="processing">Processing</string>

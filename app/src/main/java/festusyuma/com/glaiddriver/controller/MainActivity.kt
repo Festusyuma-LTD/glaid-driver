@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.RequestQueue
@@ -30,25 +29,27 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        window.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
             WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
         )
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
 
-        val sharedPref = getSharedPreferences("auth_token", Context.MODE_PRIVATE)
-        if (sharedPref.contains(getString(R.string.auth_key_name))) {
+        val authPref = getSharedPreferences(getString(R.string.auth_key_name), Context.MODE_PRIVATE)
+        if (authPref.contains(getString(R.string.sh_token))) {
 
-            val auth = sharedPref.getString(getString(R.string.auth_key_name), "")
+            val auth = authPref.getString(getString(R.string.sh_token), "")
             if (auth != null) {
 
                 queue = Volley.newRequestQueue(this)
-                val req = dashboard(auth) {response ->
+                val req = dashboard(auth) { response ->
                     if (response.getInt("status") == 200) {
                         startMapsActivity(response.getJSONObject("data"))
-                    }else startCarouselActivity()
+                    } else startCarouselActivity()
                 }
 
                 queue.add(req)
