@@ -17,7 +17,7 @@ import com.wang.avi.AVLoadingIndicatorView
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.Api
 import festusyuma.com.glaiddriver.helpers.gson
-import festusyuma.com.glaiddriver.request.PasswordResetRequest
+import festusyuma.com.glaiddriver.requestdto.PasswordResetRequest
 import org.json.JSONObject
 
 class ForgotPasswordFinalOtpActivity : AppCompatActivity() {

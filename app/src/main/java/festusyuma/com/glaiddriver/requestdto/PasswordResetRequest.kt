@@ -1,4 +1,4 @@
-package festusyuma.com.glaiddriver.request
+package festusyuma.com.glaiddriver.requestdto
 
 import java.io.Serializable
 
