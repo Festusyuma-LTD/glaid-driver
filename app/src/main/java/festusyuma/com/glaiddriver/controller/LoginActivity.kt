@@ -1,21 +1,15 @@
 package festusyuma.com.glaiddriver.controller
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.Response
@@ -82,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
                 Response.Listener {
                         response ->
                     if (response.getInt("status") == 200) {
-                        val sharedPref = getSharedPreferences("auth_token", Context.MODE_PRIVATE)
+                        val authPref = getSharedPreferences(getString(R.string.auth_key_name), Context.MODE_PRIVATE)
                         val data = response.getJSONObject("data")
                         val serverToken = data.getString("token")
 
@@ -94,8 +88,8 @@ class LoginActivity : AppCompatActivity() {
                                     ?.addOnSuccessListener {tokenRes ->
                                         val token = tokenRes.token
                                         if (token != null) {
-                                            with (sharedPref.edit()) {
-                                                putString(getString(R.string.auth_key_name), token)
+                                            with (authPref.edit()) {
+                                                putString(getString(R.string.sh_token), token)
                                                 commit()
                                             }
 

@@ -34,7 +34,7 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        authPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
+        authPref = getSharedPreferences(getString(R.string.auth_key_name), Context.MODE_PRIVATE)
         dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
 
         if (dataPref.contains(getString(R.string.sh_user_details))) {
@@ -72,7 +72,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         with(dataPref.edit()) {
-            remove(getString(R.string.auth_key_name))
             clear()
             commit()
         }
