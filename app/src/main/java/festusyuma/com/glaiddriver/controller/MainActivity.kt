@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val authPref = getSharedPreferences(getString(R.string.auth_key_name), Context.MODE_PRIVATE)
-        if (authPref.contains(getString(R.string.auth_key_name))) {
+        if (authPref.contains(getString(R.string.sh_token))) {
 
             val auth = authPref.getString(getString(R.string.sh_token), "")
             if (auth != null) {
