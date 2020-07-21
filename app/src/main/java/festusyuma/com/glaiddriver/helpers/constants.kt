@@ -40,6 +40,9 @@ const val NO_PENDING_ORDER = "no pending order"
 const val TRIP_STARTED = "trip started"
 const val ORDER_COMPLETED = "order completed"
 
+const val DRIVER_ASSIGNED_STATUS_CODE = 2L
+const val OUT_FOR_DELIVERY_STATUS_CODE = 3L
+
 val defaultRetryPolicy = DefaultRetryPolicy(
     0,
     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

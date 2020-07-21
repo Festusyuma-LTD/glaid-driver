@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
+import festusyuma.com.glaiddriver.helpers.DRIVER_ASSIGNED
+import festusyuma.com.glaiddriver.helpers.DRIVER_ASSIGNED_STATUS_CODE
 import festusyuma.com.glaiddriver.helpers.addCountryCode
 import festusyuma.com.glaiddriver.helpers.capitalizeWords
 import festusyuma.com.glaiddriver.models.live.PendingOrder
@@ -56,7 +58,14 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
         gasType.text = livePendingOrder.gasType.value?.capitalizeWords()
         callCustomerButton.setOnClickListener { callCustomer() }
         textCustomerButton.setOnClickListener { chat() }
-        deliverButton.setOnClickListener { deliverOrder() }
+
+        if (livePendingOrder.statusId.value == DRIVER_ASSIGNED_STATUS_CODE) {
+            deliverButton.setOnClickListener { startTrip() }
+        }else {
+            deliverButton.text = getString(R.string.complete_delivery)
+            mainOrderMessage.text = getString(R.string.starting_delivery)
+            deliverButton.setOnClickListener { completeTrip() }
+        }
     }
 
     private fun callCustomer() {
@@ -72,22 +81,19 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
         startActivity(intent)
     }
 
-    private fun deliverOrder() {
-        when (deliverButton.text) {
-            getString(R.string.start_delivery) -> {
-                OrderRequests(requireActivity()).startTrip {
-                    deliverButton.text = getString(R.string.complete_delivery)
-                    mainOrderMessage.text = getString(R.string.starting_delivery)
-                }
-            }
-            getString(R.string.complete_delivery) -> {
-                OrderRequests(requireActivity()).completeTrip {
-                    requireActivity().supportFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
-                        .replace(R.id.frameLayoutId, DashboardFragment())
-                        .commit()
-                }
-            }
+    private fun startTrip() {
+        OrderRequests(requireActivity()).startTrip {
+            deliverButton.text = getString(R.string.complete_delivery)
+            mainOrderMessage.text = getString(R.string.starting_delivery)
+        }
+    }
+
+    private fun completeTrip() {
+        OrderRequests(requireActivity()).completeTrip {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+                .replace(R.id.frameLayoutId, DashboardFragment())
+                .commit()
         }
     }
 }
