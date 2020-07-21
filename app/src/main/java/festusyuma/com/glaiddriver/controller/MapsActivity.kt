@@ -37,10 +37,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.FSLocation
@@ -62,7 +59,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     )
 
     private var locationPermissionsGranted = false
-
     private lateinit var gMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var userMarker: Marker
@@ -89,7 +85,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
 
-        // Construct a FusedLocationProviderClient.
         dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerHeader = findViewById(R.id.nav_header_driver_map)
@@ -152,14 +147,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun getUserLocation(listener: (lc: Location) -> Unit): Task<Location>? {
+    private fun getUserLocation(callback: (lc: Location) -> Unit): Task<Location>? {
         try {
             if (locationPermissionsGranted) {
                 if (isLocationEnabled()) {
                     return fusedLocationClient.lastLocation
                         .addOnSuccessListener {lc ->
                             if (lc != null) {
-                                listener(lc)
+                                callback(lc)
                             }else Toast.makeText(this, "Unable to get location", Toast.LENGTH_SHORT).show()
                         }
                 }
@@ -237,11 +232,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         gMap = googleMap
 
         if (locationPermissionsGranted) {
-            getUserLocation {markUserLocation(it)}
-
             gMap.isMyLocationEnabled = true
             gMap.uiSettings.isMyLocationButtonEnabled = false
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            getUserLocation {markUserLocation(it)}
         }
 
         try {
