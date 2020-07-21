@@ -274,26 +274,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (orderJson != null) {
                 val order = gson.fromJson(orderJson, Order::class.java)
                 initiateLivePendingOrder(order)
-                startRootFragment()
+                startPendingOrderFragment()
             }else startRootFragment()
         }else startRootFragment()
     }
 
     private fun startRootFragment() {
-        val rootFragment = DashboardFragment()
-
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
-            .replace(R.id.frameLayoutId, rootFragment)
+            .replace(R.id.frameLayoutId, DashboardFragment())
             .commit()
     }
 
     private fun startPendingOrderFragment() {
-        val newOrderFragment = NewOrderFragment()
-
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
-            .replace(R.id.frameLayoutId, newOrderFragment)
+            .replace(R.id.frameLayoutId, NewOrderFragment())
             .addToBackStack(null)
             .commit()
     }

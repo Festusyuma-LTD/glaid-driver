@@ -20,6 +20,7 @@ val gson = Gson()
 const val EXTRA_RECOVERY_TYPE = "recoverType"
 const val EXTRA_QUESTION = "question"
 const val EXTRA_FORGOT_PASSWORD_CHOICE = "email"
+const val COUNTRY_CODE = "+234"
 
 val buttonClickAnim: AlphaAnimation? = AlphaAnimation(1f, 0.8f)
 

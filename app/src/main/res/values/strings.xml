@@ -165,4 +165,8 @@
 
     <string name="home_greeting_intro_text">Hello %1$s</string>
     <string name="home_intro_text">Waiting for an Order....</string>
+    <string name="new_order_customer_name">Your Customer is %1$s</string>
+    <string name="details">Details</string>
+    <string name="call_customer">Call Customer</string>
+    <string name="text_customer">Text Customer</string>
 </resources>

@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="50dp"
     tools:context=".utilities.NewOrderFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/newOrderDetails"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/ic_glaidbtnbanner">
 
         <ImageView
             android:id="@+id/imageView14"
@@ -21,109 +30,99 @@
             android:contentDescription="@string/todo" />
 
         <TextView
-            android:id="@+id/main_order_message"
+            android:id="@+id/newOrderMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            
             android:layout_marginTop="20dp"
             android:text="@string/you_have_a_new_order"
             android:textColor="#9B72B3"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/imageView14"
-            app:layout_constraintTop_toTopOf="@+id/imageView14" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/customer_name"
+            android:id="@+id/customerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="Your Customer is Joshua"
+            android:text="@string/new_order_customer_name"
             android:textColor="#EDE5F2"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/main_order_message"
-            app:layout_constraintTop_toBottomOf="@+id/main_order_message" />
+            app:layout_constraintStart_toStartOf="@+id/newOrderMessage"
+            app:layout_constraintTop_toBottomOf="@+id/newOrderMessage" />
 
         <TextView
             android:id="@+id/textView28"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="Details"
+            android:text="@string/details"
             android:textColor="#9B72B3"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/customer_name"
-            app:layout_constraintTop_toBottomOf="@+id/customer_name" />
+            app:layout_constraintStart_toStartOf="@+id/customerName"
+            app:layout_constraintTop_toBottomOf="@+id/customerName" />
 
         <TextView
-            android:id="@+id/detail_quantity"
+            android:id="@+id/quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="1,000 Liters"
+            tools:text="1,000 Liters"
             android:textColor="#EDE5F2"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@+id/textView28"
             app:layout_constraintTop_toBottomOf="@+id/textView28" />
 
         <TextView
-            android:id="@+id/detail_type"
+            android:id="@+id/gasType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Standard Diesel"
+            tools:text="Diesel"
             android:textColor="#EDE5F2"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="@+id/detail_quantity"
-            app:layout_constraintTop_toBottomOf="@+id/detail_quantity" />
+            app:layout_constraintStart_toStartOf="@+id/quantity"
+            app:layout_constraintTop_toBottomOf="@+id/quantity" />
 
         <Button
             android:id="@+id/callCustomerButton"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
-            
             android:layout_marginTop="3dp"
             android:layout_marginEnd="5dp"
-            
             android:background="#4E007C"
             android:drawableStart="@drawable/ic_small_phone_logo"
-            
             android:drawablePadding="5sp"
             android:paddingLeft="15sp"
             android:paddingRight="15sp"
-            android:text="Call Customer"
+            android:text="@string/call_customer"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/imageView14"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textCustomerButton"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="@+id/imageView14"
-            app:layout_constraintTop_toBottomOf="@+id/detail_type" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/gasType" />
 
         <Button
             android:id="@+id/textCustomerButton"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="5dp"
-            
             android:layout_marginEnd="10dp"
-            
             android:background="#4E007C"
             android:drawableStart="@drawable/ic_small_mail_logo"
-            
             android:paddingLeft="15sp"
             android:paddingRight="15sp"
-            android:text="Text Customer"
+            android:text="@string/text_customer"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/callCustomerButton"
-            app:layout_constraintEnd_toEndOf="@+id/imageView14"
-            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/callCustomerButton"
             app:layout_constraintTop_toTopOf="@+id/callCustomerButton" />
 
@@ -134,7 +133,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="20dp"
-            
             android:elevation="12dp"
             android:innerRadius="0dp"
             android:shape="ring"
@@ -175,8 +173,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
-            
-            android:text="4.3"
+            tools:text="4.3"
             android:textColor="@color/white"
             android:textSize="10sp"
             app:layout_constraintBottom_toBottomOf="@+id/rating"
@@ -185,28 +182,23 @@
             app:layout_constraintTop_toTopOf="@+id/rating"
             app:layout_constraintVertical_bias="0.0"
             tools:ignore="SmallSp" />
-
-        <Button
-            android:id="@+id/deliver_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="50dp"
-            android:background="@drawable/deliver_btn"
-            android:drawableEnd="@drawable/ic_gray_tick"
-            
-            android:gravity="center|start"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="@string/start_delivery"
-            android:textAllCaps="false"
-            android:textColor="#808080"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/imageView14"
-            app:layout_constraintStart_toStartOf="@+id/imageView14"
-            app:layout_constraintTop_toBottomOf="@+id/imageView14"
-            app:layout_constraintVertical_bias="0.0" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+
+    <Button
+        android:id="@+id/deliverButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:paddingHorizontal="20dp"
+        android:background="@drawable/deliver_btn"
+        android:drawableEnd="@drawable/ic_gray_tick"
+        android:gravity="center|start"
+        android:text="@string/start_delivery"
+        android:textAllCaps="false"
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/newOrderDetails"
+        app:layout_constraintStart_toStartOf="@+id/newOrderDetails"
+        app:layout_constraintTop_toBottomOf="@+id/newOrderDetails" />
+</androidx.constraintlayout.widget.ConstraintLayout>
