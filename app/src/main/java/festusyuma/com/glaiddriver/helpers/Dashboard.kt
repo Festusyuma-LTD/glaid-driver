@@ -129,6 +129,15 @@ class Dashboard {
             )
         }else null
 
-        return Order(paymentMethod, gasType, gasUnit, quantity, amount, deliveryPrice, tax, statusId, address, scheduledDate, truck)
+        val customerJson = data.getJSONObject("customer")
+        val userJson = customerJson.getJSONObject("user")
+        val customer = User(
+            userJson.getString("email"),
+            userJson.getString("fullName"),
+            userJson.getString("tel"),
+            userJson.getLong("id")
+        )
+
+        return Order(customer, paymentMethod, gasType, gasUnit, quantity, amount, deliveryPrice, tax, statusId, address, scheduledDate, truck)
     }
 }

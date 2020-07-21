@@ -37,10 +37,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.FSLocation
@@ -49,6 +46,7 @@ import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.utilities.DashboardFragment
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
+import kotlin.math.ln
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -62,10 +60,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     )
 
     private var locationPermissionsGranted = false
-
     private lateinit var gMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var userMarker: Marker
+    private lateinit var customerMarker: Marker
     private lateinit var userLocationBtn: ImageView
 
     private lateinit var authPref: SharedPreferences
@@ -73,6 +71,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var drawerHeader: View
+    private lateinit var livePendingOrder: PendingOrder
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -89,7 +88,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
 
-        // Construct a FusedLocationProviderClient.
         dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerHeader = findViewById(R.id.nav_header_driver_map)
@@ -152,14 +150,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun getUserLocation(listener: (lc: Location) -> Unit): Task<Location>? {
+    private fun getUserLocation(callback: (lc: Location) -> Unit): Task<Location>? {
         try {
             if (locationPermissionsGranted) {
                 if (isLocationEnabled()) {
                     return fusedLocationClient.lastLocation
                         .addOnSuccessListener {lc ->
                             if (lc != null) {
-                                listener(lc)
+                                callback(lc)
                             }else Toast.makeText(this, "Unable to get location", Toast.LENGTH_SHORT).show()
                         }
                 }
@@ -178,7 +176,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (!this::userMarker.isInitialized) {
             userMarker = gMap.addMarker(
                 MarkerOptions()
-                    .position(userLocation).title("Marker in Sydney")
+                    .position(userLocation).title("User")
                     .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
                     .rotation(lc.bearing)
             )
@@ -188,6 +186,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         moveCamera(userLocation)
+    }
+
+    private fun markCustomerAddress() {
+        val lat = livePendingOrder.deliveryAddress.value?.lat ?: return
+        val lng = livePendingOrder.deliveryAddress.value?.lng ?: return
+        val lc = LatLng(lat, lng)
+
+        val mapIcon = AppCompatResources.getDrawable(this, R.drawable.customer_marker)!!.toBitmap()
+        if (!this::customerMarker.isInitialized) {
+            customerMarker = gMap.addMarker(
+                MarkerOptions()
+                    .position(lc).title("Customer")
+                    .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
+            )
+        }else {
+            customerMarker.position = lc
+        }
+
+        moveCamera(lc)
     }
 
     private fun saveUserLocation(lc: Location) {
@@ -237,10 +254,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         gMap = googleMap
 
         if (locationPermissionsGranted) {
-            getUserLocation {markUserLocation(it)}
-
             gMap.isMyLocationEnabled = true
             gMap.uiSettings.isMyLocationButtonEnabled = false
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+            getUserLocation {
+                markUserLocation(it)
+                if (this::livePendingOrder.isInitialized) markCustomerAddress()
+            }
         }
 
         try {
@@ -279,43 +300,36 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (orderJson != null) {
                 val order = gson.fromJson(orderJson, Order::class.java)
                 initiateLivePendingOrder(order)
-
-                when(order.statusId) {
-                    1L -> startPendingOrderFragment()
-                    2L -> startPendingOrderFragment()
-                    3L -> startPendingOrderFragment()
-                }
+                startPendingOrderFragment()
             }else startRootFragment()
         }else startRootFragment()
     }
 
     private fun startRootFragment() {
-        val rootFragment = DashboardFragment()
-
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
-            .replace(R.id.frameLayoutId, rootFragment)
+            .replace(R.id.frameLayoutId, DashboardFragment())
             .commit()
     }
 
     private fun startPendingOrderFragment() {
-        val newOrderFragment = NewOrderFragment()
-
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
-            .replace(R.id.frameLayoutId, newOrderFragment)
+            .replace(R.id.frameLayoutId, NewOrderFragment())
             .addToBackStack(null)
             .commit()
     }
 
     private fun initiateLivePendingOrder(order: Order) {
-        val livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
+        livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
         livePendingOrder.amount.value = order.amount
         livePendingOrder.gasType.value = order.gasType
         livePendingOrder.gasUnit.value = order.gasUnit
         livePendingOrder.quantity.value = order.quantity
         livePendingOrder.statusId.value = order.statusId
         livePendingOrder.truck.value = order.truck
+        livePendingOrder.customer.value = order.customer
+        livePendingOrder.deliveryAddress.value = order.deliveryAddress
     }
 
     // This will check if the user has turned on location from the setting

@@ -129,5 +129,4 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </RelativeLayout>
     </com.google.android.material.navigation.NavigationView>
-
 </androidx.drawerlayout.widget.DrawerLayout>

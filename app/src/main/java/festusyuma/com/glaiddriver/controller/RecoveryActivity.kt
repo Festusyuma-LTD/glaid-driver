@@ -17,8 +17,7 @@ import com.android.volley.toolbox.Volley
 import com.wang.avi.AVLoadingIndicatorView
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
-import festusyuma.com.glaiddriver.request.PasswordResetRequest
-import kotlinx.android.synthetic.main.activity_recovery.*
+import festusyuma.com.glaiddriver.requestdto.PasswordResetRequest
 import org.json.JSONObject
 
 class RecoveryActivity : AppCompatActivity() {

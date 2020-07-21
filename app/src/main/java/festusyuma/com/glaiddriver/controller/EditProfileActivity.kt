@@ -15,12 +15,12 @@ import festusyuma.com.glaiddriver.helpers.auth
 import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 import festusyuma.com.glaiddriver.helpers.gson
 import festusyuma.com.glaiddriver.models.User
+import festusyuma.com.glaiddriver.request.Authentication
 import kotlinx.android.synthetic.main.activity_login.*
 
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var userDetails: User
-    private lateinit var authPref: SharedPreferences
     private lateinit var dataPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,9 +34,7 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_profile)
 
-        authPref = getSharedPreferences(getString(R.string.auth_key_name), Context.MODE_PRIVATE)
         dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
-
         if (dataPref.contains(getString(R.string.sh_user_details))) {
 
             val user = dataPref.getString(getString(R.string.sh_user_details), null)
@@ -64,22 +62,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     fun logout(view: View? = null) {
-        view?.startAnimation(buttonClickAnim)
-
-        with(authPref.edit()) {
-            clear()
-            commit()
-        }
-
-        with(dataPref.edit()) {
-            clear()
-            commit()
-        }
-
-        auth.signOut().let {
-            startActivity(Intent(this, LoginActivity::class.java))
-            finishAffinity()
-        }
+        Authentication(this).logout()
     }
 
     fun connectFbClick(view: View) {
