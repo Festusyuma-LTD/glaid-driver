@@ -160,4 +160,9 @@
     <string name="enable_gps_msg" >You need to enable GPS to use this App properly, Do you wish to enable it?</string>
 
     <string name="fs_user_locations" >User Locations</string>
+    <string name="naira_logo">naira logo</string>
+    <string name="home_intro_image">home intro image</string>
+
+    <string name="home_greeting_intro_text">Hello %1$s</string>
+    <string name="home_intro_text">Waiting for an Order....</string>
 </resources>

@@ -58,4 +58,6 @@
         app:layout_constraintEnd_toEndOf="@+id/frameLayoutId"
         app:srcCompat="@drawable/ic_user_location" />
 
+    <include layout="@layout/loading" />
+    <include layout="@layout/error_message" />
 </androidx.constraintlayout.widget.ConstraintLayout>

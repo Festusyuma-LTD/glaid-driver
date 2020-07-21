@@ -274,11 +274,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (orderJson != null) {
                 val order = gson.fromJson(orderJson, Order::class.java)
                 initiateLivePendingOrder(order)
-
-                when(order.statusId) {
-                    2L -> startPendingOrderFragment()
-                    3L -> startPendingOrderFragment()
-                }
+                startRootFragment()
             }else startRootFragment()
         }else startRootFragment()
     }

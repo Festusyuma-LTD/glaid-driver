@@ -1,115 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="50dp"
     tools:context=".utilities.DashboardFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/waiting"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/ic_glaidbtnbanner">
+
+        <LinearLayout
+            android:id="@+id/introCover"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/greeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/sfpro"
+                android:textColor="#9B72B3"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/view2"
+                app:layout_constraintTop_toTopOf="@+id/view2" />
+
+            <TextView
+                android:id="@+id/introMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sfpro"
+                android:text="@string/home_intro_text"
+                android:textColor="#ffff"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/textView38"
+                app:layout_constraintTop_toBottomOf="@+id/textView38" />
+        </LinearLayout>
 
         <ImageView
-            android:id="@+id/helloTab"
+            android:id="@+id/homeIntroImage"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:contentDescription="@string/todo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_glaidbtnbanner" />
-
-        <TextView
-            android:id="@+id/driver_welcome_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            
-            android:layout_marginTop="7dp"
-            android:text="@string/hello_john"
-            android:textColor="#9B72B3"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/helloTab"
-            app:layout_constraintTop_toTopOf="@+id/helloTab" />
-
-        <TextView
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/waiting_for_an_order"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/helloTab"
-            app:layout_constraintStart_toStartOf="@+id/driver_welcome_name"
-            app:layout_constraintTop_toBottomOf="@+id/driver_welcome_name"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <ImageView
-            android:id="@+id/imageView16"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
-            
-            android:layout_marginBottom="10dp"
-            android:contentDescription="@string/todo"
-            app:layout_constraintBottom_toBottomOf="@+id/helloTab"
-            app:layout_constraintEnd_toEndOf="@+id/helloTab"
-            app:layout_constraintTop_toTopOf="@+id/helloTab"
-            app:srcCompat="@drawable/ic_small_glaid_logo" />
-
-        <ImageView
-            android:id="@+id/imageView19"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="60dp"
-            android:contentDescription="@string/todo"
-            android:foreground="@drawable/ic_naira_logo"
-            android:foregroundGravity="center|right"
+            android:layout_height="0dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/home_intro_image"
+            android:src="@drawable/ic_small_glaid_logo"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="W, 0.8"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/helloTab"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_naira_card"
-            tools:ignore="UnusedAttribute"
-            tools:targetApi="m" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/waiting"
+        app:layout_constraintVertical_bias="0"
+        android:background="@drawable/ic_naira_card">
 
         <TextView
-            android:id="@+id/textView22"
+            android:id="@+id/totalEarningLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="@string/total_earnings"
             android:textColor="#808080"
             android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/imageView19"
-            app:layout_constraintStart_toStartOf="@+id/imageView19"
-            app:layout_constraintTop_toTopOf="@+id/imageView19" />
+            app:layout_constraintBottom_toTopOf="@+id/totalEarning"
+            app:layout_constraintStart_toStartOf="@+id/totalEarning"
+            app:layout_constraintEnd_toEndOf="@+id/totalEarning"/>
 
         <TextView
-            android:id="@+id/total_earning"
+            android:id="@+id/totalEarning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/_00_00"
             android:textColor="#9B72B3"
             android:textSize="36sp"
-            app:layout_constraintEnd_toEndOf="@+id/imageView19"
-            app:layout_constraintStart_toStartOf="@+id/imageView19"
-            app:layout_constraintTop_toBottomOf="@+id/textView22" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="W, 1"
+            android:src="@drawable/ic_naira_logo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:contentDescription="@string/naira_logo" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
