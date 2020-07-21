@@ -1,6 +1,7 @@
 package festusyuma.com.glaiddriver.helpers
 
 import android.view.animation.AlphaAnimation
+import com.android.volley.DefaultRetryPolicy
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -37,3 +38,9 @@ const val DRIVER_ASSIGNED = "A driver has been assigned to this order"
 const val NO_PENDING_ORDER = "no pending order"
 const val TRIP_STARTED = "trip started"
 const val ORDER_COMPLETED = "order completed"
+
+val defaultRetryPolicy = DefaultRetryPolicy(
+    0,
+    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+)

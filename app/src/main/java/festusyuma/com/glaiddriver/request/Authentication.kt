@@ -24,8 +24,8 @@ open class Authentication(private val c: Activity): LoadingAndErrorHandler(c) {
                     val serverToken = authPref.getString(tokenKeyName, null)?: ""
 
                     if (token != null) callback(mutableMapOf(
-                        "token" to token,
-                        "serverToken" to serverToken
+                        "Authorization" to "Bearer $token",
+                        "ServerAuthorization" to serverToken
                     ))
                 }
                 ?.addOnFailureListener{ logout() }

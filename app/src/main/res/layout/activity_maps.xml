@@ -130,4 +130,6 @@
         </RelativeLayout>
     </com.google.android.material.navigation.NavigationView>
 
+    <include layout="@layout/loading" />
+    <include layout="@layout/error_message" />
 </androidx.drawerlayout.widget.DrawerLayout>

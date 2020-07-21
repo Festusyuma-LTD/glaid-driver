@@ -3,6 +3,7 @@ package festusyuma.com.glaiddriver.utilities
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +14,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
+import festusyuma.com.glaiddriver.helpers.API_LOG_TAG
 import festusyuma.com.glaiddriver.helpers.buttonClickAnim
+import festusyuma.com.glaiddriver.request.OrderRequests
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -77,9 +80,13 @@ class NewOrderFragment : Fragment() {
             R.id.deliver_button -> {
                 when (deliverButton.text) {
                     getString(R.string.start_delivery) -> {
-                        //Start delivery Api should be initiated here
+                        /*//Start delivery Api should be initiated here
                         deliverButton.text = getString(R.string.complete_delivery)
-                        mainOrderMessage.text = getString(R.string.starting_delivery)
+                        mainOrderMessage.text = getString(R.string.starting_delivery)*/
+
+                        OrderRequests(requireActivity()).startTrip {
+                            Log.v(API_LOG_TAG, it.getString("message"))
+                        }
                     }
                     getString(R.string.complete_delivery) -> {
                         val toast = Toast.makeText(activity, deliverButton.text, Toast.LENGTH_SHORT)

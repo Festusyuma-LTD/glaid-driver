@@ -9,7 +9,7 @@ import festusyuma.com.glaiddriver.R
 
 open class LoadingAndErrorHandler(private val c: Activity) {
 
-    private var operationRunning = false
+    var operationRunning = false
     private val loadingCover: ConstraintLayout = c.findViewById(R.id.loadingCoverConstraint)
     val loadingAvi: AVLoadingIndicatorView = c.findViewById(R.id.avi)
     private val errorMsg: TextView = c.findViewById(R.id.errorMsg)
