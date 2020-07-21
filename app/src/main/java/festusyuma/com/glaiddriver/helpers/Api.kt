@@ -9,5 +9,7 @@ class Api {
         const val VALIDATE_OTP: String = "${API_BASE_URL}validate_otp"
         const val DASHBOARD: String = "${API_BASE_URL}driver/dashboard"
         const val VALIDATE_TOKEN: String = "${API_BASE_URL}driver/dashboard"
+        const val START_TRIP: String = "${API_BASE_URL}driver/booking/start_trip"
+        const val COMPLETE_TRIP: String = "${API_BASE_URL}driver/booking/complete_trip"
     }
 }
