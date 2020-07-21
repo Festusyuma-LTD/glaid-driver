@@ -46,6 +46,7 @@ import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.utilities.DashboardFragment
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
+import kotlin.math.ln
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -62,6 +63,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var gMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var userMarker: Marker
+    private lateinit var customerMarker: Marker
     private lateinit var userLocationBtn: ImageView
 
     private lateinit var authPref: SharedPreferences
@@ -69,6 +71,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var drawerHeader: View
+    private lateinit var livePendingOrder: PendingOrder
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -173,7 +176,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (!this::userMarker.isInitialized) {
             userMarker = gMap.addMarker(
                 MarkerOptions()
-                    .position(userLocation).title("Marker in Sydney")
+                    .position(userLocation).title("User")
                     .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
                     .rotation(lc.bearing)
             )
@@ -183,6 +186,25 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         moveCamera(userLocation)
+    }
+
+    private fun markCustomerAddress() {
+        val lat = livePendingOrder.deliveryAddress.value?.lat ?: return
+        val lng = livePendingOrder.deliveryAddress.value?.lng ?: return
+        val lc = LatLng(lat, lng)
+
+        val mapIcon = AppCompatResources.getDrawable(this, R.drawable.customer_marker)!!.toBitmap()
+        if (!this::customerMarker.isInitialized) {
+            customerMarker = gMap.addMarker(
+                MarkerOptions()
+                    .position(lc).title("Customer")
+                    .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
+            )
+        }else {
+            customerMarker.position = lc
+        }
+
+        moveCamera(lc)
     }
 
     private fun saveUserLocation(lc: Location) {
@@ -235,7 +257,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             gMap.isMyLocationEnabled = true
             gMap.uiSettings.isMyLocationButtonEnabled = false
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-            getUserLocation {markUserLocation(it)}
+
+            getUserLocation {
+                markUserLocation(it)
+                if (this::livePendingOrder.isInitialized) markCustomerAddress()
+            }
         }
 
         try {
@@ -295,7 +321,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initiateLivePendingOrder(order: Order) {
-        val livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
+        livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
         livePendingOrder.amount.value = order.amount
         livePendingOrder.gasType.value = order.gasType
         livePendingOrder.gasUnit.value = order.gasUnit
@@ -303,6 +329,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         livePendingOrder.statusId.value = order.statusId
         livePendingOrder.truck.value = order.truck
         livePendingOrder.customer.value = order.customer
+        livePendingOrder.deliveryAddress.value = order.deliveryAddress
     }
 
     // This will check if the user has turned on location from the setting
