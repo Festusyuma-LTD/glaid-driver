@@ -241,6 +241,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             gMap.isMyLocationEnabled = true
             gMap.uiSettings.isMyLocationButtonEnabled = false
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         }
 
         try {
@@ -315,6 +316,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         livePendingOrder.quantity.value = order.quantity
         livePendingOrder.statusId.value = order.statusId
         livePendingOrder.truck.value = order.truck
+        livePendingOrder.customer.value = order.customer
     }
 
     // This will check if the user has turned on location from the setting
