@@ -25,6 +25,7 @@ const val COUNTRY_CODE = "+234"
 val buttonClickAnim: AlphaAnimation? = AlphaAnimation(1f, 0.8f)
 
 const val API_LOG_TAG = "apiLog"
+const val SERVICE_LOG_TAG = "serviceLog"
 const val APP_LOG_TAG = "appLog"
 const val FIRE_STORE_LOG_TAG = "fireStoreLog"
 

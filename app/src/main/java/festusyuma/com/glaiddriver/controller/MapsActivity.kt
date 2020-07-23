@@ -1,6 +1,7 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -44,6 +45,7 @@ import festusyuma.com.glaiddriver.models.FSLocation
 import festusyuma.com.glaiddriver.models.Order
 import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.live.PendingOrder
+import festusyuma.com.glaiddriver.services.LocationService
 import festusyuma.com.glaiddriver.utilities.DashboardFragment
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
 import kotlin.math.ln
@@ -250,6 +252,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // Callback when map ready
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
 
@@ -262,6 +265,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 markUserLocation(it)
                 if (this::livePendingOrder.isInitialized) markCustomerAddress()
             }
+
+            startLocationService()
         }
 
         try {
@@ -330,6 +335,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         livePendingOrder.truck.value = order.truck
         livePendingOrder.customer.value = order.customer
         livePendingOrder.deliveryAddress.value = order.deliveryAddress
+    }
+
+    private fun startLocationService() {
+        if (!locationServiceRunning()) {
+            Intent(this, LocationService::class.java).also { intent ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    startForegroundService(intent)
+                }else startService(intent)
+            }
+        }
+    }
+
+    private fun locationServiceRunning(): Boolean {
+
+
+        return false
     }
 
     // This will check if the user has turned on location from the setting

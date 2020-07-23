@@ -169,4 +169,6 @@
     <string name="details">Details</string>
     <string name="call_customer">Call Customer</string>
     <string name="text_customer">Text Customer</string>
+    <string name="notification_title">location service</string>
+    <string name="notification_message">Glaid is running in the background</string>
 </resources>
