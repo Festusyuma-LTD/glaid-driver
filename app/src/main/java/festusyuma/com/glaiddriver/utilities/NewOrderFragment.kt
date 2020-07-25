@@ -2,20 +2,21 @@ package festusyuma.com.glaiddriver.utilities
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startForegroundService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
-import festusyuma.com.glaiddriver.helpers.DRIVER_ASSIGNED
-import festusyuma.com.glaiddriver.helpers.DRIVER_ASSIGNED_STATUS_CODE
-import festusyuma.com.glaiddriver.helpers.addCountryCode
-import festusyuma.com.glaiddriver.helpers.capitalizeWords
+import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.request.OrderRequests
+import festusyuma.com.glaiddriver.services.LocationService
 
 class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
 
@@ -85,15 +86,42 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
         OrderRequests(requireActivity()).startTrip {
             deliverButton.text = getString(R.string.complete_delivery)
             mainOrderMessage.text = getString(R.string.starting_delivery)
+            startLocationService()
+            deliverButton.setOnClickListener { completeTrip() }
         }
     }
 
     private fun completeTrip() {
         OrderRequests(requireActivity()).completeTrip {
+            stopLocationService()
+
             requireActivity().supportFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
                 .replace(R.id.frameLayoutId, DashboardFragment())
                 .commit()
         }
+    }
+
+    private fun startLocationService() {
+        if (!locationServiceRunning()) {
+            Intent(requireActivity(), LocationService::class.java).also { intent ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    requireActivity().startForegroundService(intent)
+                }else requireActivity().startService(intent)
+            }
+        }
+    }
+
+    private fun stopLocationService() {
+        Log.v(FIRE_STORE_LOG_TAG, "stop clicked")
+        Intent(requireActivity(), LocationService::class.java).also { intent ->
+            requireActivity().stopService(intent)
+        }
+    }
+
+    private fun locationServiceRunning(): Boolean {
+
+
+        return false
     }
 }

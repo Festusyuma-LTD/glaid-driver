@@ -128,7 +128,9 @@
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
 
-        <service android:name=".services.LocationService" />
+        <service
+            android:name=".services.LocationService"
+            android:stopWithTask="true"/>
     </application>
 
 </manifest>

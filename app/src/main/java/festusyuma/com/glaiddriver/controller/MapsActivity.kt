@@ -271,8 +271,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 markUserLocation(it)
                 if (this::livePendingOrder.isInitialized) markCustomerAddress()
             }
-
-            startLocationService()
         }
 
         try {
@@ -386,22 +384,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
-    }
-
-    private fun startLocationService() {
-        if (!locationServiceRunning()) {
-            Intent(this, LocationService::class.java).also { intent ->
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(intent)
-                }else startService(intent)
-            }
-        }
-    }
-
-    private fun locationServiceRunning(): Boolean {
-
-
-        return false
     }
 
     // This will check if the user has turned on location from the setting

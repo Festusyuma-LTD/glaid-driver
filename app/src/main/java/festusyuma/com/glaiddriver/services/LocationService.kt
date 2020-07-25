@@ -18,6 +18,7 @@ import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.MapsActivity
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.FSLocation
+import kotlin.concurrent.timer
 
 
 class LocationService: Service() {
@@ -109,6 +110,9 @@ class LocationService: Service() {
 
             locationRef
                 .set(location)
+                .addOnSuccessListener {
+                    Log.v(FIRE_STORE_LOG_TAG, "Location saved")
+                }
                 .addOnFailureListener { e ->
                     Log.w(FIRE_STORE_LOG_TAG, "Error saving location", e)
                 }
@@ -126,5 +130,11 @@ class LocationService: Service() {
             this,
             Manifest.permission.ACCESS_COARSE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onDestroy() {
+        Log.v(FIRE_STORE_LOG_TAG, "destroyed")
+        stopForeground(true)
+        stopSelf()
     }
 }
