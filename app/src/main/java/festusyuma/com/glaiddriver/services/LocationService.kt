@@ -28,6 +28,11 @@ class LocationService: Service() {
     private val fastestInterval = 500L
     private val channelId = "locationServiceChannel"
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
+
+    init {
+        locationCallback = locationCallback()
+    }
 
     override fun onCreate() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -81,7 +86,7 @@ class LocationService: Service() {
         if (hasPermissions()) {
             fusedLocationClient.requestLocationUpdates(
                 locationRequest,
-                locationCallback(),
+                locationCallback,
                 Looper.myLooper()
             )
         }else {
@@ -134,6 +139,7 @@ class LocationService: Service() {
 
     override fun onDestroy() {
         Log.v(FIRE_STORE_LOG_TAG, "destroyed")
+        fusedLocationClient.removeLocationUpdates(locationCallback)
         stopForeground(true)
         stopSelf()
     }

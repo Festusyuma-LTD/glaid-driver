@@ -79,7 +79,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var livePendingOrder: PendingOrder
 
     private lateinit var user: User
-    private lateinit var listener: ListenerRegistration
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -314,7 +313,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         startRootFragment()
-        startOrderListener()
     }
 
     private fun startRootFragment() {
@@ -342,48 +340,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         livePendingOrder.truck.value = order.truck
         livePendingOrder.customer.value = order.customer
         livePendingOrder.deliveryAddress.value = order.deliveryAddress
-    }
-
-    private fun startOrderListener() {
-        Log.v(FIRE_STORE_LOG_TAG, "${auth.uid}")
-        val locationRef =
-            db.collection(getString(R.string.fs_pending_orders))
-                .whereEqualTo(getString(R.string.fs_pending_orders_driver_id), auth.uid?.toLong())
-                .whereEqualTo(
-                    getString(R.string.fs_pending_orders_status),
-                    OrderStatusCode.DRIVER_ASSIGNED
-                )
-
-        listener = locationRef.addSnapshotListener { values, e ->
-
-            if (e != null) {
-                Log.v(FIRE_STORE_LOG_TAG, "Error: ${e.message}")
-                return@addSnapshotListener
-            }
-
-            if (values != null) {
-                for (doc in values) {
-                    val orderId = doc.id.toLong()
-                    val status = doc.getLong(getString(R.string.fs_pending_orders_status))
-                        ?:return@addSnapshotListener
-                    if (status != OrderStatusCode.DRIVER_ASSIGNED) return@addSnapshotListener
-
-                    OrderRequests(this).getOrderDetails(orderId) {
-                        val order = Dashboard().convertOrderJSonToOrder(it)
-                        with(dataPref.edit()) {
-                            putString(getString(R.string.sh_pending_order), gson.toJson(order))
-                            apply()
-                        }
-
-                        initiateLivePendingOrder(order)
-                        startPendingOrderFragment()
-                        listener.remove()
-                    }
-
-                    return@addSnapshotListener
-                }
-            }
-        }
     }
 
     // This will check if the user has turned on location from the setting
