@@ -109,11 +109,8 @@ class LocationService: Service() {
 
             locationRef
                 .set(location)
-                .addOnSuccessListener {
-                    Log.d(FIRE_STORE_LOG_TAG, "location saved")
-                }
                 .addOnFailureListener { e ->
-                    Log.w(FIRE_STORE_LOG_TAG, "Error adding document", e)
+                    Log.w(FIRE_STORE_LOG_TAG, "Error saving location", e)
                 }
         }else {
             Log.v(SERVICE_LOG_TAG, "user logged out")

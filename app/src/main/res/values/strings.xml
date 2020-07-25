@@ -171,4 +171,7 @@
     <string name="text_customer">Text Customer</string>
     <string name="notification_title">location service</string>
     <string name="notification_message">Glaid is running in the background</string>
+    <string name="fs_pending_orders">Pending Orders</string>
+    <string name="fs_pending_orders_driver_id">driverId</string>
+    <string name="fs_pending_orders_status">status</string>
 </resources>

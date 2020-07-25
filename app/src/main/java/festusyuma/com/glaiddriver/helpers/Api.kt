@@ -11,5 +11,8 @@ class Api {
         const val VALIDATE_TOKEN: String = "${API_BASE_URL}driver/dashboard"
         const val START_TRIP: String = "${API_BASE_URL}driver/booking/start_trip"
         const val COMPLETE_TRIP: String = "${API_BASE_URL}driver/booking/complete_trip"
+        fun orderDetails(orderId: Long): String {
+            return "${API_BASE_URL}driver/booking/$orderId"
+        }
     }
 }

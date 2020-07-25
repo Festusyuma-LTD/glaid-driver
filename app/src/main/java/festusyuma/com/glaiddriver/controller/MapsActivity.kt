@@ -39,12 +39,15 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.firestore.ListenerRegistration
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.FSLocation
 import festusyuma.com.glaiddriver.models.Order
 import festusyuma.com.glaiddriver.models.User
+import festusyuma.com.glaiddriver.models.fs.FSPendingOrder
 import festusyuma.com.glaiddriver.models.live.PendingOrder
+import festusyuma.com.glaiddriver.request.OrderRequests
 import festusyuma.com.glaiddriver.services.LocationService
 import festusyuma.com.glaiddriver.utilities.DashboardFragment
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
@@ -74,6 +77,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var drawerHeader: View
     private lateinit var livePendingOrder: PendingOrder
+
+    private lateinit var user: User
+    private lateinit var listener: ListenerRegistration
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -290,8 +296,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val rating: RatingBar = drawerHeader.findViewById(R.id.rating)
             val ratingTxt: TextView = drawerHeader.findViewById(R.id.ratingText)
 
-            val user = gson.fromJson(userJson, User::class.java)
-
+            user = gson.fromJson(userJson, User::class.java)
             fullNameTV.text = user.fullName
             emailTV.text = user.email
             rating.rating = 4.1F
@@ -306,8 +311,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 val order = gson.fromJson(orderJson, Order::class.java)
                 initiateLivePendingOrder(order)
                 startPendingOrderFragment()
-            }else startRootFragment()
-        }else startRootFragment()
+                return
+            }
+        }
+
+        startRootFragment()
+        startOrderListener()
     }
 
     private fun startRootFragment() {
@@ -335,6 +344,46 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         livePendingOrder.truck.value = order.truck
         livePendingOrder.customer.value = order.customer
         livePendingOrder.deliveryAddress.value = order.deliveryAddress
+    }
+
+    private fun startOrderListener() {
+        Log.v(FIRE_STORE_LOG_TAG, "${auth.uid}")
+        val locationRef =
+            db.collection(getString(R.string.fs_pending_orders))
+                .whereEqualTo(getString(R.string.fs_pending_orders_driver_id), auth.uid?.toLong())
+                .whereEqualTo(getString(R.string.fs_pending_orders_status), OrderStatusCode.DRIVER_ASSIGNED)
+
+        locationRef.get().addOnSuccessListener {
+            Log.v(FIRE_STORE_LOG_TAG, "${it.toObjects(FSPendingOrder::class.java)}")
+        }
+
+        listener = locationRef.addSnapshotListener { values, e ->
+            Log.v(FIRE_STORE_LOG_TAG, "Changed")
+
+            if (e != null) {
+                Log.v(FIRE_STORE_LOG_TAG, "$e")
+                return@addSnapshotListener
+            }
+
+            if (values != null) {
+                Log.v(FIRE_STORE_LOG_TAG, "values not null")
+                for (doc in values) {
+                    val orderId = doc.id.toLong()
+                    OrderRequests(this).getOrderDetails(orderId) {
+                        Log.v(FIRE_STORE_LOG_TAG, "$orderId")
+                        val order = Dashboard().convertOrderJSonToOrder(it)
+                        with(dataPref.edit()) {
+                            putString(getString(R.string.sh_pending_order), gson.toJson(order))
+                            apply()
+                        }
+
+                        initiateLivePendingOrder(order)
+                        startPendingOrderFragment()
+                        listener.remove()
+                    }
+                }
+            }
+        }
     }
 
     private fun startLocationService() {
