@@ -61,18 +61,21 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     val orderId = doc.id.toLong()
                     val status = doc.getLong(getString(R.string.fs_pending_orders_status))
                         ?:return@addSnapshotListener
-                    if (status != OrderStatusCode.DRIVER_ASSIGNED) return@addSnapshotListener
+                    if (status != OrderStatusCode.DRIVER_ASSIGNED){
+                        return@addSnapshotListener
+                    }else {
+                        OrderRequests(requireActivity()).getOrderDetails(orderId) {
+                            val order = Dashboard().convertOrderJSonToOrder(it)
 
-                    OrderRequests(requireActivity()).getOrderDetails(orderId) {
-                        val order = Dashboard().convertOrderJSonToOrder(it)
-                        with(dataPref.edit()) {
-                            putString(getString(R.string.sh_pending_order), gson.toJson(order))
-                            apply()
+                            with(dataPref.edit()) {
+                                putString(getString(R.string.sh_pending_order), gson.toJson(order))
+                                commit()
+                            }
+
+                            initiateLivePendingOrder(order)
+                            startPendingOrderFragment()
+                            listener.remove()
                         }
-
-                        initiateLivePendingOrder(order)
-                        startPendingOrderFragment()
-                        listener.remove()
                     }
 
                     return@addSnapshotListener
@@ -82,7 +85,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun initiateLivePendingOrder(order: Order) {
-        livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
+        livePendingOrder = ViewModelProvider(requireActivity()).get(PendingOrder::class.java)
         livePendingOrder.amount.value = order.amount
         livePendingOrder.gasType.value = order.gasType
         livePendingOrder.gasUnit.value = order.gasUnit

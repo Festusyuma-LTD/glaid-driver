@@ -1,6 +1,8 @@
 package festusyuma.com.glaiddriver.utilities
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -21,6 +23,7 @@ import festusyuma.com.glaiddriver.services.LocationService
 class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
 
     private lateinit var livePendingOrder: PendingOrder
+    private lateinit var dataPref: SharedPreferences
 
     private lateinit var mainOrderMessage: TextView
     private lateinit var customerName: TextView
@@ -33,6 +36,7 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        dataPref = requireActivity().getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         livePendingOrder = ViewModelProvider(requireActivity()).get(PendingOrder::class.java)
         initElem()
     }
@@ -95,10 +99,15 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
         OrderRequests(requireActivity()).completeTrip {
             stopLocationService()
 
-            requireActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
-                .replace(R.id.frameLayoutId, DashboardFragment())
-                .commit()
+            with(dataPref.edit()) {
+                remove(getString(R.string.sh_pending_order))
+                commit()
+            }.also {
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+                    .replace(R.id.frameLayoutId, DashboardFragment())
+                    .commit()
+            }
         }
     }
 
