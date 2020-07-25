@@ -351,7 +351,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val locationRef =
             db.collection(getString(R.string.fs_pending_orders))
                 .whereEqualTo(getString(R.string.fs_pending_orders_driver_id), auth.uid?.toLong())
-                .whereEqualTo(getString(R.string.fs_pending_orders_status), OrderStatusCode.DRIVER_ASSIGNED)
+                .whereEqualTo(
+                    getString(R.string.fs_pending_orders_status),
+                    OrderStatusCode.DRIVER_ASSIGNED
+                )
 
         listener = locationRef.addSnapshotListener { values, e ->
 
@@ -363,6 +366,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (values != null) {
                 for (doc in values) {
                     val orderId = doc.id.toLong()
+                    val status = doc.getLong(getString(R.string.fs_pending_orders_status))
+                        ?:return@addSnapshotListener
+                    if (status != OrderStatusCode.DRIVER_ASSIGNED) return@addSnapshotListener
+
                     OrderRequests(this).getOrderDetails(orderId) {
                         val order = Dashboard().convertOrderJSonToOrder(it)
                         with(dataPref.edit()) {
@@ -374,6 +381,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         startPendingOrderFragment()
                         listener.remove()
                     }
+
+                    return@addSnapshotListener
                 }
             }
         }
