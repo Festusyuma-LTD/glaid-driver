@@ -27,6 +27,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
@@ -38,8 +39,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.GeoPoint
-import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.*
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.FSLocation
@@ -48,14 +48,13 @@ import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.fs.FSPendingOrder
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.request.OrderRequests
-import festusyuma.com.glaiddriver.services.LocationService
 import festusyuma.com.glaiddriver.utilities.DashboardFragment
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
-import kotlin.math.ln
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
+    private var firstLaunch = true
     private val errorDialogRequest = 9001
 
     private val requestCode = 42
@@ -80,6 +79,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var user: User
 
+    override fun onResume() {
+        super.onResume()
+        if (firstLaunch) {
+            firstLaunch = false
+            return
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         window.setFlags(
@@ -98,6 +105,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerHeader = findViewById(R.id.nav_header_driver_map)
+        livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         if (isServiceOk()) initMap()
@@ -266,11 +274,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             gMap.uiSettings.isMyLocationButtonEnabled = false
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-            getUserLocation {
-                markUserLocation(it)
-                if (this::livePendingOrder.isInitialized) markCustomerAddress()
-            }
+            /*getUserLocation { markUserLocation(it) }*/
         }
+
+        if (livePendingOrder.deliveryAddress.value != null) markCustomerAddress()
+        livePendingOrder.deliveryAddress.observe(this, Observer {
+            if (it != null) markCustomerAddress() else {
+                customerMarker.remove()
+            }
+        })
 
         try {
             // Customise the styling
@@ -305,8 +317,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (dataPref.contains(getString(R.string.sh_pending_order))) {
             val orderJson = dataPref.getString(getString(R.string.sh_pending_order), null)
             if (orderJson != null) {
-                val order = gson.fromJson(orderJson, Order::class.java)
-                initiateLivePendingOrder(order)
                 startPendingOrderFragment()
                 return
             }
@@ -328,18 +338,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .replace(R.id.frameLayoutId, NewOrderFragment())
             .addToBackStack(null)
             .commit()
-    }
-
-    private fun initiateLivePendingOrder(order: Order) {
-        livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
-        livePendingOrder.amount.value = order.amount
-        livePendingOrder.gasType.value = order.gasType
-        livePendingOrder.gasUnit.value = order.gasUnit
-        livePendingOrder.quantity.value = order.quantity
-        livePendingOrder.statusId.value = order.statusId
-        livePendingOrder.truck.value = order.truck
-        livePendingOrder.customer.value = order.customer
-        livePendingOrder.deliveryAddress.value = order.deliveryAddress
     }
 
     // This will check if the user has turned on location from the setting
@@ -407,5 +405,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         view.startAnimation(buttonClickAnim)
         val intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onPause() {
+        Log.v(API_LOG_TAG, "paused")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        Log.v(API_LOG_TAG, "stopped")
+        super.onStop()
     }
 }

@@ -90,6 +90,7 @@ class Dashboard {
     }
 
     fun convertOrderJSonToOrder(data: JSONObject): Order {
+        val id: Long? = data.getLong("id")
         val quantity = data.getDouble("quantity")
         val amount = data.getDouble("amount")
         val deliveryPrice = data.getDouble("deliveryPrice")
@@ -138,6 +139,9 @@ class Dashboard {
             userJson.getLong("id")
         )
 
-        return Order(customer, paymentMethod, gasType, gasUnit, quantity, amount, deliveryPrice, tax, statusId, address, scheduledDate, truck)
+        val order = Order(customer, paymentMethod, gasType, gasUnit, quantity, amount, deliveryPrice, tax, statusId, address, scheduledDate, truck)
+        order.id = id
+
+        return order
     }
 }

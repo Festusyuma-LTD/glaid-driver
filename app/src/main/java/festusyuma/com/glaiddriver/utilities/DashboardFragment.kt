@@ -7,20 +7,20 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.*
 
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.Order
 import festusyuma.com.glaiddriver.models.User
+import festusyuma.com.glaiddriver.models.fs.FSPendingOrder
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.request.OrderRequests
 
 class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
-    private lateinit var listener: ListenerRegistration
     private lateinit var dataPref: SharedPreferences
-    private lateinit var livePendingOrder: PendingOrder
+    private lateinit var listener: ListenerRegistration
 
     private lateinit var greeting: TextView
 
@@ -35,12 +35,15 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             val user = gson.fromJson(userJson, User::class.java)
             greeting.text = getString(R.string.home_greeting_intro_text).format(user.fullName.getFirst())
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         startOrderListener()
+        Log.v(FIRE_STORE_LOG_TAG, "started listener")
     }
 
     private fun startOrderListener() {
-        Log.v(FIRE_STORE_LOG_TAG, "${auth.uid}")
         val locationRef =
             db.collection(getString(R.string.fs_pending_orders))
                 .whereEqualTo(getString(R.string.fs_pending_orders_driver_id), auth.uid?.toLong())
@@ -49,51 +52,47 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     OrderStatusCode.DRIVER_ASSIGNED
                 )
 
-        listener = locationRef.addSnapshotListener { values, e ->
+        listener = locationRef.addSnapshotListener(MetadataChanges.INCLUDE, getEventListener())
+    }
 
+    private fun getEventListener(): EventListener<QuerySnapshot> {
+
+        return EventListener { values, e ->
             if (e != null) {
                 Log.v(FIRE_STORE_LOG_TAG, "Error: ${e.message}")
-                return@addSnapshotListener
             }
 
             if (values != null) {
-                for (doc in values) {
-                    val orderId = doc.id.toLong()
-                    val status = doc.getLong(getString(R.string.fs_pending_orders_status))
-                        ?:return@addSnapshotListener
-                    if (status != OrderStatusCode.DRIVER_ASSIGNED){
-                        return@addSnapshotListener
-                    }else {
-                        OrderRequests(requireActivity()).getOrderDetails(orderId) {
-                            val order = Dashboard().convertOrderJSonToOrder(it)
 
-                            with(dataPref.edit()) {
-                                putString(getString(R.string.sh_pending_order), gson.toJson(order))
-                                commit()
+                for (document in values.documentChanges) {
+                    if (document.type == DocumentChange.Type.ADDED) {
+                        val doc = document.document
+                        if (!doc.metadata.isFromCache) {
+                            val orderId = doc.id.toLong()
+                            val status = doc.getLong(getString(R.string.fs_pending_orders_status))
+
+                            if (status != null) {
+                                if (status == OrderStatusCode.DRIVER_ASSIGNED) {
+                                    OrderRequests(requireActivity()).getOrderDetails(orderId) {
+                                        val order = Dashboard().convertOrderJSonToOrder(it)
+
+                                        with(dataPref.edit()) {
+                                            putString(getString(R.string.sh_pending_order), gson.toJson(order))
+                                            commit()
+                                        }
+
+                                        Log.v(FIRE_STORE_LOG_TAG, "order found ${order.id}")
+                                        startPendingOrderFragment()
+                                    }
+
+                                    return@EventListener
+                                }
                             }
-
-                            initiateLivePendingOrder(order)
-                            startPendingOrderFragment()
-                            listener.remove()
                         }
                     }
-
-                    return@addSnapshotListener
                 }
             }
         }
-    }
-
-    private fun initiateLivePendingOrder(order: Order) {
-        livePendingOrder = ViewModelProvider(requireActivity()).get(PendingOrder::class.java)
-        livePendingOrder.amount.value = order.amount
-        livePendingOrder.gasType.value = order.gasType
-        livePendingOrder.gasUnit.value = order.gasUnit
-        livePendingOrder.quantity.value = order.quantity
-        livePendingOrder.statusId.value = order.statusId
-        livePendingOrder.truck.value = order.truck
-        livePendingOrder.customer.value = order.customer
-        livePendingOrder.deliveryAddress.value = order.deliveryAddress
     }
 
     private fun startPendingOrderFragment() {
@@ -102,5 +101,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             .replace(R.id.frameLayoutId, NewOrderFragment())
             .addToBackStack(null)
             .commit()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        listener.remove()
+        Log.v(FIRE_STORE_LOG_TAG, "stopped listener")
     }
 }

@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
 import festusyuma.com.glaiddriver.helpers.*
+import festusyuma.com.glaiddriver.models.Order
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.request.OrderRequests
 import festusyuma.com.glaiddriver.services.LocationService
@@ -38,7 +39,26 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
 
         dataPref = requireActivity().getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         livePendingOrder = ViewModelProvider(requireActivity()).get(PendingOrder::class.java)
+        initLivePendingOrder()
         initElem()
+    }
+
+    private fun initLivePendingOrder() {
+        if (dataPref.contains(getString(R.string.sh_pending_order))) {
+            val orderJson = dataPref.getString(getString(R.string.sh_pending_order), null)
+            if (orderJson != null) {
+                val order = gson.fromJson(orderJson, Order::class.java)
+
+                livePendingOrder.amount.value = order.amount
+                livePendingOrder.gasType.value = order.gasType
+                livePendingOrder.gasUnit.value = order.gasUnit
+                livePendingOrder.quantity.value = order.quantity
+                livePendingOrder.statusId.value = order.statusId
+                livePendingOrder.truck.value = order.truck
+                livePendingOrder.customer.value = order.customer
+                livePendingOrder.deliveryAddress.value = order.deliveryAddress
+            }
+        }
     }
 
     private fun initElem() {
@@ -102,13 +122,26 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
             with(dataPref.edit()) {
                 remove(getString(R.string.sh_pending_order))
                 commit()
-            }.also {
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
-                    .replace(R.id.frameLayoutId, DashboardFragment())
-                    .commit()
             }
+
+            clearLivePendingOrder()
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+                .replace(R.id.frameLayoutId, DashboardFragment())
+                .commit()
         }
+    }
+
+    private fun clearLivePendingOrder() {
+        livePendingOrder.amount.value = null
+        livePendingOrder.gasType.value = null
+        livePendingOrder.gasUnit.value = null
+        livePendingOrder.quantity.value = null
+        livePendingOrder.statusId.value = null
+        livePendingOrder.truck.value = null
+        livePendingOrder.customer.value = null
+        livePendingOrder.deliveryAddress.value = null
     }
 
     private fun startLocationService() {
@@ -129,8 +162,6 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     }
 
     private fun locationServiceRunning(): Boolean {
-
-
         return false
     }
 }
