@@ -91,7 +91,9 @@ class OrderDetailsActivity : AppCompatActivity() {
 
     fun viewInvoiceClick(view: View) {
         view.startAnimation(buttonClickAnim)
+
         val intent = Intent(this, OrderInvoiceActivity::class.java)
+        intent.putExtra("order", gson.toJson(order))
         startActivity(intent)
     }
 

@@ -13,25 +13,19 @@ class OrderInvoiceActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.white)
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
-            }
-        }
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_invoice)
     }
 
     fun downloadClick(view: View) {}
-    fun backClick(view: View) {
 
-        val intent = Intent(this, MapsActivity::class.java)
-        startActivity(intent)
+    fun backClick(view: View) {
+        finish()
     }
+
     fun confirmPayment(view: View) {
         confirmpayment.visibility = View.INVISIBLE
         paid_banner.visibility = View.VISIBLE
