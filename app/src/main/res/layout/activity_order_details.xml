@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center_vertical"
-        android:text="Order Details"
+        android:text="@string/order_details"
         android:textColor="#333333"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -85,12 +85,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/mapScreenShot" />
 
             <TextView
-                android:id="@+id/detailLiters"
+                android:id="@+id/quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                
-                android:text="1000"
+                tools:text="1000 Liters"
                 android:textColor="#333333"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -99,27 +98,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/mapScreenShot" />
 
             <TextView
-                android:id="@+id/textView27"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                
-                android:text="@string/liters"
-                android:textColor="#333333"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/detailLiters"
-                app:layout_constraintStart_toEndOf="@+id/detailLiters" />
-
-            <TextView
-                android:id="@+id/standardOilDetail"
+                android:id="@+id/gasType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                
-                android:text="Standard Oil"
+                tools:text="Standard Oil"
                 android:textColor="#808080"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView27"
+                app:layout_constraintBaseline_toBaselineOf="@+id/quantity"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <View
@@ -155,6 +140,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/locationAndTimeView" />
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/locationAndTimeView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"
                 android:layout_width="wrap_content"
@@ -176,7 +170,7 @@
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
-                android:text="From the nearest fuel station"
+                android:text="@string/from_the_nearest_fuel_station"
                 android:textColor="#333333"
                 app:layout_constraintBottom_toTopOf="@+id/divider7"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -186,7 +180,7 @@
                 android:id="@+id/destination"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Customer location"
+                tools:text="Customer location"
                 android:textColor="#333333"
                 app:layout_constraintBottom_toBottomOf="@+id/locationAndTimeDetails"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -254,8 +248,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                
-                android:text="$80,000"
+                tools:text="N80,000"
                 android:textColor="#333333"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/paymentDetail"
@@ -268,9 +261,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                
                 android:onClick="viewInvoiceClick"
-                android:text="View Invoice"
+                android:text="@string/view_invoice"
                 android:textAllCaps="false"
                 android:textColor="#4E007C"
                 app:layout_constraintBottom_toBottomOf="@+id/paymentDetail"
@@ -292,8 +284,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                
-                android:text="Status"
+                android:text="@string/status"
                 android:textColor="#808080"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@+id/statusView"
@@ -317,12 +308,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                
                 android:text="@string/delivered"
                 android:textColor="#333333"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/statusDetail"
                 app:layout_constraintStart_toStartOf="@+id/statusDetail"
+                app:layout_constraintTop_toTopOf="@+id/statusDetail" />
+
+            <RatingBar
+                android:visibility="gone"
+                android:id="@+id/customerRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:textAllCaps="false"
+                android:textColor="#4E007C"
+                app:layout_constraintBottom_toBottomOf="@+id/statusDetail"
+                app:layout_constraintEnd_toEndOf="@+id/statusDetail"
                 app:layout_constraintTop_toTopOf="@+id/statusDetail" />
 
             <Button
@@ -331,7 +333,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                
                 android:onClick="rateCustomerClick"
                 android:text="@string/rate_customer"
                 android:textAllCaps="false"
@@ -389,5 +390,17 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
+    <FrameLayout
+        android:id="@+id/ratingFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <include layout="@layout/loading" />
+    <include layout="@layout/error_message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

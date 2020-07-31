@@ -25,13 +25,12 @@ class OrderHistoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
-        window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_history)
 
-        dataPref = getSharedPreferences("cached_data", Context.MODE_PRIVATE)
+        dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         val layoutManager = LinearLayoutManager(this)
         val typeToken = object: TypeToken<MutableList<Order>>(){}.type
         val ordersJson = dataPref.getString(getString(R.string.sh_orders), null)
@@ -49,6 +48,10 @@ class OrderHistoryActivity : AppCompatActivity() {
             // for performance when we know the layout sizes wont be changing
             orderHistoryRecycler.setHasFixedSize(true)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     fun helpBackClick(view: View) {

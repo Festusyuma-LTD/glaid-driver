@@ -79,14 +79,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var user: User
 
-    override fun onResume() {
-        super.onResume()
-        if (firstLaunch) {
-            firstLaunch = false
-            return
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         window.setFlags(
