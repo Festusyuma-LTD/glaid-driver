@@ -180,4 +180,8 @@
     <string name="status">Status</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="done">Done</string>
+    <string name="please_rate_customer">Please rate customer</string>
+    <string name="delivery_complete">Delivery Complete</string>
+    <string name="fuel_icon">fuel icon</string>
 </resources>

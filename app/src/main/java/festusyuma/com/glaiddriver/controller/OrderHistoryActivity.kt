@@ -29,6 +29,10 @@ class OrderHistoryActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_history)
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         val layoutManager = LinearLayoutManager(this)
@@ -48,10 +52,6 @@ class OrderHistoryActivity : AppCompatActivity() {
             // for performance when we know the layout sizes wont be changing
             orderHistoryRecycler.setHasFixedSize(true)
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     fun helpBackClick(view: View) {

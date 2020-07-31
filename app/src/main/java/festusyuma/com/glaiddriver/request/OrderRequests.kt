@@ -6,6 +6,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import festusyuma.com.glaiddriver.helpers.*
+import festusyuma.com.glaiddriver.requestdto.RatingRequest
 import org.json.JSONObject
 
 class OrderRequests(private val c: Activity): Authentication(c) {
@@ -119,6 +120,46 @@ class OrderRequests(private val c: Activity): Authentication(c) {
 
                 req.retryPolicy = defaultRetryPolicy
                 req.tag = "update_order_status"
+                queue.add(req)
+            }
+        }
+    }
+
+    fun rateCustomer(ratingRequest: RatingRequest, callback: () -> Unit) {
+        if (!operationRunning) {
+            setLoading(true)
+
+            val ratingRequestJsonObj = JSONObject(gson.toJson(ratingRequest))
+            getAuthentication { authorization ->
+                val req = object : JsonObjectRequest(
+                    Method.POST,
+                    Api.RATE_CUSTOMER,
+                    ratingRequestJsonObj,
+                    Response.Listener { response ->
+                        if (response.getInt("status") == 200) {
+                            callback()
+                        }else showError(response.getString("message"))
+
+                        setLoading(false)
+                    },
+
+                    Response.ErrorListener { response->
+                        if (response.networkResponse != null) {
+                            if (response.networkResponse.statusCode == 403) {
+                                logout()
+                            }else showError(ERROR_OCCURRED_MSG)
+                        }else showError(CHECK_YOUR_INTERNET)
+
+                        setLoading(false)
+                    }
+                ){
+                    override fun getHeaders(): MutableMap<String, String> {
+                        return authorization
+                    }
+                }
+
+                req.retryPolicy = defaultRetryPolicy
+                req.tag = "rate_driver"
                 queue.add(req)
             }
         }

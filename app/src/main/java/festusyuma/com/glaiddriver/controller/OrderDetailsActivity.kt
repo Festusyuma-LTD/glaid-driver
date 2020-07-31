@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import festusyuma.com.glaiddriver.R
+import festusyuma.com.glaiddriver.helpers.OrderStatusCode
 import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 import festusyuma.com.glaiddriver.helpers.capitalizeWords
 import festusyuma.com.glaiddriver.helpers.gson
@@ -62,6 +63,10 @@ class OrderDetailsActivity : AppCompatActivity() {
         status.text = getDeliveryStatusString(order.statusId)
 
         val customerRating = order.customerRating
+
+        if (order.statusId != OrderStatusCode.DELIVERED) {
+            rateCustomerBtn.visibility = View.GONE
+        }
 
         if (customerRating != null) {
             rateCustomerBtn.visibility = View.GONE
