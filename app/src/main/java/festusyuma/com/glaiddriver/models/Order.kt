@@ -3,6 +3,7 @@ package festusyuma.com.glaiddriver.models
 import org.threeten.bp.LocalDateTime
 
 data class Order (
+    val customer: User,
     val paymentMethod: String,
     val gasType: String,
     val gasUnit: String,
