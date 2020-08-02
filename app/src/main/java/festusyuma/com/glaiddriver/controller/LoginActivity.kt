@@ -18,7 +18,7 @@ import com.android.volley.toolbox.Volley
 import com.wang.avi.AVLoadingIndicatorView
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
-import festusyuma.com.glaiddriver.request.LoginRequest
+import festusyuma.com.glaiddriver.requestdto.LoginRequest
 import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 
