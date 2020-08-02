@@ -108,6 +108,7 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
 
     private fun startTrip() {
         OrderRequests(requireActivity()).startTrip {
+            livePendingOrder.statusId.value = OrderStatusCode.ON_THE_WAY
             deliverButton.text = getString(R.string.complete_delivery)
             mainOrderMessage.text = getString(R.string.starting_delivery)
             startLocationService()
