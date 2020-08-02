@@ -54,27 +54,32 @@ class LoginActivity : AppCompatActivity() {
         passwordInput = findViewById(R.id.passwordInput)
         passwordEye.setOnClickListener {
             it.startAnimation(buttonClickAnim)
-            val passwordField = findViewById<EditText>(R.id.passwordInput)
-            if (passwordEye.drawable.constantState == resources.getDrawable(
-                    R.drawable.ic_password_eye,
-                    theme
-                ).constantState
-            ) {
+            togglePasswordView()
+
+        }
+    }
+
+    private fun togglePasswordView() {
+        val passwordField = findViewById<EditText>(R.id.passwordInput)
+        when (passwordEye.drawable.constantState) {
+            (resources.getDrawable(
+                R.drawable.ic_password_eye,
+                theme
+            ).constantState) -> {
                 passwordEye.setImageResource(R.drawable.ic_password_eye_closed)
                 passwordField.inputType =
                     InputType.TYPE_CLASS_TEXT
 
-            } else if (passwordEye.drawable.constantState == resources.getDrawable(
-                    R.drawable.ic_password_eye_closed,
-                    theme
-                ).constantState
-            ) {
+            }
+            (resources.getDrawable(
+                R.drawable.ic_password_eye_closed,
+                theme
+            ).constantState) -> {
                 passwordEye.setImageResource(R.drawable.ic_password_eye)
                 passwordField.inputType =
                     InputType.TYPE_TEXT_VARIATION_PASSWORD
 
             }
-
         }
     }
 
