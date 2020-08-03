@@ -53,10 +53,10 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
                 livePendingOrder.gasType.value = order.gasType
                 livePendingOrder.gasUnit.value = order.gasUnit
                 livePendingOrder.quantity.value = order.quantity
-                livePendingOrder.statusId.value = order.statusId
                 livePendingOrder.truck.value = order.truck
                 livePendingOrder.customer.value = order.customer
                 livePendingOrder.deliveryAddress.value = order.deliveryAddress
+                livePendingOrder.statusId.value = order.statusId
             }
         }
     }
@@ -156,7 +156,6 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     }
 
     private fun stopLocationService() {
-        Log.v(FIRE_STORE_LOG_TAG, "stop clicked")
         Intent(requireActivity(), LocationService::class.java).also { intent ->
             requireActivity().stopService(intent)
         }

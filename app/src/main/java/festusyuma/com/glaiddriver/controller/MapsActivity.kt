@@ -12,6 +12,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.util.Log
@@ -41,6 +42,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*
+import com.google.maps.DirectionsApiRequest
+import com.google.maps.GeoApiContext
+import com.google.maps.PendingResult
+import com.google.maps.internal.PolylineEncoding
+import com.google.maps.model.DirectionsResult
+import com.google.maps.model.DirectionsRoute
+import com.google.maps.model.GeocodingResult
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.FSLocation
@@ -51,6 +59,8 @@ import festusyuma.com.glaiddriver.utilities.DashboardFragment
 import festusyuma.com.glaiddriver.utilities.LatLngInterpolator
 import festusyuma.com.glaiddriver.utilities.MarkerAnimation
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
+import kotlin.math.round
+import com.google.maps.model.LatLng as DirectionsLatLng
 
 
 class MapsActivity :
@@ -72,11 +82,13 @@ class MapsActivity :
 
     private var locationPermissionsGranted = false
     private lateinit var gMap: GoogleMap
+    private lateinit var geoApiContext: GeoApiContext
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private lateinit var userMarker: Marker
     private lateinit var customerMarker: Marker
     private lateinit var userLocationBtn: ImageView
+    private lateinit var polyline: Polyline
 
     private val updateInterval =  1000L
     private val fastestInterval = 1000L
@@ -90,6 +102,7 @@ class MapsActivity :
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var drawerHeader: View
     private lateinit var livePendingOrder: PendingOrder
+    private var currentStatusCode = OrderStatusCode.PENDING
 
     private lateinit var user: User
 
@@ -158,6 +171,11 @@ class MapsActivity :
         getLocationPermission()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        geoApiContext =
+            GeoApiContext.Builder()
+                .apiKey(getString(R.string.google_api_key))
+                .build()
     }
 
     private fun getLocationPermission() {
@@ -244,22 +262,72 @@ class MapsActivity :
         moveCamera(cameraPosition)
     }
 
+    private fun calculateDirections(callback: (route: DirectionsRoute) -> Unit) {
+        if (this::userMarker.isInitialized && this::customerMarker.isInitialized) {
+            val customerLocation = DirectionsLatLng(
+                customerMarker.position.latitude,
+                customerMarker.position.longitude
+            )
+            val userLocation = DirectionsLatLng(
+                userMarker.position.latitude,
+                userMarker.position.longitude
+            )
+
+            val directionsRequest = DirectionsApiRequest(geoApiContext)
+            directionsRequest.alternatives(true)
+            directionsRequest.origin(userLocation)
+            directionsRequest.destination(customerLocation).setCallback(
+                object: PendingResult.Callback<DirectionsResult> {
+                    override fun onFailure(e: Throwable?) {
+                        Log.v(API_LOG_TAG, "Error getting directions ${e?.message}")
+                    }
+
+                    override fun onResult(result: DirectionsResult?) {
+                        result?: return
+                        if (result.routes.isNotEmpty()) callback(result.routes[0])
+                    }
+
+                }
+            )
+        }
+    }
+
+    private fun addPolyLine(route: DirectionsRoute) {
+        if (this::gMap.isInitialized) {
+            Handler(Looper.getMainLooper()).post {
+                val decodedPathD = PolylineEncoding.decode(route.overviewPolyline.encodedPath)
+                val decodedPath = decodedPathD.map { LatLng(it.lat, it.lng) }
+                val polylineOptions =
+                    PolylineOptions()
+                        .addAll(decodedPath)
+                        .color(R.color.polyLineColor)
+                        .width(20f)
+
+                if (this::polyline.isInitialized) polyline.remove()
+                polyline = gMap.addPolyline(polylineOptions)
+            }
+        }
+    }
+
+    private fun removePolyLine() {
+        if (this::polyline.isInitialized) polyline.remove()
+    }
+
     private fun locationCallback(): LocationCallback {
 
         return object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 if (locationResult != null) {
-                    Log.v(API_LOG_TAG, "Location ${locationResult.lastLocation.accuracy}")
                     val stickyCameraState = isCameraSticky
                     markUserLocation(locationResult.lastLocation)
                     isCameraSticky = stickyCameraState
-                }else Log.v(API_LOG_TAG, "Location null")
+                }
             }
         }
     }
 
     private fun moveCamera(position: CameraPosition) {
-        gMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 2000, null)
+        gMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000, null)
     }
 
     // This method is called when a user Allow or Deny our requested permissions. So it will help us to move forward if the permissions are granted
@@ -288,24 +356,15 @@ class MapsActivity :
     override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
         gMap.setOnCameraMoveStartedListener(this)
-        gMap.isMyLocationEnabled = true
 
         if (locationPermissionsGranted) {
             gMap.uiSettings.isMyLocationButtonEnabled = false
             if (!locationUpdate) startLocationUpdates()
         }
 
-        if (livePendingOrder.deliveryAddress.value != null) markCustomerAddress()
-        livePendingOrder.deliveryAddress.observe(this, Observer {
-            if (it != null) markCustomerAddress() else {
-                customerMarker.remove()
-            }
-        })
-
-        if (livePendingOrder.statusId.value == OrderStatusCode.ON_THE_WAY) { goToUserLocation() }
+        updateMapWithStatusId(livePendingOrder.statusId.value)
         livePendingOrder.statusId.observe(this, Observer { statusId ->
-            isOnTrip = statusId == OrderStatusCode.ON_THE_WAY
-            goToUserLocation()
+            updateMapWithStatusId(statusId)
         })
 
         try {
@@ -317,6 +376,22 @@ class MapsActivity :
             )
         } catch (e: Resources.NotFoundException) {
             Log.e("FragmentActivity.TAG", "Error parsing style. Error: ", e)
+        }
+    }
+
+    private fun updateMapWithStatusId(statusId: Long?) {
+        isOnTrip = statusId == OrderStatusCode.ON_THE_WAY
+
+        when (statusId) {
+            OrderStatusCode.DRIVER_ASSIGNED -> markCustomerAddress()
+            OrderStatusCode.ON_THE_WAY -> {
+                goToUserLocation()
+                calculateDirections { addPolyLine(it) }
+            }
+            else -> {
+                if (this::customerMarker.isInitialized) customerMarker.remove()
+                removePolyLine()
+            }
         }
     }
 
@@ -336,8 +411,10 @@ class MapsActivity :
             user = gson.fromJson(userJson, User::class.java)
             fullNameTV.text = user.fullName
             emailTV.text = user.email
-            rating.rating = 4.1F
-            ratingTxt.text = "4.1"
+
+            val ratingValue = user.rating?: 0.0
+            rating.rating = ratingValue.toFloat()
+            ratingTxt.text = ratingValue.round(1).toString()
         }
     }
 

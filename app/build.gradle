@@ -65,4 +65,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.3'
     implementation 'com.google.firebase:firebase-auth:19.3.2'
     implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.google.maps:google-maps-services:0.14.0'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
 }
