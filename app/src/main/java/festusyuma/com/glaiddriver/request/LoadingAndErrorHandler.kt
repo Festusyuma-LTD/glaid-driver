@@ -18,7 +18,7 @@ open class LoadingAndErrorHandler(private val c: Activity) {
         if (loading) {
             loadingCover.visibility = View.VISIBLE
             operationRunning = true
-        }else {
+        } else {
             loadingCover.visibility = View.GONE
             operationRunning = false
         }

@@ -1,6 +1,7 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -46,7 +47,6 @@ import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.utilities.DashboardFragment
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
-import kotlin.math.ln
 
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -155,10 +155,14 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             if (locationPermissionsGranted) {
                 if (isLocationEnabled()) {
                     return fusedLocationClient.lastLocation
-                        .addOnSuccessListener {lc ->
+                        .addOnSuccessListener { lc ->
                             if (lc != null) {
                                 callback(lc)
-                            }else Toast.makeText(this, "Unable to get location", Toast.LENGTH_SHORT).show()
+                            } else Toast.makeText(
+                                this,
+                                "Unable to get location",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                 }
             }else Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show()
@@ -180,7 +184,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
                     .rotation(lc.bearing)
             )
-        }else {
+        } else {
             userMarker.position = userLocation
             userMarker.rotation = lc.bearing
         }
@@ -200,7 +204,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     .position(lc).title("Customer")
                     .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
             )
-        }else {
+        } else {
             customerMarker.position = lc
         }
 
@@ -212,7 +216,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val location = FSLocation(geoPoint, auth.uid, lc.bearing)
 
         if (location.userId != null) {
-            val locationRef = db.collection(getString(R.string.fs_user_locations)).document(location.userId)
+            val locationRef =
+                db.collection(getString(R.string.fs_user_locations)).document(location.userId)
 
             locationRef
                 .set(location)
@@ -250,6 +255,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // Callback when map ready
+    @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
 
@@ -307,14 +313,24 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun startRootFragment() {
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+            .setCustomAnimations(
+                R.anim.slide_up,
+                R.anim.slide_down,
+                R.anim.slide_up,
+                R.anim.slide_down
+            )
             .replace(R.id.frameLayoutId, DashboardFragment())
             .commit()
     }
 
     private fun startPendingOrderFragment() {
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+            .setCustomAnimations(
+                R.anim.slide_up,
+                R.anim.slide_down,
+                R.anim.slide_up,
+                R.anim.slide_down
+            )
             .replace(R.id.frameLayoutId, NewOrderFragment())
             .addToBackStack(null)
             .commit()

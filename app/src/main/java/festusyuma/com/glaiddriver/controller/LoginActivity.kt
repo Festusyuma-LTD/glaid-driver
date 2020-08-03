@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
@@ -18,6 +19,7 @@ import com.wang.avi.AVLoadingIndicatorView
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.requestdto.LoginRequest
+import kotlinx.android.synthetic.main.activity_login.*
 import org.json.JSONObject
 
 class LoginActivity : AppCompatActivity() {
@@ -37,7 +39,8 @@ class LoginActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
 
         super.onCreate(savedInstanceState)
@@ -49,11 +52,35 @@ class LoginActivity : AppCompatActivity() {
 
         emailInput = findViewById(R.id.emailInput)
         passwordInput = findViewById(R.id.passwordInput)
+        passwordEye.setOnClickListener {
+            it.startAnimation(buttonClickAnim)
+            togglePasswordView()
+
+        }
     }
 
-    fun togglePasswordClick(view: View) {
-        view.startAnimation(buttonClickAnim)
+    private fun togglePasswordView() {
+        val passwordField = findViewById<EditText>(R.id.passwordInput)
+        when (passwordEye.drawable.constantState) {
+            (resources.getDrawable(
+                R.drawable.ic_password_eye,
+                theme
+            ).constantState) -> {
+                passwordEye.setImageResource(R.drawable.ic_password_eye_closed)
+                passwordField.inputType =
+                    InputType.TYPE_CLASS_TEXT
 
+            }
+            (resources.getDrawable(
+                R.drawable.ic_password_eye_closed,
+                theme
+            ).constantState) -> {
+                passwordEye.setImageResource(R.drawable.ic_password_eye)
+                passwordField.inputType =
+                    InputType.TYPE_TEXT_VARIATION_PASSWORD
+
+            }
+        }
     }
 
     fun loginBtnClick(view: View) {
@@ -72,39 +99,43 @@ class LoginActivity : AppCompatActivity() {
                 Request.Method.POST,
                 Api.LOGIN,
                 loginRequestJson,
-                Response.Listener {
-                        response ->
+                Response.Listener { response ->
                     if (response.getInt("status") == 200) {
-                        val authPref = getSharedPreferences(getString(R.string.auth_key_name), Context.MODE_PRIVATE)
+                        val authPref = getSharedPreferences(
+                            getString(R.string.auth_key_name),
+                            Context.MODE_PRIVATE
+                        )
                         val data = response.getJSONObject("data")
                         val serverToken = data.getString("token")
 
                         auth.signInWithCustomToken(serverToken)
-                            .addOnSuccessListener {res->
+                            .addOnSuccessListener { res ->
                                 val user = res.user
 
                                 user?.getIdToken(true)
-                                    ?.addOnSuccessListener {tokenRes ->
+                                    ?.addOnSuccessListener { tokenRes ->
                                         val token = tokenRes.token
                                         if (token != null) {
-                                            with (authPref.edit()) {
+                                            with(authPref.edit()) {
                                                 putString(getString(R.string.sh_token), token)
                                                 commit()
                                             }
 
                                             queue.add(dashboard(token))
-                                        }else errorOccurred()
+                                        } else errorOccurred()
                                     }
                                     ?.addOnFailureListener { errorOccurred() }
                             }.addOnFailureListener { errorOccurred() }
 
-                    }else { errorOccurred(response.getString("message")) }
+                    } else {
+                        errorOccurred(response.getString("message"))
+                    }
                 },
                 Response.ErrorListener { response ->
                     if (response.networkResponse != null) {
                         showError(getString(R.string.error_occurred))
                         response.printStackTrace()
-                    }else showError(getString(R.string.internet_error_msg))
+                    } else showError(getString(R.string.internet_error_msg))
 
                     setLoading(false)
                 }
@@ -118,7 +149,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun errorOccurred(message: String? = null) {
         setLoading(false)
-        showError(message?: "An error occurred")
+        showError(message ?: "An error occurred")
     }
 
     private fun dashboard(token: String): JsonObjectRequest {
@@ -132,13 +163,12 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(Intent(this, MapsActivity::class.java))
                 finishAffinity()
             },
-
-            Response.ErrorListener { response->
+            Response.ErrorListener { response ->
                 if (response.networkResponse != null) {
                     if (response.networkResponse.statusCode == 403) {
                         showError("Not registered as driver")
-                    }else showError("An error occurred")
-                }else showError(getString(R.string.internet_error_msg))
+                    } else showError("An error occurred")
+                } else showError(getString(R.string.internet_error_msg))
 
                 setLoading(false)
             }
@@ -162,7 +192,7 @@ class LoginActivity : AppCompatActivity() {
         if (loading) {
             loadingCover.visibility = View.VISIBLE
             operationRunning = true
-        }else {
+        } else {
             loadingCover.visibility = View.GONE
             operationRunning = false
         }

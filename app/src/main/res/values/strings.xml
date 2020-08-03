@@ -152,14 +152,14 @@
     <string name="reset_password_intro_image">reset_password_intro_image</string>
     <string name="get_otp_button_label">Send otp</string>
     <string name="otp_reset_intro_text">Please enter the %1$s associated with your account below</string>
-    <string name="reset_password" >Reset Password</string>
+    <string name="reset_password">Reset Password</string>
     <string name="set_reset_password_intro_text">Enter your new password below</string>
     <string name="sign_out_btn_label">Sign Out</string>
     <string name="formatted_quantity">%1$.1f %2$s</string>
     <string name="formatted_amount">&#8358;%1$s</string>
-    <string name="enable_gps_msg" >You need to enable GPS to use this App properly, Do you wish to enable it?</string>
+    <string name="enable_gps_msg">You need to enable GPS to use this App properly, Do you wish to enable it?</string>
 
-    <string name="fs_user_locations" >User Locations</string>
+    <string name="fs_user_locations">User Locations</string>
     <string name="naira_logo">naira logo</string>
     <string name="home_intro_image">home intro image</string>
 
@@ -169,4 +169,5 @@
     <string name="details">Details</string>
     <string name="call_customer">Call Customer</string>
     <string name="text_customer">Text Customer</string>
+    <string name="chat_user_name">Chat With %1$s</string>
 </resources>

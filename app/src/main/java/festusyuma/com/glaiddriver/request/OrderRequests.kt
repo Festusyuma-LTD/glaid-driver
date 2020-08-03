@@ -1,14 +1,16 @@
 package festusyuma.com.glaiddriver.request
 
 import android.app.Activity
-import android.util.Log
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import festusyuma.com.glaiddriver.helpers.*
+import festusyuma.com.glaiddriver.helpers.Api
+import festusyuma.com.glaiddriver.helpers.CHECK_YOUR_INTERNET
+import festusyuma.com.glaiddriver.helpers.ERROR_OCCURRED_MSG
+import festusyuma.com.glaiddriver.helpers.defaultRetryPolicy
 import org.json.JSONObject
 
-class OrderRequests(private val c: Activity): Authentication(c) {
+class OrderRequests(private val c: Activity) : Authentication(c) {
 
     private val queue = Volley.newRequestQueue(c)
 
@@ -24,21 +26,21 @@ class OrderRequests(private val c: Activity): Authentication(c) {
                     Response.Listener { response ->
                         if (response.getInt("status") == 200) {
                             callback(response)
-                        }else showError(response.getString("message"))
+                        } else showError(response.getString("message"))
 
                         setLoading(false)
                     },
 
-                    Response.ErrorListener { response->
+                    Response.ErrorListener { response ->
                         if (response.networkResponse != null) {
                             if (response.networkResponse.statusCode == 403) {
                                 logout()
-                            }else showError(ERROR_OCCURRED_MSG)
-                        }else showError(CHECK_YOUR_INTERNET)
+                            } else showError(ERROR_OCCURRED_MSG)
+                        } else showError(CHECK_YOUR_INTERNET)
 
                         setLoading(false)
                     }
-                ){
+                ) {
                     override fun getHeaders(): MutableMap<String, String> {
                         return authorization
                     }
@@ -63,20 +65,20 @@ class OrderRequests(private val c: Activity): Authentication(c) {
                     Response.Listener { response ->
                         if (response.getInt("status") == 200) {
                             callback(response)
-                        }else showError(response.getString("message"))
+                        } else showError(response.getString("message"))
                         setLoading(false)
                     },
 
-                    Response.ErrorListener { response->
+                    Response.ErrorListener { response ->
                         if (response.networkResponse != null) {
                             if (response.networkResponse.statusCode == 403) {
                                 logout()
-                            }else showError(ERROR_OCCURRED_MSG)
-                        }else showError(CHECK_YOUR_INTERNET)
+                            } else showError(ERROR_OCCURRED_MSG)
+                        } else showError(CHECK_YOUR_INTERNET)
 
                         setLoading(false)
                     }
-                ){
+                ) {
                     override fun getHeaders(): MutableMap<String, String> {
                         return authorization
                     }

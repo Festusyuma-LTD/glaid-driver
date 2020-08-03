@@ -10,10 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
-import festusyuma.com.glaiddriver.helpers.DRIVER_ASSIGNED
-import festusyuma.com.glaiddriver.helpers.DRIVER_ASSIGNED_STATUS_CODE
-import festusyuma.com.glaiddriver.helpers.addCountryCode
-import festusyuma.com.glaiddriver.helpers.capitalizeWords
+import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.request.OrderRequests
 
@@ -61,7 +58,7 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
 
         if (livePendingOrder.statusId.value == DRIVER_ASSIGNED_STATUS_CODE) {
             deliverButton.setOnClickListener { startTrip() }
-        }else {
+        } else {
             deliverButton.text = getString(R.string.complete_delivery)
             mainOrderMessage.text = getString(R.string.starting_delivery)
             deliverButton.setOnClickListener { completeTrip() }
@@ -71,14 +68,21 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     private fun callCustomer() {
         val tel = livePendingOrder.customer.value?.tel
         if (tel != null) {
-            val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", tel.addCountryCode(), null))
+            val intent =
+                Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", tel.addCountryCode(), null))
             startActivity(intent)
         }
     }
 
     private fun chat() {
-        val intent = Intent(requireActivity(), ChatActivity::class.java)
-        startActivity(intent)
+        val chatEmail = livePendingOrder.customer.value?.email
+        val chatName = livePendingOrder.customer.value?.fullName
+        if (chatEmail != null && chatName != null) {
+            val intent = Intent(requireActivity(), ChatActivity::class.java)
+            intent.putExtra(CHAT_NAME, chatName)
+            intent.putExtra(CHAT_EMAIL, chatEmail)
+            startActivity(intent)
+        }
     }
 
     private fun startTrip() {
@@ -91,7 +95,12 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     private fun completeTrip() {
         OrderRequests(requireActivity()).completeTrip {
             requireActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+                .setCustomAnimations(
+                    R.anim.slide_up,
+                    R.anim.slide_down,
+                    R.anim.slide_up,
+                    R.anim.slide_down
+                )
                 .replace(R.id.frameLayoutId, DashboardFragment())
                 .commit()
         }

@@ -119,7 +119,7 @@ class Dashboard {
             val truckJson = data.getJSONObject("truck")
             val driverUser = driverJson.getJSONObject("user")
 
-            Truck (
+            Truck(
                 driverUser.getString("fullName"),
                 driverUser.getString("tel"),
                 truckJson.getString("make"),
@@ -127,7 +127,7 @@ class Dashboard {
                 truckJson.getString("year"),
                 truckJson.getString("color")
             )
-        }else null
+        } else null
 
         val customerJson = data.getJSONObject("customer")
         val userJson = customerJson.getJSONObject("user")
@@ -138,6 +138,19 @@ class Dashboard {
             userJson.getLong("id")
         )
 
-        return Order(customer, paymentMethod, gasType, gasUnit, quantity, amount, deliveryPrice, tax, statusId, address, scheduledDate, truck)
+        return Order(
+            customer,
+            paymentMethod,
+            gasType,
+            gasUnit,
+            quantity,
+            amount,
+            deliveryPrice,
+            tax,
+            statusId,
+            address,
+            scheduledDate,
+            truck
+        )
     }
 }
