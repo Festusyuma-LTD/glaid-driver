@@ -28,7 +28,6 @@ class CarouselActivity : AppCompatActivity() {
             launchHomeScreen()
             finish()
         }
-
         setContentView(R.layout.activity_carousel)
         val w: Window = window
         w.setFlags(

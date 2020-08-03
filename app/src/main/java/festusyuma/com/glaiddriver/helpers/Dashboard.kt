@@ -122,7 +122,7 @@ class Dashboard {
             val truckJson = data.getJSONObject("truck")
             val driverUser = driverJson.getJSONObject("user")
 
-            Truck (
+            Truck(
                 driverUser.getString("fullName"),
                 driverUser.getString("tel"),
                 truckJson.getString("make"),
@@ -151,7 +151,20 @@ class Dashboard {
             rating.getDouble("userRating")
         }else null
 
-        val order = Order(customer, paymentMethod, gasType, gasUnit, quantity, amount, deliveryPrice, tax, statusId, address, scheduledDate, truck)
+        val order = Order(
+            customer,
+            paymentMethod,
+            gasType,
+            gasUnit,
+            quantity,
+            amount,
+            deliveryPrice,
+            tax,
+            statusId,
+            address,
+            scheduledDate,
+            truck
+        )
         order.id = id
         order.driverRating = driverRating
         order.customerRating = customerRating

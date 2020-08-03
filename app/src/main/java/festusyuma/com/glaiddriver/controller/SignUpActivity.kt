@@ -1,11 +1,14 @@
 package festusyuma.com.glaiddriver.controller
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -35,7 +38,8 @@ class SignUpActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.colorPrimary)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+            window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
@@ -56,9 +60,21 @@ class SignUpActivity : AppCompatActivity() {
 
     fun togglePasswordClick(view: View) {
         view.startAnimation(buttonClickAnim)
+
+    }
+
+    private fun hideKeyboard() {
+        try {
+            val imm: InputMethodManager =
+                getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        } catch (e: Exception) {
+            Toast.makeText(this, "no keyboard open ${e.cause}", Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun signUp(view: View) {
+        hideKeyboard()
         if (!operationRunning) {
             setLoading(true)
             val userRequest = getUserRequest()
@@ -77,7 +93,7 @@ class SignUpActivity : AppCompatActivity() {
                             signUpIntent.putExtra("userRequest", userRequest)
 
                             startActivity(signUpIntent)
-                        }else showError(response.getString("message"))
+                        } else showError(response.getString("message"))
 
                         setLoading(false)
                     },
@@ -85,14 +101,14 @@ class SignUpActivity : AppCompatActivity() {
                         if (response.networkResponse != null) {
                             showError(getString(R.string.error_occurred))
                             response.printStackTrace()
-                        }else showError(getString(R.string.internet_error_msg))
+                        } else showError(getString(R.string.internet_error_msg))
 
                         setLoading(false)
                     }
                 )
 
                 queue.add(request)
-            }else setLoading(false)
+            } else setLoading(false)
         }
     }
 
@@ -113,7 +129,8 @@ class SignUpActivity : AppCompatActivity() {
         val telError = findViewById<TextView>(R.id.telInputError)
         val passwordError = findViewById<TextView>(R.id.passwordInputError)
         val verifyPasswordError = findViewById<TextView>(R.id.verifyPasswordInputError)
-        val emailRegex = "(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])"
+        val emailRegex =
+            "(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])"
 
         when {
             userRequest.fullName == "" -> {
@@ -147,7 +164,8 @@ class SignUpActivity : AppCompatActivity() {
             !userRequest.tel.matches(Regex("^[0-9]*$")) -> {
                 telError.setText(R.string.invalid_format)
                 error = true
-            }else -> telError.text = ""
+            }
+            else -> telError.text = ""
         }
 
         when {
@@ -165,7 +183,7 @@ class SignUpActivity : AppCompatActivity() {
         if (userRequest.password != verifyPassword.text.toString()) {
             verifyPasswordError.setText(R.string.password_does_not_match)
             error = true
-        }else verifyPasswordError.text = ""
+        } else verifyPasswordError.text = ""
 
         return error
     }
@@ -175,7 +193,7 @@ class SignUpActivity : AppCompatActivity() {
             loadingCover.visibility = View.VISIBLE
             loadingAvi.show()
             operationRunning = true
-        }else {
+        } else {
             loadingCover.visibility = View.GONE
             loadingAvi.hide()
             operationRunning = false

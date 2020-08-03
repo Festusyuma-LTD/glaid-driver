@@ -8,7 +8,7 @@ import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.GetStartedActivity
 import festusyuma.com.glaiddriver.helpers.auth
 
-open class Authentication(private val c: Activity): LoadingAndErrorHandler(c) {
+open class Authentication(private val c: Activity) : LoadingAndErrorHandler(c) {
 
     private lateinit var authPref: SharedPreferences
 
@@ -21,20 +21,24 @@ open class Authentication(private val c: Activity): LoadingAndErrorHandler(c) {
             auth.currentUser?.getIdToken(true)
                 ?.addOnSuccessListener {
                     val token = it.token
-                    val serverToken = authPref.getString(tokenKeyName, null)?: ""
+                    val serverToken = authPref.getString(tokenKeyName, null) ?: ""
 
-                    if (token != null) callback(mutableMapOf(
-                        "Authorization" to "Bearer $token",
-                        "ServerAuthorization" to serverToken
-                    ))
+                    if (token != null) callback(
+                        mutableMapOf(
+                            "Authorization" to "Bearer $token",
+                            "ServerAuthorization" to serverToken
+                        )
+                    )
                 }
-                ?.addOnFailureListener{ logout() }
-        }else logout()
+                ?.addOnFailureListener { logout() }
+        } else logout()
     }
 
     fun logout() {
-        val dataPref = c.getSharedPreferences(c.getString(R.string.auth_key_name), Context.MODE_PRIVATE)
-        val authPref = c.getSharedPreferences(c.getString(R.string.cached_data), Context.MODE_PRIVATE)
+        val dataPref =
+            c.getSharedPreferences(c.getString(R.string.auth_key_name), Context.MODE_PRIVATE)
+        val authPref =
+            c.getSharedPreferences(c.getString(R.string.cached_data), Context.MODE_PRIVATE)
 
         with(authPref.edit()) {
             clear()

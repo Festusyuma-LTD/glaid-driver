@@ -1,7 +1,6 @@
 package festusyuma.com.glaiddriver.controller
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
@@ -11,12 +10,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import festusyuma.com.glaiddriver.R
-import festusyuma.com.glaiddriver.helpers.auth
 import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 import festusyuma.com.glaiddriver.helpers.gson
 import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.request.Authentication
-import kotlinx.android.synthetic.main.activity_login.*
 
 class EditProfileActivity : AppCompatActivity() {
 

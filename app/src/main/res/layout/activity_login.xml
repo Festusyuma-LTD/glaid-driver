@@ -156,7 +156,6 @@
             
             android:clickable="true"
             android:focusable="true"
-            android:onClick="togglePasswordClick"
             app:layout_constraintBottom_toBottomOf="@+id/passwordInput"
             app:layout_constraintEnd_toEndOf="@+id/passwordInput"
             app:layout_constraintTop_toTopOf="@+id/passwordInput"

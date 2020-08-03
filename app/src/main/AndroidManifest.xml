@@ -76,7 +76,12 @@
             android:name=".controller.MapsActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity" />
+            tools:ignore="LockedOrientationActivity">
+            <intent-filter>
+                <!-- MAIN represents that it is the Main Activity -->
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".controller.ResetPasswordActivity"
             android:screenOrientation="sensorPortrait"
@@ -108,7 +113,7 @@
         <activity
             android:name=".controller.GetStartedActivity"
             android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity" /> <!-- The below is for the splash screen and we need no action bar and the default theme -->
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.MainActivity"
             android:screenOrientation="sensorPortrait"

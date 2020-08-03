@@ -102,8 +102,14 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     }
 
     private fun chat() {
-        val intent = Intent(requireActivity(), ChatActivity::class.java)
-        startActivity(intent)
+        val chatEmail = livePendingOrder.customer.value?.email
+        val chatName = livePendingOrder.customer.value?.fullName
+        if (chatEmail != null && chatName != null) {
+            val intent = Intent(requireActivity(), ChatActivity::class.java)
+            intent.putExtra(CHAT_NAME, chatName)
+            intent.putExtra(CHAT_EMAIL, chatEmail)
+            startActivity(intent)
+        }
     }
 
     private fun startTrip() {
