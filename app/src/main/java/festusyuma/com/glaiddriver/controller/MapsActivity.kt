@@ -18,10 +18,7 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
@@ -124,6 +121,7 @@ class MapsActivity :
         dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerHeader = findViewById(R.id.nav_header_driver_map)
+
         livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationCallback = locationCallback()
@@ -197,7 +195,10 @@ class MapsActivity :
 
     private fun initUserLocationBtn() {
         userLocationBtn = findViewById(R.id.userLocationBtn)
-        userLocationBtn.setOnClickListener { goToUserLocation() }
+        userLocationBtn.setOnClickListener {
+            if (isOnTrip) calculateDirections { addPolyLine(it) }
+            goToUserLocation()
+        }
     }
 
     private fun getZoom(): Float {
