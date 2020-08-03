@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
-import festusyuma.com.glaiddriver.helpers.DRIVER_ASSIGNED_STATUS_CODE
-import festusyuma.com.glaiddriver.helpers.addCountryCode
-import festusyuma.com.glaiddriver.helpers.capitalizeWords
+import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.request.OrderRequests
 
@@ -77,8 +75,14 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     }
 
     private fun chat() {
-        val intent = Intent(requireActivity(), ChatActivity::class.java)
-        startActivity(intent)
+        val chatEmail = livePendingOrder.customer.value?.email
+        val chatName = livePendingOrder.customer.value?.fullName
+        if (chatEmail != null && chatName != null) {
+            val intent = Intent(requireActivity(), ChatActivity::class.java)
+            intent.putExtra(CHAT_NAME, chatName)
+            intent.putExtra(CHAT_EMAIL, chatEmail)
+            startActivity(intent)
+        }
     }
 
     private fun startTrip() {
