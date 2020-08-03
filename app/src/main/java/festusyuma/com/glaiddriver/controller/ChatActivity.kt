@@ -30,10 +30,8 @@ class ChatActivity : AppCompatActivity() {
     lateinit var apdater: GroupAdapter<GroupieViewHolder>
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.white)
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
-        }
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 window.decorView.systemUiVisibility =

@@ -73,4 +73,6 @@ dependencies {
     //groupie for recycler view
     implementation "com.xwray:groupie:2.8.0"
     implementation 'com.xwray:groupie-kotlin-android-extensions:2.8.0'
+    implementation 'com.google.maps:google-maps-services:0.14.0'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
 }

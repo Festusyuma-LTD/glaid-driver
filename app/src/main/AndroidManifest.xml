@@ -8,7 +8,8 @@
          location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeIntroScreen">
-        <activity android:name=".controller.ForgotPasswordFinalOtpActivity"></activity>
+
+        <activity
+            android:name=".controller.ForgotPasswordFinalOtpActivity"
+            android:screenOrientation="sensorPortrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".controller.OrderInvoiceActivity"
             android:screenOrientation="sensorPortrait"
@@ -127,6 +132,10 @@
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme"
             tools:ignore="LockedOrientationActivity" />
+
+        <service
+            android:name=".services.LocationService"
+            android:stopWithTask="true"/>
     </application>
 
 </manifest>

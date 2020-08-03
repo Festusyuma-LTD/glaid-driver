@@ -14,6 +14,10 @@ open class LoadingAndErrorHandler(private val c: Activity) {
     val loadingAvi: AVLoadingIndicatorView = c.findViewById(R.id.avi)
     private val errorMsg: TextView = c.findViewById(R.id.errorMsg)
 
+    init {
+        errorMsg.setOnClickListener { hideError() }
+    }
+
     fun setLoading(loading: Boolean) {
         if (loading) {
             loadingCover.visibility = View.VISIBLE
@@ -29,7 +33,7 @@ open class LoadingAndErrorHandler(private val c: Activity) {
         errorMsg.visibility = View.VISIBLE
     }
 
-    fun hideError() {
+    private fun hideError() {
         errorMsg.visibility = View.INVISIBLE
     }
 }

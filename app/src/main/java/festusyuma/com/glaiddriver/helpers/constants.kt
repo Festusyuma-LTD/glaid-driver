@@ -25,6 +25,7 @@ const val COUNTRY_CODE = "+234"
 val buttonClickAnim: AlphaAnimation? = AlphaAnimation(1f, 0.8f)
 
 const val API_LOG_TAG = "apiLog"
+const val SERVICE_LOG_TAG = "serviceLog"
 const val APP_LOG_TAG = "appLog"
 const val FIRE_STORE_LOG_TAG = "fireStoreLog"
 
@@ -50,3 +51,16 @@ val defaultRetryPolicy = DefaultRetryPolicy(
 )
 const val CHAT_EMAIL = "CHAT_EMAIL"
 const val CHAT_NAME = "CHAT_NAME"
+
+class OrderStatusCode {
+    companion object {
+        const val PENDING: Long = 1
+        const val DRIVER_ASSIGNED: Long = 2
+        const val ON_THE_WAY: Long = 3
+        const val DELIVERED: Long = 4
+
+        fun all(): List<Long> {
+            return listOf(PENDING, DRIVER_ASSIGNED, ON_THE_WAY, DELIVERED)
+        }
+    }
+}

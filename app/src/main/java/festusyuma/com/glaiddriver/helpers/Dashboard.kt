@@ -42,7 +42,9 @@ class Dashboard {
         return User(
             data.getString("email").capitalizeWords(),
             data.getString("fullName").capitalizeWords(),
-            data.getString("tel")
+            data.getString("tel"),
+            data.getLong("id"),
+            data.getDouble("rating")
         )
     }
 
@@ -69,8 +71,8 @@ class Dashboard {
     }
 
     fun pendingOrder(data: JSONArray): Order? {
-        if (data.length() > 0) {
-            val order = convertOrderJSonToOrder(data[0] as JSONObject)
+        for (i in 0 until data.length()) {
+            val order = convertOrderJSonToOrder(data[i] as JSONObject)
             if (order.statusId < 4) {
                 return order
             }
@@ -90,6 +92,7 @@ class Dashboard {
     }
 
     fun convertOrderJSonToOrder(data: JSONObject): Order {
+        val id: Long? = data.getLong("id")
         val quantity = data.getDouble("quantity")
         val amount = data.getDouble("amount")
         val deliveryPrice = data.getDouble("deliveryPrice")
@@ -127,7 +130,7 @@ class Dashboard {
                 truckJson.getString("year"),
                 truckJson.getString("color")
             )
-        } else null
+        }else null
 
         val customerJson = data.getJSONObject("customer")
         val userJson = customerJson.getJSONObject("user")
@@ -138,7 +141,17 @@ class Dashboard {
             userJson.getLong("id")
         )
 
-        return Order(
+        val driverRating = if (!data.isNull("driverRating")) {
+            val rating =  data.getJSONObject("driverRating")
+            rating.getDouble("userRating")
+        }else null
+
+        val customerRating = if (!data.isNull("customerRating")) {
+            val rating =  data.getJSONObject("customerRating")
+            rating.getDouble("userRating")
+        }else null
+
+        val order = Order(
             customer,
             paymentMethod,
             gasType,
@@ -152,5 +165,10 @@ class Dashboard {
             scheduledDate,
             truck
         )
+        order.id = id
+        order.driverRating = driverRating
+        order.customerRating = customerRating
+
+        return order
     }
 }

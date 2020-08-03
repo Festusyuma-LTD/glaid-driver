@@ -12,33 +12,40 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.scale
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.GeoPoint
+import com.google.firebase.firestore.*
+import com.google.maps.DirectionsApiRequest
+import com.google.maps.GeoApiContext
+import com.google.maps.PendingResult
+import com.google.maps.internal.PolylineEncoding
+import com.google.maps.model.DirectionsResult
+import com.google.maps.model.DirectionsRoute
+import com.google.maps.model.GeocodingResult
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.FSLocation
@@ -46,11 +53,22 @@ import festusyuma.com.glaiddriver.models.Order
 import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.utilities.DashboardFragment
+import festusyuma.com.glaiddriver.utilities.LatLngInterpolator
+import festusyuma.com.glaiddriver.utilities.MarkerAnimation
 import festusyuma.com.glaiddriver.utilities.NewOrderFragment
+import kotlin.math.round
+import com.google.maps.model.LatLng as DirectionsLatLng
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapsActivity :
+    AppCompatActivity(),
+    OnMapReadyCallback,
+    GoogleMap.OnCameraMoveStartedListener
+{
 
+    private var locationUpdate = false
+    private var isOnTrip = false
+    private var isCameraSticky = true
     private val errorDialogRequest = 9001
 
     private val requestCode = 42
@@ -61,10 +79,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var locationPermissionsGranted = false
     private lateinit var gMap: GoogleMap
+    private lateinit var geoApiContext: GeoApiContext
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationCallback: LocationCallback
     private lateinit var userMarker: Marker
     private lateinit var customerMarker: Marker
     private lateinit var userLocationBtn: ImageView
+    private lateinit var polyline: Polyline
+
+    private val updateInterval =  1000L
+    private val fastestInterval = 1000L
+    private val defaultZoom = 15.0f
+    private val defaultTilt = 0f
+    private val defaultBearing = 0f
 
     private lateinit var authPref: SharedPreferences
     private lateinit var dataPref: SharedPreferences
@@ -72,6 +99,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var drawerHeader: View
     private lateinit var livePendingOrder: PendingOrder
+    private var currentStatusCode = OrderStatusCode.PENDING
+
+    private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -91,11 +121,29 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         drawerLayout = findViewById(R.id.drawer_layout)
         drawerHeader = findViewById(R.id.nav_header_driver_map)
+
+        livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        locationCallback = locationCallback()
 
         if (isServiceOk()) initMap()
         initUserDetails()
         startFragment()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        locationUpdate = true
+        val locationRequest = LocationRequest()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = updateInterval
+        locationRequest.fastestInterval = fastestInterval
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.getMainLooper()
+        )
     }
 
     private fun isServiceOk(): Boolean {
@@ -121,6 +169,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         getLocationPermission()
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        geoApiContext =
+            GeoApiContext.Builder()
+                .apiKey(getString(R.string.google_api_key))
+                .build()
     }
 
     private fun getLocationPermission() {
@@ -143,53 +196,51 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun initUserLocationBtn() {
         userLocationBtn = findViewById(R.id.userLocationBtn)
         userLocationBtn.setOnClickListener {
-            getUserLocation {
-                markUserLocation(it)
-                saveUserLocation(it)
-            }
+            if (isOnTrip) calculateDirections { addPolyLine(it) }
+            goToUserLocation()
         }
     }
 
-    private fun getUserLocation(callback: (lc: Location) -> Unit): Task<Location>? {
-        try {
-            if (locationPermissionsGranted) {
-                if (isLocationEnabled()) {
-                    return fusedLocationClient.lastLocation
-                        .addOnSuccessListener { lc ->
-                            if (lc != null) {
-                                callback(lc)
-                            } else Toast.makeText(
-                                this,
-                                "Unable to get location",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                }
-            }else Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show()
-        }catch (e: SecurityException) {
-            Log.v("ApiLog", "${e.message}")
-        }
+    private fun getZoom(): Float {
+        return if (isOnTrip) 20.0f else defaultZoom
+    }
 
-        return null
+    private fun getTilt(): Float {
+        return if (isOnTrip) 45.0f else defaultTilt
+    }
+
+    private fun getBearing(): Float {
+        return if (isOnTrip) userMarker.rotation else defaultBearing
     }
 
     private fun markUserLocation(lc: Location) {
         val userLocation = LatLng(lc.latitude, lc.longitude)
 
-        val mapIcon = AppCompatResources.getDrawable(this, R.drawable.customlocation)!!.toBitmap()
+        val mapIcon = AppCompatResources.getDrawable(this, R.drawable.customlocation)!!.toBitmap().scale(64, 96, false)
         if (!this::userMarker.isInitialized) {
             userMarker = gMap.addMarker(
                 MarkerOptions()
                     .position(userLocation).title("User")
                     .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
                     .rotation(lc.bearing)
+                    .anchor(1F, 1F)
+                    .flat(true)
             )
-        } else {
-            userMarker.position = userLocation
+        }else {
+            MarkerAnimation.animateMarkerToGB(userMarker, userLocation, LatLngInterpolator.Spherical())
             userMarker.rotation = lc.bearing
         }
 
-        moveCamera(userLocation)
+        val cameraPosition = CameraPosition(userLocation, getZoom(), getTilt(), getBearing())
+        if (isCameraSticky) moveCamera(cameraPosition)
+    }
+
+    private fun goToUserLocation() {
+        if (this::userMarker.isInitialized) {
+            val cameraPosition = CameraPosition(userMarker.position, getZoom(), getTilt(), getBearing())
+            moveCamera(cameraPosition)
+            isCameraSticky = true
+        }
     }
 
     private fun markCustomerAddress() {
@@ -197,41 +248,87 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val lng = livePendingOrder.deliveryAddress.value?.lng ?: return
         val lc = LatLng(lat, lng)
 
-        val mapIcon = AppCompatResources.getDrawable(this, R.drawable.customer_marker)!!.toBitmap()
+        val mapIcon = AppCompatResources.getDrawable(this, R.drawable.customer_marker)!!.toBitmap(30, 30)
         if (!this::customerMarker.isInitialized) {
             customerMarker = gMap.addMarker(
                 MarkerOptions()
                     .position(lc).title("Customer")
                     .icon(BitmapDescriptorFactory.fromBitmap(mapIcon))
             )
-        } else {
+        }else {
             customerMarker.position = lc
         }
 
-        moveCamera(lc)
+        val cameraPosition = CameraPosition(lc, 15f, 0f, 0f)
+        moveCamera(cameraPosition)
     }
 
-    private fun saveUserLocation(lc: Location) {
-        val geoPoint = GeoPoint(lc.latitude, lc.longitude)
-        val location = FSLocation(geoPoint, auth.uid, lc.bearing)
+    private fun calculateDirections(callback: (route: DirectionsRoute) -> Unit) {
+        if (this::userMarker.isInitialized && this::customerMarker.isInitialized) {
+            val customerLocation = DirectionsLatLng(
+                customerMarker.position.latitude,
+                customerMarker.position.longitude
+            )
+            val userLocation = DirectionsLatLng(
+                userMarker.position.latitude,
+                userMarker.position.longitude
+            )
 
-        if (location.userId != null) {
-            val locationRef =
-                db.collection(getString(R.string.fs_user_locations)).document(location.userId)
+            val directionsRequest = DirectionsApiRequest(geoApiContext)
+            directionsRequest.alternatives(true)
+            directionsRequest.origin(userLocation)
+            directionsRequest.destination(customerLocation).setCallback(
+                object: PendingResult.Callback<DirectionsResult> {
+                    override fun onFailure(e: Throwable?) {
+                        Log.v(API_LOG_TAG, "Error getting directions ${e?.message}")
+                    }
 
-            locationRef
-                .set(location)
-                .addOnSuccessListener {
-                    Log.d(FIRE_STORE_LOG_TAG, "DocumentSnapshot added")
+                    override fun onResult(result: DirectionsResult?) {
+                        result?: return
+                        if (result.routes.isNotEmpty()) callback(result.routes[0])
+                    }
+
                 }
-                .addOnFailureListener { e ->
-                    Log.w(FIRE_STORE_LOG_TAG, "Error adding document", e)
-                }
+            )
         }
     }
 
-    private fun moveCamera(location: LatLng) {
-        gMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, 15.0f))
+    private fun addPolyLine(route: DirectionsRoute) {
+        if (this::gMap.isInitialized) {
+            Handler(Looper.getMainLooper()).post {
+                val decodedPathD = PolylineEncoding.decode(route.overviewPolyline.encodedPath)
+                val decodedPath = decodedPathD.map { LatLng(it.lat, it.lng) }
+                val polylineOptions =
+                    PolylineOptions()
+                        .addAll(decodedPath)
+                        .color(R.color.polyLineColor)
+                        .width(20f)
+
+                if (this::polyline.isInitialized) polyline.remove()
+                polyline = gMap.addPolyline(polylineOptions)
+            }
+        }
+    }
+
+    private fun removePolyLine() {
+        if (this::polyline.isInitialized) polyline.remove()
+    }
+
+    private fun locationCallback(): LocationCallback {
+
+        return object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                if (locationResult != null) {
+                    val stickyCameraState = isCameraSticky
+                    markUserLocation(locationResult.lastLocation)
+                    isCameraSticky = stickyCameraState
+                }
+            }
+        }
+    }
+
+    private fun moveCamera(position: CameraPosition) {
+        gMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000, null)
     }
 
     // This method is called when a user Allow or Deny our requested permissions. So it will help us to move forward if the permissions are granted
@@ -249,6 +346,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 locationPermissionsGranted = granted
                 if (locationPermissionsGranted) {
                     initUserLocationBtn()
+                    if (!locationUpdate) startLocationUpdates()
                 }
             }
         }
@@ -258,17 +356,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
         gMap = googleMap
+        gMap.setOnCameraMoveStartedListener(this)
 
         if (locationPermissionsGranted) {
-            gMap.isMyLocationEnabled = true
             gMap.uiSettings.isMyLocationButtonEnabled = false
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-            getUserLocation {
-                markUserLocation(it)
-                if (this::livePendingOrder.isInitialized) markCustomerAddress()
-            }
+            if (!locationUpdate) startLocationUpdates()
         }
+
+        updateMapWithStatusId(livePendingOrder.statusId.value)
+        livePendingOrder.statusId.observe(this, Observer { statusId ->
+            updateMapWithStatusId(statusId)
+        })
 
         try {
             // Customise the styling
@@ -282,6 +380,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun updateMapWithStatusId(statusId: Long?) {
+        isOnTrip = statusId == OrderStatusCode.ON_THE_WAY
+
+        when (statusId) {
+            OrderStatusCode.DRIVER_ASSIGNED -> markCustomerAddress()
+            OrderStatusCode.ON_THE_WAY -> {
+                goToUserLocation()
+                calculateDirections { addPolyLine(it) }
+            }
+            else -> {
+                if (this::customerMarker.isInitialized) customerMarker.remove()
+                removePolyLine()
+            }
+        }
+    }
+
+    override fun onCameraMoveStarted(p0: Int) {
+        isCameraSticky = false
+    }
+
     private fun initUserDetails() {
         val userJson = dataPref.getString("userDetails", "null")
 
@@ -291,12 +409,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             val rating: RatingBar = drawerHeader.findViewById(R.id.rating)
             val ratingTxt: TextView = drawerHeader.findViewById(R.id.ratingText)
 
-            val user = gson.fromJson(userJson, User::class.java)
-
+            user = gson.fromJson(userJson, User::class.java)
             fullNameTV.text = user.fullName
             emailTV.text = user.email
-            rating.rating = 4.1F
-            ratingTxt.text = "4.1"
+
+            val ratingValue = user.rating?: 0.0
+            rating.rating = ratingValue.toFloat()
+            ratingTxt.text = ratingValue.round(1).toString()
         }
     }
 
@@ -304,48 +423,27 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         if (dataPref.contains(getString(R.string.sh_pending_order))) {
             val orderJson = dataPref.getString(getString(R.string.sh_pending_order), null)
             if (orderJson != null) {
-                val order = gson.fromJson(orderJson, Order::class.java)
-                initiateLivePendingOrder(order)
                 startPendingOrderFragment()
-            }else startRootFragment()
-        }else startRootFragment()
+                return
+            }
+        }
+
+        startRootFragment()
     }
 
     private fun startRootFragment() {
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_up,
-                R.anim.slide_down,
-                R.anim.slide_up,
-                R.anim.slide_down
-            )
+            .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
             .replace(R.id.frameLayoutId, DashboardFragment())
             .commit()
     }
 
     private fun startPendingOrderFragment() {
         supportFragmentManager.beginTransaction()
-            .setCustomAnimations(
-                R.anim.slide_up,
-                R.anim.slide_down,
-                R.anim.slide_up,
-                R.anim.slide_down
-            )
+            .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
             .replace(R.id.frameLayoutId, NewOrderFragment())
             .addToBackStack(null)
             .commit()
-    }
-
-    private fun initiateLivePendingOrder(order: Order) {
-        livePendingOrder = ViewModelProvider(this).get(PendingOrder::class.java)
-        livePendingOrder.amount.value = order.amount
-        livePendingOrder.gasType.value = order.gasType
-        livePendingOrder.gasUnit.value = order.gasUnit
-        livePendingOrder.quantity.value = order.quantity
-        livePendingOrder.statusId.value = order.statusId
-        livePendingOrder.truck.value = order.truck
-        livePendingOrder.customer.value = order.customer
-        livePendingOrder.deliveryAddress.value = order.deliveryAddress
     }
 
     // This will check if the user has turned on location from the setting
@@ -413,5 +511,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         view.startAnimation(buttonClickAnim)
         val intent = Intent(this, EditProfileActivity::class.java)
         startActivity(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (this::gMap.isInitialized) {
+            if (!locationUpdate) startLocationUpdates()
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+        locationUpdate = false
     }
 }
