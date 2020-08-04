@@ -77,9 +77,11 @@ class OrderDetailsActivity : AppCompatActivity() {
 
     private fun getDeliveryStatusString(statusId: Long): String {
         return when(statusId) {
-            1L -> "Pending"
-            2L -> "Driver assigned"
-            3L -> "On the way"
+            OrderStatusCode.PENDING -> "Pending"
+            OrderStatusCode.DRIVER_ASSIGNED -> "Driver assigned"
+            OrderStatusCode.ON_THE_WAY -> "On the way"
+            OrderStatusCode.PENDING_PAYMENT -> "Pending payment"
+            OrderStatusCode.FAILED -> "Failed"
             else -> "Delivered"
         }
     }
