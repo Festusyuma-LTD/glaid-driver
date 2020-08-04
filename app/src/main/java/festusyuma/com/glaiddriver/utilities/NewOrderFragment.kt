@@ -149,17 +149,8 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
                 failedPayment.setOnClickListener { confirmPayment(false) }
                 updateLocalOrderStatus(OrderStatusCode.PENDING_PAYMENT)
             }else {
-                with(dataPref.edit()) {
-                    remove(getString(R.string.sh_pending_order))
-                    commit()
-                }
-
-                clearLivePendingOrder()
-
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
-                    .replace(R.id.frameLayoutId, DashboardFragment())
-                    .commit()
+                updateLocalOrderStatus(OrderStatusCode.DELIVERED)
+                endPendingOrder()
             }
         }
     }
@@ -167,19 +158,25 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     private fun confirmPayment(success: Boolean) {
         OrderRequests(requireActivity()).confirmPayment(success) {
             failedPayment.visibility = View.GONE
-
-            with(dataPref.edit()) {
-                remove(getString(R.string.sh_pending_order))
-                commit()
-            }
-
-            clearLivePendingOrder()
-
-            requireActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
-                .replace(R.id.frameLayoutId, DashboardFragment())
-                .commit()
+            updateLocalOrderStatus(
+                if (success) OrderStatusCode.DELIVERED else OrderStatusCode.FAILED
+            )
+            endPendingOrder()
         }
+    }
+
+    private fun endPendingOrder() {
+        with(dataPref.edit()) {
+            remove(getString(R.string.sh_pending_order))
+            commit()
+        }
+
+        clearLivePendingOrder()
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+            .replace(R.id.frameLayoutId, DashboardFragment())
+            .commit()
     }
 
     private fun updateLocalOrderStatus(statusId: Long) {

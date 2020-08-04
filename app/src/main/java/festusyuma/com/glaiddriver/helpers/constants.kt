@@ -59,6 +59,7 @@ class OrderStatusCode {
         const val ON_THE_WAY: Long = 3
         const val DELIVERED: Long = 4
         const val PENDING_PAYMENT: Long = 5
+        const val FAILED: Long = 6
 
         fun all(): List<Long> {
             return listOf(PENDING, DRIVER_ASSIGNED, ON_THE_WAY, DELIVERED)
