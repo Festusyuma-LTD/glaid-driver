@@ -75,12 +75,12 @@
     <string name="paid">Paid!</string>
     <string name="chidozie_henry">Chidozie Henry</string>
     <string name="awaiting_payment">Awaiting Payment</string>
-    <string name="fee_is">fee is</string>
+    <string name="fee_is">Fee is &#8358;%1$s</string>
     <string name="_9000">₦9000</string>
     <string name="payment_type">Payment Type</string>
     <string name="card">Card</string>
     <string name="confirm_payment">Confirm Payment</string>
-    <string name="order_number">Order number:</string>
+    <string name="order_number">Order number: %1$s</string>
     <string name="_12134526">12134526</string>
     <string name="_12_30_am_3_3_2020">12:30 AM - 3/3/2020</string>
     <string name="price">Price (₦)</string>
@@ -189,4 +189,5 @@
     <string name="reroute">Reroute</string>
     <string name="failed">Failed</string>
     <string name="success">Success</string>
+    <string name="app_logo">app_logo</string>
 </resources>

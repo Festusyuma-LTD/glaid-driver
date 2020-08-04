@@ -168,6 +168,9 @@ class Dashboard {
             LocalDateTime.parse(timeJson)
         }
 
+        val timeJson = data.getString("created")
+        val created = LocalDateTime.parse(timeJson)
+
         return Order(
             customer,
             paymentMethod,
@@ -185,7 +188,8 @@ class Dashboard {
             driverRating = driverRating,
             customerRating = customerRating,
             tripStarted = tripStarted,
-            tripEnded = tripEnded
+            tripEnded = tripEnded,
+            created = created
         )
     }
 }

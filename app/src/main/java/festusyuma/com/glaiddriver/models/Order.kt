@@ -19,5 +19,6 @@ data class Order (
     var customerRating: Double? = null,
     var id: Long? = null,
     var tripStarted: LocalDateTime? = null,
-    var tripEnded: LocalDateTime? = null
+    var tripEnded: LocalDateTime? = null,
+    var created: LocalDateTime? = null
 )

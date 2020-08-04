@@ -75,6 +75,7 @@ class PaymentType {
 
         const val WALLET_TEXT = "Glaid Wallet"
         const val CASH_TEXT = "Cash"
+        const val CARD_TEXT = "Cash"
 
         fun all(): List<String> {
             return listOf(CARD, WALLET, CASH)

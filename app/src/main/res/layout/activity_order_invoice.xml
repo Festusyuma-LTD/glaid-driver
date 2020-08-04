@@ -95,123 +95,71 @@
                 android:layout_height="20dp"
                 android:background="#f6f6f6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <View
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/paymentCard"
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="20dp"
                 android:background="@color/colorPrimaryDark"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/top" />
+                app:layout_constraintTop_toBottomOf="@+id/top">
 
-            <TextView
-                android:id="@+id/paymentStatusText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                
-                android:layout_marginTop="20dp"
-                android:text="@string/awaiting_payment"
-                android:textColor="#9B72B3"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/paymentCard"
-                app:layout_constraintTop_toBottomOf="@+id/top" />
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/fee_is"
-                android:textColor="#EDE5F2"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/paymentStatusText"
-                app:layout_constraintTop_toBottomOf="@+id/paymentStatusText" />
+                <TextView
+                    android:id="@+id/paymentStatusText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/awaiting_payment"
+                    android:textColor="#9B72B3"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/paymentCard"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0"/>
 
-            <TextView
-                android:id="@+id/feeCost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                
-                android:text="@string/_9000"
-                android:textColor="#EDE5F2"
-                android:textSize="12sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
-                app:layout_constraintStart_toEndOf="@+id/textView6" />
+                <TextView
+                    android:id="@+id/paymentAmount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/fee_is"
+                    android:textColor="#EDE5F2"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@+id/paymentStatusText"
+                    app:layout_constraintTop_toBottomOf="@+id/paymentStatusText" />
 
-            <TextView
-                android:id="@+id/textView21"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/payment_type"
-                android:textColor="#9B72B3"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/textView6"
-                app:layout_constraintTop_toBottomOf="@+id/textView6"
-                tools:ignore="SmallSp" />
+                <TextView
+                    android:id="@+id/paymentTypeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/payment_type"
+                    android:textColor="#9B72B3"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="@+id/paymentAmount"
+                    app:layout_constraintTop_toBottomOf="@+id/paymentAmount"
+                    tools:ignore="SmallSp" />
 
-            <TextView
-                android:id="@+id/paymentType"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="@string/card"
-                android:textColor="#EDE5F2"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/textView21"
-                app:layout_constraintTop_toBottomOf="@+id/textView21"
-                app:lineHeight="14sp" />
-
-            <TextView
-                android:id="@+id/confirmpayment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                
-                android:layout_marginBottom="20dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="confirmPayment"
-                android:text="@string/confirm_payment"
-                android:textColor="@color/white"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/paymentCard"
-                app:layout_constraintEnd_toEndOf="@+id/paymentCard" />
-
-            <ImageView
-                android:id="@+id/confrimImg"
-                android:layout_width="19dp"
-                android:layout_height="19dp"
-                android:layout_marginEnd="4dp"
-                
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="confirmPayment"
-                app:layout_constraintBottom_toBottomOf="@+id/confirmpayment"
-                app:layout_constraintEnd_toStartOf="@+id/confirmpayment"
-                app:layout_constraintTop_toTopOf="@+id/confirmpayment"
-                app:srcCompat="@drawable/ic_tick_text"
-                android:contentDescription="@string/todo" />
-
-            <ImageView
-                android:id="@+id/paid_banner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/paymentCard"
-                app:layout_constraintEnd_toEndOf="@+id/paymentCard"
-                app:layout_constraintTop_toTopOf="@+id/paymentCard"
-                app:srcCompat="@drawable/paid_banner"
-                android:contentDescription="@string/todo" />
+                <TextView
+                    android:id="@+id/paymentType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/card"
+                    android:textColor="#EDE5F2"
+                    android:textSize="12sp"
+                    app:layout_constraintStart_toStartOf="@+id/paymentTypeLabel"
+                    app:layout_constraintTop_toBottomOf="@+id/paymentTypeLabel"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:lineHeight="14sp" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <View
                 android:id="@+id/top2"
@@ -223,43 +171,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/paymentCard" />
 
-            <View
-                android:id="@+id/divider8"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="100dp"
-                android:background="@drawable/ic_glaidline"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/top2" />
-
             <ImageView
-                android:id="@+id/imageView20"
-                android:layout_width="102dp"
-                android:layout_height="87dp"
-                app:layout_constraintBottom_toTopOf="@+id/divider8"
+                android:id="@+id/glaidLogo"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                app:layout_constraintDimensionRatio="H, 1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/top2"
                 app:srcCompat="@drawable/ic_glaid_order_inv"
-                android:contentDescription="@string/todo" />
+                android:contentDescription="@string/app_logo" />
 
             <View
-                android:id="@+id/divider10"
+                android:id="@+id/divider8"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginTop="55dp"
+                android:layout_height="1dp"
                 android:background="@drawable/ic_glaidline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider8" />
+                app:layout_constraintTop_toBottomOf="@+id/glaidLogo" />
 
             <TextView
-                android:id="@+id/textView29"
+                android:id="@+id/orderNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                
+                android:layout_marginTop="10dp"
                 android:text="@string/order_number"
                 android:textColor="#808080"
                 android:textSize="12sp"
@@ -268,89 +205,121 @@
                 app:layout_constraintTop_toBottomOf="@+id/divider8" />
 
             <TextView
-                android:id="@+id/orderNo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                
-                android:text="@string/_12134526"
-                android:textColor="#808080"
-                android:textSize="12sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView29"
-                app:layout_constraintStart_toEndOf="@+id/textView29" />
-
-            <TextView
                 android:id="@+id/orderTimeAndDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                
-                android:text="@string/_12_30_am_3_3_2020"
+                tools:text="@string/_12_30_am_3_3_2020"
                 android:textColor="#808080"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider10"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider8" />
 
-            <ImageView
-                android:id="@+id/imageView25"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
+            <View
+                android:id="@+id/divider10"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/ic_glaidline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider10"
-                app:srcCompat="@drawable/invoice_header"
+                app:layout_constraintTop_toBottomOf="@+id/orderNumber" />
+
+            <View
+                android:id="@+id/imageView25"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/priceLabel"
+                app:layout_constraintStart_toStartOf="@+id/gasTypeLabel"
+                app:layout_constraintTop_toTopOf="@+id/gasTypeLabel"
+                app:layout_constraintBottom_toBottomOf="@+id/gasTypeLabel"
+                android:background="@drawable/invoice_header"
                 android:contentDescription="@string/todo" />
 
             <TextView
-                android:id="@+id/textView34"
+                android:id="@+id/gasTypeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                
-                android:gravity="center|start"
-                android:text="@string/price"
-                android:textColor="#808080"
-                android:textSize="12sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView33"
-                app:layout_constraintEnd_toEndOf="@+id/imageView25"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView33" />
-
-            <TextView
-                android:id="@+id/textView33"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center|start"
-                android:text="@string/quantity"
-                android:textColor="#808080"
-                android:textSize="12sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView32"
-                app:layout_constraintEnd_toStartOf="@+id/textView34"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textView32" />
-
-            <TextView
-                android:id="@+id/textView32"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                
-                android:gravity="center|start"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="30dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
                 android:text="@string/item"
                 android:textColor="#808080"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView25"
-                app:layout_constraintEnd_toStartOf="@+id/textView33"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="spread_inside"
-                app:layout_constraintStart_toStartOf="@+id/imageView25"
-                app:layout_constraintTop_toTopOf="@+id/imageView25" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider10"/>
+
+            <TextView
+                android:id="@+id/quantityLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/quantity"
+                android:textColor="#808080"
+                android:textSize="12sp"
+                app:layout_constraintTop_toTopOf="@+id/gasTypeLabel"
+                app:layout_constraintBottom_toBottomOf="@+id/gasTypeLabel"
+                app:layout_constraintStart_toEndOf="@+id/gasTypeLabel"
+                app:layout_constraintEnd_toStartOf="@+id/priceLabel"/>
+
+            <TextView
+                android:id="@+id/priceLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@string/price"
+                android:textColor="#808080"
+                android:textSize="12sp"
+                app:layout_constraintHorizontal_bias="0.3"
+                app:layout_constraintTop_toTopOf="@+id/quantityLabel"
+                app:layout_constraintBottom_toBottomOf="@+id/quantityLabel"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/gasType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:gravity="center|start"
+                android:text="@string/diesel"
+                android:textColor="#808080"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/gasTypeLabel"
+                app:layout_constraintTop_toBottomOf="@+id/gasTypeLabel" />
+
+            <TextView
+                android:id="@+id/itemQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center|start"
+                android:text="@string/_10_liters"
+                android:textColor="#808080"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/quantityLabel"
+                app:layout_constraintTop_toBottomOf="@+id/quantityLabel"
+                app:layout_constraintTop_toTopOf="@+id/gasType"
+                app:layout_constraintBottom_toBottomOf="@+id/gasType"/>
+
+            <TextView
+                android:id="@+id/orderPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:gravity="center|start"
+                android:text="@string/_8000"
+                android:textColor="#808080"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="@+id/priceLabel"
+                app:layout_constraintTop_toBottomOf="@+id/priceLabel"
+                app:layout_constraintTop_toTopOf="@+id/itemQuantity"
+                app:layout_constraintBottom_toBottomOf="@+id/itemQuantity" />
 
             <View
                 android:id="@+id/divider11"
@@ -365,40 +334,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageView25" />
-
-            <TextView
-                android:id="@+id/item"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:gravity="center|start"
-                android:text="@string/diesel"
-                android:textColor="#808080"
-                android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/textView32"
-                app:layout_constraintTop_toBottomOf="@+id/imageView25" />
-
-            <TextView
-                android:id="@+id/itemQuantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center|start"
-                android:text="@string/_10_liters"
-                android:textColor="#808080"
-                android:textSize="12sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/item"
-                app:layout_constraintStart_toStartOf="@+id/textView33" />
-
-            <TextView
-                android:id="@+id/orderPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center|start"
-                android:text="@string/_8000"
-                android:textColor="#808080"
-                android:textSize="12sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/itemQuantity"
-                app:layout_constraintStart_toStartOf="@+id/textView34" />
 
             <View
                 android:id="@+id/divider12"
