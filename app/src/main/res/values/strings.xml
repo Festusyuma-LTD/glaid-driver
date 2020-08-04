@@ -190,4 +190,5 @@
     <string name="failed">Failed</string>
     <string name="success">Success</string>
     <string name="app_logo">app_logo</string>
+    <string name="total">Total</string>
 </resources>

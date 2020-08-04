@@ -324,83 +324,63 @@
             <View
                 android:id="@+id/divider11"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="44dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="20dp"
                 android:background="@drawable/ic_glaidline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView25" />
-
-            <View
-                android:id="@+id/divider12"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="92dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@drawable/ic_glaidline"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider11" />
+                app:layout_constraintTop_toBottomOf="@+id/gasType" />
 
             <TextView
-                android:id="@+id/textView38"
+                android:id="@+id/subTotalTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="30dp"
-                
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/subtotal"
                 android:textColor="#333333"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/introMessage"
-                app:layout_constraintStart_toStartOf="@+id/divider11"
-                app:layout_constraintTop_toBottomOf="@+id/divider11"
-                app:layout_constraintVertical_chainStyle="packed" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider11" />
 
             <TextView
-                android:id="@+id/introMessage"
+                android:id="@+id/deliveryPriceTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/delivery"
                 android:textColor="#808080"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@+id/textView40"
-                app:layout_constraintStart_toStartOf="@+id/textView38"
-                app:layout_constraintTop_toBottomOf="@+id/textView38" />
+                app:layout_constraintStart_toStartOf="@+id/subTotalTxt"
+                app:layout_constraintTop_toBottomOf="@+id/subTotalTxt" />
 
             <TextView
-                android:id="@+id/textView40"
+                android:id="@+id/taxPriceTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:text="@string/tax"
                 android:textColor="#808080"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/divider12"
-                app:layout_constraintStart_toStartOf="@+id/introMessage"
-                app:layout_constraintTop_toBottomOf="@+id/introMessage" />
+                app:layout_constraintStart_toStartOf="@+id/deliveryPriceTxt"
+                app:layout_constraintTop_toBottomOf="@+id/deliveryPriceTxt" />
 
             <TextView
                 android:id="@+id/subTotal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="30dp"
-                
                 android:text="@string/_8000"
                 android:textColor="#333333"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/deliveryCost"
-                app:layout_constraintEnd_toEndOf="@+id/divider11"
-                app:layout_constraintTop_toBottomOf="@+id/divider11" />
+                app:layout_constraintTop_toTopOf="@+id/subTotalTxt"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/subTotalTxt" />
 
             <TextView
                 android:id="@+id/deliveryCost"
@@ -409,9 +389,9 @@
                 android:text="@string/_500"
                 android:textColor="#808080"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@+id/taxCost"
+                app:layout_constraintTop_toTopOf="@+id/deliveryPriceTxt"
                 app:layout_constraintStart_toStartOf="@+id/subTotal"
-                app:layout_constraintTop_toBottomOf="@+id/subTotal" />
+                app:layout_constraintBottom_toBottomOf="@+id/deliveryPriceTxt" />
 
             <TextView
                 android:id="@+id/taxCost"
@@ -420,36 +400,32 @@
                 android:text="@string/_500"
                 android:textColor="#808080"
                 android:textSize="12sp"
-                app:layout_constraintBottom_toTopOf="@+id/divider12"
+                app:layout_constraintTop_toTopOf="@+id/taxPriceTxt"
                 app:layout_constraintStart_toStartOf="@+id/deliveryCost"
-                app:layout_constraintTop_toBottomOf="@+id/deliveryCost" />
+                app:layout_constraintTop_toBottomOf="@+id/taxPriceTxt" />
 
             <View
-                android:id="@+id/divider13"
+                android:id="@+id/divider12"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="20dp"
                 android:background="@drawable/ic_glaidline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider12" />
+                app:layout_constraintTop_toBottomOf="@+id/taxPriceTxt" />
 
             <TextView
-                android:id="@+id/textView44"
+                android:id="@+id/totalTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:layout_marginStart="20dp"
-                
-                android:text="@string/total_outstanding"
+                android:text="@string/total"
                 android:textColor="#333333"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/divider13"
-                app:layout_constraintStart_toStartOf="@+id/divider12"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/divider12"
                 app:lineHeight="21sp" />
 
@@ -458,19 +434,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                
                 android:text="@string/_9000"
                 android:textColor="#333333"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView44"
-                app:layout_constraintEnd_toEndOf="@+id/divider12"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/totalTxt"
+                app:layout_constraintBottom_toBottomOf="@+id/totalTxt"
                 app:lineHeight="21sp" />
+
+            <View
+                android:id="@+id/divider13"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_glaidline"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalTxt" />
 
             <View
                 android:id="@+id/divider14"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/ic_glaidline"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -478,12 +465,11 @@
                 app:layout_constraintTop_toBottomOf="@+id/divider13" />
 
             <TextView
-                android:id="@+id/textView46"
+                android:id="@+id/billedToTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
                 android:text="@string/billed_to"
                 android:textColor="#808080"
@@ -498,12 +484,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="20dp"
-                
                 android:text="@string/chidozie_henry"
                 android:textColor="#808080"
                 android:textSize="12sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/textView46"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/billedToTxt"
+                app:layout_constraintBottom_toBottomOf="@id/billedToTxt"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

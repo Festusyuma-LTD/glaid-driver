@@ -43,15 +43,15 @@
                 app:layout_constraintTop_toTopOf="@+id/view2" />
 
             <TextView
-                android:id="@+id/introMessage"
+                android:id="@+id/deliveryPriceTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/sfpro"
                 android:text="@string/home_intro_text"
                 android:textColor="#ffff"
                 android:textSize="12sp"
-                app:layout_constraintStart_toStartOf="@+id/textView38"
-                app:layout_constraintTop_toBottomOf="@+id/textView38" />
+                app:layout_constraintStart_toStartOf="@+id/subTotalTxt"
+                app:layout_constraintTop_toBottomOf="@+id/subTotalTxt" />
         </LinearLayout>
 
         <ImageView
