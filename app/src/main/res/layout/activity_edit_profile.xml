@@ -67,13 +67,13 @@
                 android:layout_height="145dp"
                 android:layout_marginTop="8dp"
                 android:contentDescription="@string/todo"
+                android:src="@drawable/pic"
                 app:civ_border_color="@color/colorPrimary"
                 app:civ_border_width="1.2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/pic" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/dividerLine"

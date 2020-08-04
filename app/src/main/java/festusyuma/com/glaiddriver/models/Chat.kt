@@ -22,11 +22,12 @@ class ChatMessage(
     val text: String,
     val senderId: String,
     val recieverId: String,
-    val timeStamp: Timestamp?
+    val timeStamp: Timestamp?,
+    val dateString: String
 ) : Parcelable {
-    constructor() : this("", "", "", null)
+    constructor() : this("", "", "", null, "")
 
     override fun toString(): String {
-        return "senderId: $senderId \n recieverId: $recieverId \n timeStamp: $timeStamp \n text: $text"
+        return "senderId: $senderId \n recieverId: $recieverId \n timeStamp: $dateString \n text: $text"
     }
 }

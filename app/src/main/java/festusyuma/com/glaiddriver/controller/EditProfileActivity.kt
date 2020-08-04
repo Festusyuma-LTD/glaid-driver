@@ -59,6 +59,7 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     fun logout(view: View? = null) {
+        view?.startAnimation(buttonClickAnim)
         Authentication(this).logout()
     }
 
