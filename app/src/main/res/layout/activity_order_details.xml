@@ -49,7 +49,7 @@
 
     <ScrollView
         android:id="@+id/orderDetailScroll"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -68,34 +68,24 @@
                 android:id="@+id/mapScreenShot"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:background="#EA1F1F"
+                android:background="#f6f6f6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <View
-                android:id="@+id/details"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#fff"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mapScreenShot" />
 
             <TextView
                 android:id="@+id/quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
                 tools:text="1000 Liters"
                 android:textColor="#333333"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/details"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mapScreenShot" />
+                app:layout_constraintTop_toBottomOf="@+id/mapScreenShot"/>
 
             <TextView
                 android:id="@+id/gasType"
@@ -104,155 +94,165 @@
                 android:layout_marginEnd="20dp"
                 tools:text="Standard Oil"
                 android:textColor="#808080"
-                app:layout_constraintBaseline_toBaselineOf="@+id/quantity"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/quantity"
+                app:layout_constraintBottom_toBottomOf="@+id/quantity"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-            <View
+            <LinearLayout
                 android:id="@+id/locationAndTimeView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp"
                 android:background="#f6f6f6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/details" />
+                app:layout_constraintTop_toBottomOf="@+id/quantity" >
 
-            <TextView
-                android:id="@+id/locationAndTimeText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                
-                android:text="@string/location_time"
-                android:textColor="#808080"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/locationAndTimeView"
-                app:layout_constraintStart_toStartOf="@+id/locationAndTimeView"
-                app:layout_constraintTop_toBottomOf="@+id/details" />
-
-            <View
-                android:id="@+id/locationAndTimeDetails"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="#fff"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/locationAndTimeView" />
+                <TextView
+                    android:id="@+id/locationAndTimeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/location_time"
+                    android:textColor="#808080"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/tripSummary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/locationAndTimeView"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/locationAndTimeView">
+
+                <ImageView
+                    android:id="@+id/caretOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/location"
+                    app:layout_constraintTop_toTopOf="@+id/location"
+                    app:layout_constraintBottom_toBottomOf="@+id/location"
+                    app:srcCompat="@drawable/ic_circle_location"
+                    android:contentDescription="@string/dot" />
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/from_the_nearest_fuel_station"
+                    android:textColor="#333333"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/caretOne"
+                    app:layout_constraintEnd_toStartOf="@+id/locationTime"/>
+
+                <TextView
+                    android:id="@+id/locationTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    tools:text="10:30 AM"
+                    android:textColor="#333333"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/location"
+                    app:layout_constraintBottom_toBottomOf="@+id/location"/>
+
+                <View
+                    android:id="@+id/tripSummaryDivider"
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="#E0E0E0"
+                    app:layout_constraintStart_toStartOf="@id/location"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/location"
+                    app:layout_constraintBottom_toTopOf="@+id/destination"/>
+
+                <ImageView
+                    android:id="@+id/caretTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/destination"
+                    app:layout_constraintTop_toTopOf="@+id/destination"
+                    app:layout_constraintBottom_toBottomOf="@+id/destination"
+                    app:srcCompat="@drawable/ic_location"
+                    android:contentDescription="@string/dot" />
+
+                <TextView
+                    android:id="@+id/destination"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/from_the_nearest_fuel_station"
+                    android:textColor="#333333"
+                    app:layout_constraintTop_toBottomOf="@+id/tripSummaryDivider"
+                    app:layout_constraintStart_toEndOf="@+id/caretTwo"
+                    app:layout_constraintEnd_toStartOf="@+id/destinationTime"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <TextView
+                    android:id="@+id/destinationTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="20dp"
+                    tools:text="10:30 AM"
+                    android:textColor="#333333"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/destination"
+                    app:layout_constraintBottom_toBottomOf="@+id/destination"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="0dp"
+                    android:background="#FFD2CC"
+                    app:layout_constraintTop_toBottomOf="@+id/caretOne"
+                    app:layout_constraintBottom_toTopOf="@id/caretTwo"
+                    app:layout_constraintStart_toStartOf="@id/caretOne"
+                    app:layout_constraintEnd_toEndOf="@id/caretOne"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.20" />
-
-            <View
-                android:id="@+id/divider7"
-                android:layout_width="0dp"
-                android:layout_height="3dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintBottom_toBottomOf="@+id/locationAndTimeDetails"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/locationAndTimeView" />
-
-            <TextView
-                android:id="@+id/location"
-                android:layout_width="wrap_content"
-                android:layout_height="22dp"
-                android:text="@string/from_the_nearest_fuel_station"
-                android:textColor="#333333"
-                app:layout_constraintBottom_toTopOf="@+id/divider7"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/locationAndTimeView" />
-
-            <TextView
-                android:id="@+id/destination"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="Customer location"
-                android:textColor="#333333"
-                app:layout_constraintBottom_toBottomOf="@+id/locationAndTimeDetails"
-                app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/divider7" />
-
-            <TextView
-                android:id="@+id/locationTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                
-                android:text="10:30 AM"
-                android:textColor="#333333"
-                app:layout_constraintBottom_toTopOf="@+id/divider7"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/locationAndTimeDetails" />
-
-            <TextView
-                android:id="@+id/destinationTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                
-                android:text="12:45 PM"
-                android:textColor="#333333"
-                app:layout_constraintBottom_toBottomOf="@+id/locationAndTimeDetails"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider7" />
-
-            <View
+            <LinearLayout
                 android:id="@+id/paymentView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp"
                 android:background="#f6f6f6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/locationAndTimeDetails" />
+                app:layout_constraintTop_toBottomOf="@+id/tripSummary" >
 
-            <TextView
-                android:id="@+id/paymentText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                
-                android:text="@string/payment"
-                android:textColor="#808080"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/paymentView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/locationAndTimeDetails" />
-
-            <View
-                android:id="@+id/paymentDetail"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="#fff"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/paymentView" />
+                <TextView
+                    android:id="@+id/paymentText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/payment"
+                    android:textColor="#808080"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/paymentCost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:layout_marginStart="20dp"
                 tools:text="N80,000"
                 android:textColor="#333333"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/paymentDetail"
-                app:layout_constraintStart_toStartOf="@+id/paymentDetail"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/paymentView" />
 
             <Button
@@ -265,67 +265,59 @@
                 android:text="@string/view_invoice"
                 android:textAllCaps="false"
                 android:textColor="#4E007C"
-                app:layout_constraintBottom_toBottomOf="@+id/paymentDetail"
-                app:layout_constraintEnd_toEndOf="@+id/paymentDetail"
-                app:layout_constraintTop_toBottomOf="@+id/paymentView" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/paymentCost"
+                app:layout_constraintBottom_toBottomOf="@+id/paymentCost" />
 
-            <View
+            <LinearLayout
                 android:id="@+id/statusView"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="10dp"
                 android:background="#f6f6f6"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/paymentDetail" />
+                app:layout_constraintTop_toBottomOf="@+id/paymentCost" >
 
-            <TextView
-                android:id="@+id/statusText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="@string/status"
-                android:textColor="#808080"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/statusView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/paymentDetail" />
-
-            <View
-                android:id="@+id/statusDetail"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginBottom="20dp"
-                android:background="#fff"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/statusView" />
+                <TextView
+                    android:id="@+id/statusText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:text="@string/status"
+                    android:textColor="#808080"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/statusType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
                 android:text="@string/delivered"
                 android:textColor="#333333"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@+id/statusDetail"
-                app:layout_constraintStart_toStartOf="@+id/statusDetail"
-                app:layout_constraintTop_toTopOf="@+id/statusDetail" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/statusView" />
 
             <RatingBar
                 android:visibility="gone"
                 android:id="@+id/customerRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.RatingBar.Small"
                 android:layout_marginEnd="20dp"
+                android:isIndicator="true"
                 android:textAllCaps="false"
                 android:textColor="#4E007C"
-                app:layout_constraintBottom_toBottomOf="@+id/statusDetail"
-                app:layout_constraintEnd_toEndOf="@+id/statusDetail"
-                app:layout_constraintTop_toTopOf="@+id/statusDetail" />
+                android:numStars="5"
+                android:stepSize="0.5"
+                app:layout_constraintTop_toTopOf="@+id/statusType"
+                app:layout_constraintBottom_toBottomOf="@+id/statusType"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
             <Button
                 android:id="@+id/rateCustomerBtn"
@@ -337,57 +329,9 @@
                 android:text="@string/rate_customer"
                 android:textAllCaps="false"
                 android:textColor="#4E007C"
-                app:layout_constraintBottom_toBottomOf="@+id/statusDetail"
-                app:layout_constraintEnd_toEndOf="@+id/statusDetail"
-                app:layout_constraintTop_toTopOf="@+id/statusDetail" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#EDE5F2"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.1" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline5"
-                android:layout_width="2dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_glaidline"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.6" />
-
-            <ImageView
-                android:id="@+id/imageView23"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/guideline5"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/locationAndTimeDetails"
-                app:srcCompat="@drawable/ic_circle_location" />
-
-            <ImageView
-                android:id="@+id/imageView24"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:alpha="0.1"
-                app:layout_constraintBottom_toBottomOf="@+id/locationAndTimeDetails"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintStart_toStartOf="@+id/locationAndTimeDetails"
-                app:layout_constraintTop_toTopOf="@+id/guideline5"
-                app:srcCompat="@drawable/ic_location" />
-
-            <View
-                android:id="@+id/divider9"
-                android:layout_width="2dp"
-                android:layout_height="0dp"
-                android:background="#EDE5F2"
-                app:layout_constraintBottom_toTopOf="@+id/imageView24"
-                app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView23" />
-
+                app:layout_constraintTop_toTopOf="@+id/statusType"
+                app:layout_constraintBottom_toBottomOf="@+id/statusType"
+                app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
