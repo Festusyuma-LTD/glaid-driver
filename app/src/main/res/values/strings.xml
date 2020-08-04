@@ -112,6 +112,7 @@
     <string name="complete_delivery">Complete Delivery</string>
     <string name="you_have_a_new_order">You have a new order!</string>
     <string name="starting_delivery">Starting Delivery....</string>
+    <string name="payment_pending">Payment Pending....</string>
     <string name="splash_icon">splash_icon</string>
 
     <string name="sh_user_details">userDetails</string>
@@ -186,4 +187,6 @@
     <string name="delivery_complete">Delivery Complete</string>
     <string name="fuel_icon">fuel icon</string>
     <string name="reroute">Reroute</string>
+    <string name="failed">Failed</string>
+    <string name="success">Success</string>
 </resources>

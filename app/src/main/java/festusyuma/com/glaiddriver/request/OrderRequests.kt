@@ -164,4 +164,43 @@ class OrderRequests(private val c: Activity): Authentication(c) {
             }
         }
     }
+
+    fun confirmPayment(success: Boolean, callback: () -> Unit) {
+        if (!operationRunning) {
+            setLoading(true)
+
+            getAuthentication { authorization ->
+                val req = object : JsonObjectRequest(
+                    Method.GET,
+                    if (success) Api.CONFIRM_PAYMENT else Api.PAYMENT_FAILED,
+                    null,
+                    Response.Listener { response ->
+                        if (response.getInt("status") == 200) {
+                            callback()
+                        }else showError(response.getString("message"))
+
+                        setLoading(false)
+                    },
+
+                    Response.ErrorListener { response->
+                        if (response.networkResponse != null) {
+                            if (response.networkResponse.statusCode == 403) {
+                                logout()
+                            }else showError(ERROR_OCCURRED_MSG)
+                        }else showError(CHECK_YOUR_INTERNET)
+
+                        setLoading(false)
+                    }
+                ){
+                    override fun getHeaders(): MutableMap<String, String> {
+                        return authorization
+                    }
+                }
+
+                req.retryPolicy = defaultRetryPolicy
+                req.tag = "rate_driver"
+                queue.add(req)
+            }
+        }
+    }
 }

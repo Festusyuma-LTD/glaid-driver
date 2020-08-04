@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.firestore.*
+import com.google.gson.reflect.TypeToken
 
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.*
@@ -74,14 +75,22 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                             if (status != null) {
                                 if (status == OrderStatusCode.DRIVER_ASSIGNED) {
                                     OrderRequests(requireActivity()).getOrderDetails(orderId) {
+                                        val typeToken = object: TypeToken<MutableList<Order>>(){}.type
                                         val order = Dashboard().convertOrderJSonToOrder(it)
+                                        val ordersJson = dataPref.getString(getString(R.string.sh_orders), null)
+
+                                        val orders = if (ordersJson != null) {
+                                            gson.fromJson(ordersJson, typeToken)
+                                        }else mutableListOf<Order>()
+
+                                        orders.add(0, order)
 
                                         with(dataPref.edit()) {
                                             putString(getString(R.string.sh_pending_order), gson.toJson(order))
+                                            putString(getString(R.string.sh_orders), gson.toJson(orders))
                                             commit()
                                         }
 
-                                        Log.v(FIRE_STORE_LOG_TAG, "order found ${order.id}")
                                         startPendingOrderFragment()
                                     }
 
