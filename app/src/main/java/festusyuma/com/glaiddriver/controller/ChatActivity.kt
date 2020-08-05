@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.Query
 import com.xwray.groupie.GroupAdapter
@@ -24,7 +25,7 @@ import festusyuma.com.glaiddriver.models.fs.FSChatMessage
 import festusyuma.com.glaiddriver.requestdto.Chat
 
 class ChatActivity : AppCompatActivity() {
-    //    lateinit var chatAdapter: ChatAdapter
+
     private var user: User? = null
     private lateinit var adapter: GroupAdapter<GroupieViewHolder>
 
@@ -68,16 +69,8 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun listenForMessages() {
-        val messagesReference = db.collection(getString(R.string.fs_chat_rooms))
-            .document(
-                if (chat.isOrder) {
-                    getString(R.string.fs_order_messages)
-                } else getString(R.string.fs_support_messages)
-            )
-            .collection(getString(R.string.fs_messages))
+        getChatRoomQuery()
             .orderBy("timestamp", Query.Direction.ASCENDING)
-
-        messagesReference
             .addSnapshotListener { snapshots, error ->
                 if (error != null) {
                     Log.w(FIRE_STORE_LOG_TAG, "listen:error", error)
@@ -122,13 +115,7 @@ class ChatActivity : AppCompatActivity() {
         if (message.isBlank()) return
         val chatMessage = FSChatMessage(chat.sender, message)
 
-        db.collection(getString(R.string.fs_chat_rooms))
-            .document(
-                if (chat.isOrder) {
-                    getString(R.string.fs_order_messages)
-                } else getString(R.string.fs_support_messages)
-            )
-            .collection(getString(R.string.fs_messages))
+        getChatRoomQuery()
             .add(chatMessage)
             .addOnSuccessListener {
                 Log.v(FIRE_STORE_LOG_TAG, "message sent")
@@ -139,6 +126,16 @@ class ChatActivity : AppCompatActivity() {
 
         chatMessageBox.text.clear()
         chatView.scrollToPosition(adapter.itemCount - 1)
+    }
+
+    private fun getChatRoomQuery(): CollectionReference {
+        val chatRoomPath = if (chat.isOrder) {
+            getString(R.string.fs_order_messages)
+        } else getString(R.string.fs_support_messages)
+
+        return db.collection(chatRoomPath)
+            .document(chat.chatRoomId)
+            .collection(getString(R.string.fs_messages))
     }
 
 }
