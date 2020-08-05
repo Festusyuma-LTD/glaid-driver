@@ -8,5 +8,5 @@ data class FSChatMessage (
     val message: String? = null,
 
     @ServerTimestamp
-    val time: Timestamp? = null
+    val timestamp: Timestamp? = Timestamp.now()
 )

@@ -99,7 +99,7 @@
     <string name="sign_up">Sign up</string>
     <string name="did_not_receive_an_otp">Did not receive an OTP?</string>
     <string name="resend">Resend</string>
-    <string name="chat_with_henry">Chat With Henry</string>
+    <string name="chat_with">Chat With Henry</string>
     <string name="type_a_message">Type a message</string>
     <string name="send_otp">Send OTP</string>
     <string name="send_mail">Send Mail</string>

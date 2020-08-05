@@ -129,13 +129,20 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
 
         val chatId = livePendingOrder.id.value?: return
         val sender = user.email
+        val senderName = user.fullName.capitalizeWords()
         val recipient = livePendingOrder.customer.value?.email?: return
-        val chat = Chat(chatId.toString(), sender, recipient, true)
+        val recipientName = livePendingOrder.customer.value?.fullName?.getFirst()?.capitalizeWords()?: return
+        val chat = Chat(
+            chatId.toString(),
+            sender,
+            senderName,
+            recipient,
+            recipientName,
+            true
+        )
 
         if (chatEmail != null && chatName != null) {
             val intent = Intent(requireActivity(), ChatActivity::class.java)
-            intent.putExtra(CHAT_NAME, chatName)
-            intent.putExtra(CHAT_EMAIL, chatEmail)
             intent.putExtra(CHAT, gson.toJson(chat))
             startActivity(intent)
         }

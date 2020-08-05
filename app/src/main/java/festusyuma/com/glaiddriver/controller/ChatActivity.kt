@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,19 +19,17 @@ import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.adapters.ChatReceiveItem
 import festusyuma.com.glaiddriver.adapters.ChatSendItem
 import festusyuma.com.glaiddriver.helpers.*
-import festusyuma.com.glaiddriver.models.ChatMessage
 import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.fs.FSChatMessage
 import festusyuma.com.glaiddriver.requestdto.Chat
-import kotlinx.android.synthetic.main.activity_chat.*
 
 class ChatActivity : AppCompatActivity() {
     //    lateinit var chatAdapter: ChatAdapter
     private var user: User? = null
-    private val TAG = "ChatActivity"
-    lateinit var apdater: GroupAdapter<GroupieViewHolder>
+    private lateinit var adapter: GroupAdapter<GroupieViewHolder>
 
     private lateinit var chat: Chat
+    private lateinit var chatTitle: TextView
     private lateinit var chatView: RecyclerView
     private lateinit var chatMessageBox: EditText
 
@@ -47,77 +46,67 @@ class ChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
+        chatTitle = findViewById(R.id.chatTitle)
         chatView = findViewById(R.id.chatView)
         chatMessageBox = findViewById(R.id.chatMessageBox)
+        adapter = GroupAdapter()
 
         val chatJson = intent.getStringExtra(CHAT)
         if (chatJson != null) {
             chat = gson.fromJson(chatJson, Chat::class.java)
         }else finish()
 
-        initDriverDetails()
-        //listen for new messages
+        chatTitle.text = getString(R.string.chat_user_name).format(chat.recipientName)
         listenForMessages()
-//        chatAdapter = ChatAdapter(this, DataServices.chatTestBlock)
-        val layoutManager = LinearLayoutManager(this)
 
-        //use beloow for chat+
+        val layoutManager = LinearLayoutManager(this)
         layoutManager.reverseLayout = false
         layoutManager.stackFromEnd = true
+
         chatView.layoutManager = layoutManager
-        chatView.adapter = apdater
-        // for performance when we know the layout sizes wont be changing
-        chatView.setHasFixedSize(true)
+        chatView.adapter = adapter
     }
 
     private fun listenForMessages() {
-        val customerEmail = if (intent.getStringExtra(CHAT_EMAIL) == user?.email) {
-            "customerCare@glaidDriver.com"
-        } else {
-            intent.getStringExtra(CHAT_EMAIL)!!
-        }
-        apdater = GroupAdapter()
-        db.collection("chat_log/${user?.email}/$customerEmail")
-            .orderBy("timeStamp", Query.Direction.ASCENDING)
+        val messagesReference = db.collection(getString(R.string.fs_chat_rooms))
+            .document(
+                if (chat.isOrder) {
+                    getString(R.string.fs_order_messages)
+                } else getString(R.string.fs_support_messages)
+            )
+            .collection(getString(R.string.fs_messages))
+            .orderBy("timestamp", Query.Direction.ASCENDING)
+
+        messagesReference
             .addSnapshotListener { snapshots, error ->
                 if (error != null) {
-                    Log.w(TAG, "listen:error", error)
+                    Log.w(FIRE_STORE_LOG_TAG, "listen:error", error)
                     return@addSnapshotListener
                 }
 
                 for (dc in snapshots!!.documentChanges) {
                     when (dc.type) {
                         DocumentChange.Type.ADDED -> {
-                            val newChat = dc.document.toObject(ChatMessage::class.java)
-                            Log.d(TAG, "New message: $newChat")
-                            //if message is sent by current loggin user
-                            if (newChat.senderId == user?.email) {
-                                apdater.add(ChatSendItem(newChat))
+                            val newChat = dc.document.toObject(FSChatMessage::class.java)
+                            Log.d(FIRE_STORE_LOG_TAG, "New message: $newChat")
+
+                            if (newChat.sender == chat.sender) {
+                                adapter.add(ChatSendItem(newChat))
                             } else {
-                                apdater.add(ChatReceiveItem("friendDetail", newChat))
+                                adapter.add(ChatReceiveItem(newChat))
                             }
-                            //scrool recycler to new message
-                            chatView.scrollToPosition(apdater.itemCount - 1)
+
+                            chatView.scrollToPosition(adapter.itemCount - 1)
                         }
                         DocumentChange.Type.MODIFIED -> {
-                            Log.d(TAG, "Modified message: ${dc.document.data}")
+                            Log.d(FIRE_STORE_LOG_TAG, "Modified message: ${dc.document.data}")
                         }
                         DocumentChange.Type.REMOVED -> {
-                            Log.d(TAG, "Removed message: ${dc.document.data}")
+                            Log.d(FIRE_STORE_LOG_TAG, "Removed message: ${dc.document.data}")
                         }
                     }
                 }
             }
-    }
-
-    private fun initDriverDetails() {
-        user = initDriverDetails(this)
-        chatTitle.text = if (intent.getStringExtra(CHAT_EMAIL) == user?.email) {
-            "Customer Support"
-        } else {
-            getString(R.string.chat_user_name, intent.getStringExtra(CHAT_NAME)!!.getFirst())
-        }
-
     }
 
     fun editBackBtnClick(view: View) {
@@ -149,43 +138,7 @@ class ChatActivity : AppCompatActivity() {
             }
 
         chatMessageBox.text.clear()
-        chatView.scrollToPosition(apdater.itemCount - 1)
-
-        /*val receiverId = if (intent.getStringExtra(CHAT_EMAIL) == user?.email) {
-            "customerCare@glaidDriver.com"
-        } else {
-            intent.getStringExtra(CHAT_EMAIL)!!
-        }
-        val senderId = user!!.email
-        val timeStamp = Timestamp.now()
-        val dateFormat: DateFormat = SimpleDateFormat("hh:mm aa", Locale.getDefault())
-        val dateString: String = dateFormat.format(Date()).toString()
-        val newChat =
-            ChatMessage(
-                chatMessageBox.editableText.toString(),
-                senderId,
-                receiverId,
-                timeStamp,
-                dateString
-            )
-        chatMessageBox.editableText.clear()
-//        Toast.makeText(this, chatMessageBox.editableText, Toast.LENGTH_SHORT).show()
-        db.collection("chat_log/$senderId/$receiverId").add(newChat)
-            .addOnSuccessListener {
-                Log.d(TAG, "$senderId mmessage to $receiverId log: $newChat")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
-        db.collection("chat_log/$receiverId/$senderId").add(newChat)
-            .addOnSuccessListener {
-                Log.d(TAG, "$senderId mmessage to $receiverId log: $newChat")
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error adding document", e)
-            }
-
-        //scrool recycler to new message*/
+        chatView.scrollToPosition(adapter.itemCount - 1)
     }
 
 }
