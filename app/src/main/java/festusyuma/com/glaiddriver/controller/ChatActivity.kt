@@ -152,7 +152,7 @@ class ChatActivity : AppCompatActivity() {
                 Log.w(TAG, "Error adding document", e)
             }
 
-        //scrool recycler to new message
+        //scroll recycler to new message
         chatView.scrollToPosition(apdater.itemCount - 1)
     }
 
