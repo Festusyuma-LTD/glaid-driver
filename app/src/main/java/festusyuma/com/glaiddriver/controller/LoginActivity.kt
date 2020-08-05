@@ -84,6 +84,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun loginBtnClick(view: View) {
+        view.startAnimation(buttonClickAnim)
         if (!operationRunning) {
             setLoading(true)
 
@@ -144,7 +145,6 @@ class LoginActivity : AppCompatActivity() {
             queue.add(request)
         }
 
-        view.startAnimation(buttonClickAnim)
     }
 
     private fun errorOccurred(message: String? = null) {

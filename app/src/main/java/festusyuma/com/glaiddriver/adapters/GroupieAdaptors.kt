@@ -19,7 +19,7 @@ class ChatSendItem(
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 //        Picasso.get().load(friendDetail.photoUrl).into(viewHolder.itemView.chat_send_img)
         viewHolder.itemView.reciever_chatbox.text = chatDetail.text
-        viewHolder.itemView.reciever_time.text = chatDetail.timeStamp.toString()
+        viewHolder.itemView.reciever_time.text = chatDetail.dateString
     }
 
     override fun getLayout() = R.layout.chatbox_reciever
@@ -31,10 +31,10 @@ class ChatRecieveItem(
     private val chatDetail: ChatMessage
 ) : Item() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        Picasso.get().load(friend_img).placeholder(R.drawable.ic_user_light)
-            .error(R.drawable.ic_user_light).into(viewHolder.itemView.senderImg)
+        Picasso.get().load(friend_img).placeholder(R.drawable.pic)
+            .error(R.drawable.pic).into(viewHolder.itemView.senderImg)
         viewHolder.itemView.sender_chatbox.text = chatDetail.text
-        viewHolder.itemView.senderTime.text = chatDetail.timeStamp.toString()
+        viewHolder.itemView.senderTime.text = chatDetail.dateString
 
     }
 
