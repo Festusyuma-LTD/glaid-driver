@@ -2,17 +2,17 @@ package festusyuma.com.glaiddriver.controller
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import festusyuma.com.glaiddriver.R
-import festusyuma.com.glaiddriver.helpers.OrderStatusCode
-import festusyuma.com.glaiddriver.helpers.buttonClickAnim
-import festusyuma.com.glaiddriver.helpers.capitalizeWords
-import festusyuma.com.glaiddriver.helpers.gson
+import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.Order
+import kotlinx.android.synthetic.main.activity_order_details.*
+import org.threeten.bp.format.DateTimeFormatter
 import java.text.NumberFormat
 
 class OrderDetailsActivity : AppCompatActivity() {
@@ -61,6 +61,8 @@ class OrderDetailsActivity : AppCompatActivity() {
         deliveryAddress.text = order.deliveryAddress.address
         amount.text = getString(R.string.formatted_amount).format(numberFormatter.format(order.amount))
         status.text = getDeliveryStatusString(order.statusId)
+        locationTime.text = order.tripStarted?.format(DateTimeFormatter.ofPattern("HH:mm"))
+        destinationTime.text = order.tripEnded?.format(DateTimeFormatter.ofPattern("HH:mm"))
 
         val customerRating = order.customerRating
 
@@ -77,9 +79,11 @@ class OrderDetailsActivity : AppCompatActivity() {
 
     private fun getDeliveryStatusString(statusId: Long): String {
         return when(statusId) {
-            1L -> "Pending"
-            2L -> "Driver assigned"
-            3L -> "On the way"
+            OrderStatusCode.PENDING -> "Pending"
+            OrderStatusCode.DRIVER_ASSIGNED -> "Driver assigned"
+            OrderStatusCode.ON_THE_WAY -> "On the way"
+            OrderStatusCode.PENDING_PAYMENT -> "Pending payment"
+            OrderStatusCode.FAILED -> "Failed"
             else -> "Delivered"
         }
     }

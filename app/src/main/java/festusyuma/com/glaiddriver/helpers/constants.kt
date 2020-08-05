@@ -43,6 +43,9 @@ const val DRIVER_ASSIGNED = "A driver has been assigned to this order"
 const val NO_PENDING_ORDER = "no pending order"
 const val TRIP_STARTED = "trip started"
 const val ORDER_COMPLETED = "order completed"
+const val PAYMENT_COMPLETE_MSG = "Payment Complete"
+const val PENDING_PAYMENT_MSG = "Awaiting Payment"
+const val FAILED_PAYMENT_MSG = "Payment Failed"
 
 const val DRIVER_ASSIGNED_STATUS_CODE = 2L
 const val OUT_FOR_DELIVERY_STATUS_CODE = 3L
@@ -61,9 +64,27 @@ class OrderStatusCode {
         const val DRIVER_ASSIGNED: Long = 2
         const val ON_THE_WAY: Long = 3
         const val DELIVERED: Long = 4
+        const val PENDING_PAYMENT: Long = 5
+        const val FAILED: Long = 6
 
         fun all(): List<Long> {
             return listOf(PENDING, DRIVER_ASSIGNED, ON_THE_WAY, DELIVERED)
+        }
+    }
+}
+
+class PaymentType {
+    companion object {
+        const val CARD = "card"
+        const val WALLET = "wallet"
+        const val CASH = "on_delivery"
+
+        const val WALLET_TEXT = "Glaid Wallet"
+        const val CASH_TEXT = "Cash"
+        const val CARD_TEXT = "Cash"
+
+        fun all(): List<String> {
+            return listOf(CARD, WALLET, CASH)
         }
     }
 }

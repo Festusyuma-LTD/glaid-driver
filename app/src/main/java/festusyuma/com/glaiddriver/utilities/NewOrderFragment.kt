@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat.startForegroundService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.google.gson.reflect.TypeToken
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
 import festusyuma.com.glaiddriver.helpers.*
@@ -23,6 +24,7 @@ import festusyuma.com.glaiddriver.services.LocationService
 
 class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
 
+    private lateinit var order: Order
     private lateinit var livePendingOrder: PendingOrder
     private lateinit var dataPref: SharedPreferences
 
@@ -33,6 +35,7 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     private lateinit var textCustomerButton: Button
     private lateinit var quantity: TextView
     private lateinit var gasType: TextView
+    private lateinit var failedPayment: Button
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -47,8 +50,7 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
         if (dataPref.contains(getString(R.string.sh_pending_order))) {
             val orderJson = dataPref.getString(getString(R.string.sh_pending_order), null)
             if (orderJson != null) {
-                val order = gson.fromJson(orderJson, Order::class.java)
-
+                order = gson.fromJson(orderJson, Order::class.java)
                 livePendingOrder.amount.value = order.amount
                 livePendingOrder.gasType.value = order.gasType
                 livePendingOrder.gasUnit.value = order.gasUnit
@@ -70,6 +72,7 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
         gasType = orderDetails.findViewById(R.id.gasType)
         quantity = orderDetails.findViewById(R.id.quantity)
         deliverButton = requireActivity().findViewById(R.id.deliverButton)
+        failedPayment = requireActivity().findViewById(R.id.paymentFailed)
 
         customerName.text =
             getString(R.string.new_order_customer_name)
@@ -84,12 +87,21 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
         callCustomerButton.setOnClickListener { callCustomer() }
         textCustomerButton.setOnClickListener { chat() }
 
-        if (livePendingOrder.statusId.value == DRIVER_ASSIGNED_STATUS_CODE) {
-            deliverButton.setOnClickListener { startTrip() }
-        }else {
-            deliverButton.text = getString(R.string.complete_delivery)
-            mainOrderMessage.text = getString(R.string.starting_delivery)
-            deliverButton.setOnClickListener { completeTrip() }
+        when (livePendingOrder.statusId.value) {
+            OrderStatusCode.DRIVER_ASSIGNED -> deliverButton.setOnClickListener { startTrip() }
+            OrderStatusCode.DELIVERED -> {
+                deliverButton.text = getString(R.string.complete_delivery)
+                mainOrderMessage.text = getString(R.string.starting_delivery)
+                deliverButton.setOnClickListener { completeTrip() }
+            }
+            OrderStatusCode.PENDING_PAYMENT -> {
+                deliverButton.text = getString(R.string.success)
+                mainOrderMessage.text = getString(R.string.payment_pending)
+                failedPayment.visibility = View.VISIBLE
+
+                deliverButton.setOnClickListener { confirmPayment(true) }
+                failedPayment.setOnClickListener { confirmPayment(false) }
+            }
         }
     }
 
@@ -119,6 +131,7 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
             mainOrderMessage.text = getString(R.string.starting_delivery)
             startLocationService()
             deliverButton.setOnClickListener { completeTrip() }
+            updateLocalOrderStatus(OrderStatusCode.ON_THE_WAY)
         }
     }
 
@@ -126,17 +139,64 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
         OrderRequests(requireActivity()).completeTrip {
             stopLocationService()
 
-            with(dataPref.edit()) {
-                remove(getString(R.string.sh_pending_order))
-                commit()
+            if (order.paymentMethod == PaymentType.CASH) {
+                deliverButton.text = getString(R.string.success)
+                mainOrderMessage.text = getString(R.string.payment_pending)
+                failedPayment.visibility = View.VISIBLE
+                livePendingOrder.statusId.value = OrderStatusCode.PENDING_PAYMENT
+
+                deliverButton.setOnClickListener { confirmPayment(true) }
+                failedPayment.setOnClickListener { confirmPayment(false) }
+                updateLocalOrderStatus(OrderStatusCode.PENDING_PAYMENT)
+            }else {
+                updateLocalOrderStatus(OrderStatusCode.DELIVERED)
+                endPendingOrder()
             }
+        }
+    }
 
-            clearLivePendingOrder()
+    private fun confirmPayment(success: Boolean) {
+        OrderRequests(requireActivity()).confirmPayment(success) {
+            failedPayment.visibility = View.GONE
+            updateLocalOrderStatus(
+                if (success) OrderStatusCode.DELIVERED else OrderStatusCode.FAILED
+            )
+            endPendingOrder()
+        }
+    }
 
-            requireActivity().supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
-                .replace(R.id.frameLayoutId, DashboardFragment())
-                .commit()
+    private fun endPendingOrder() {
+        with(dataPref.edit()) {
+            remove(getString(R.string.sh_pending_order))
+            commit()
+        }
+
+        clearLivePendingOrder()
+
+        requireActivity().supportFragmentManager.beginTransaction()
+            .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+            .replace(R.id.frameLayoutId, DashboardFragment())
+            .commit()
+    }
+
+    private fun updateLocalOrderStatus(statusId: Long) {
+        val typeToken = object: TypeToken<MutableList<Order>>(){}.type
+        val ordersJson = dataPref.getString(getString(R.string.sh_orders), null)
+        val orders = if (ordersJson != null) {
+            gson.fromJson(ordersJson, typeToken)
+        }else mutableListOf<Order>()
+
+        orders.forEach {
+            if (it.id == order.id) {
+                it.statusId = statusId
+
+                with(dataPref.edit()) {
+                    putString(getString(R.string.sh_orders), gson.toJson(orders))
+                    commit()
+                }
+
+                return@forEach
+            }
         }
     }
 

@@ -12,6 +12,8 @@ class Api {
         const val START_TRIP: String = "${API_BASE_URL}driver/booking/start_trip"
         const val COMPLETE_TRIP: String = "${API_BASE_URL}driver/booking/complete_trip"
         const val RATE_CUSTOMER: String = "${API_BASE_URL}driver/booking/rate_customer"
+        const val CONFIRM_PAYMENT: String = "${API_BASE_URL}driver/booking/confirm_payment"
+        const val PAYMENT_FAILED: String = "${API_BASE_URL}driver/booking/payment_failed"
         fun orderDetails(orderId: Long): String {
             return "${API_BASE_URL}driver/booking/$orderId"
         }

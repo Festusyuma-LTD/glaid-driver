@@ -185,9 +185,10 @@
 
     <Button
         android:id="@+id/deliverButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="5dp"
         android:background="@drawable/deliver_btn"
         android:drawableEnd="@drawable/ic_gray_tick"
         android:gravity="center|start"
@@ -197,7 +198,25 @@
         android:textColor="#808080"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/newOrderDetails"
         app:layout_constraintStart_toStartOf="@+id/newOrderDetails"
-        app:layout_constraintTop_toBottomOf="@+id/newOrderDetails" />
+        app:layout_constraintTop_toBottomOf="@+id/newOrderDetails"
+        app:layout_constraintEnd_toStartOf="@+id/paymentFailed"/>
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/paymentFailed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/deliver_btn"
+        android:gravity="center|start"
+        android:paddingHorizontal="20dp"
+        android:text="@string/failed"
+        android:textAllCaps="false"
+        android:textColor="#808080"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/deliverButton"
+        app:layout_constraintTop_toTopOf="@+id/deliverButton"
+        app:layout_constraintEnd_toEndOf="@+id/newOrderDetails"
+        app:layout_constraintStart_toEndOf="@id/deliverButton"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
