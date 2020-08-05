@@ -7,6 +7,7 @@ import festusyuma.com.glaiddriver.models.Truck
 import festusyuma.com.glaiddriver.models.User
 
 class PendingOrder: ViewModel() {
+    val id: MutableLiveData<Long> = MutableLiveData()
     val gasType: MutableLiveData<String> = MutableLiveData()
     val gasUnit: MutableLiveData<String> = MutableLiveData()
     val quantity: MutableLiveData<Double> = MutableLiveData()

@@ -5,30 +5,35 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.Timestamp
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentChange
 import com.google.firebase.firestore.Query
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
 import festusyuma.com.glaiddriver.R
-import festusyuma.com.glaiddriver.adapters.ChatRecieveItem
+import festusyuma.com.glaiddriver.adapters.ChatReceiveItem
 import festusyuma.com.glaiddriver.adapters.ChatSendItem
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.ChatMessage
 import festusyuma.com.glaiddriver.models.User
+import festusyuma.com.glaiddriver.models.fs.FSChatMessage
+import festusyuma.com.glaiddriver.requestdto.Chat
 import kotlinx.android.synthetic.main.activity_chat.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.*
 
 class ChatActivity : AppCompatActivity() {
     //    lateinit var chatAdapter: ChatAdapter
     private var user: User? = null
     private val TAG = "ChatActivity"
     lateinit var apdater: GroupAdapter<GroupieViewHolder>
+
+    private lateinit var chat: Chat
+    private lateinit var chatView: RecyclerView
+    private lateinit var chatMessageBox: EditText
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
@@ -41,6 +46,15 @@ class ChatActivity : AppCompatActivity() {
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
+        chatView = findViewById(R.id.chatView)
+        chatMessageBox = findViewById(R.id.chatMessageBox)
+
+        val chatJson = intent.getStringExtra(CHAT)
+        if (chatJson != null) {
+            chat = gson.fromJson(chatJson, Chat::class.java)
+        }else finish()
+
         initDriverDetails()
         //listen for new messages
         listenForMessages()
@@ -54,7 +68,6 @@ class ChatActivity : AppCompatActivity() {
         chatView.adapter = apdater
         // for performance when we know the layout sizes wont be changing
         chatView.setHasFixedSize(true)
-
     }
 
     private fun listenForMessages() {
@@ -81,7 +94,7 @@ class ChatActivity : AppCompatActivity() {
                             if (newChat.senderId == user?.email) {
                                 apdater.add(ChatSendItem(newChat))
                             } else {
-                                apdater.add(ChatRecieveItem("friendDetail", newChat))
+                                apdater.add(ChatReceiveItem("friendDetail", newChat))
                             }
                             //scrool recycler to new message
                             chatView.scrollToPosition(apdater.itemCount - 1)
@@ -115,10 +128,30 @@ class ChatActivity : AppCompatActivity() {
     }
 
     fun sendMessageClick(view: View) {
-        if (chatMessageBox.editableText.isEmpty()) return
         view.startAnimation(buttonClickAnim)
+        val message = chatMessageBox.text.toString()
+        if (message.isBlank()) return
+        val chatMessage = FSChatMessage(chat.sender, message)
 
-        val receiverId = if (intent.getStringExtra(CHAT_EMAIL) == user?.email) {
+        db.collection(getString(R.string.fs_chat_rooms))
+            .document(chat.chatRoomId)
+            .collection(
+                if (chat.isOrder) {
+                    getString(R.string.fs_order_messages)
+                } else getString(R.string.fs_support_messages)
+            )
+            .add(chatMessage)
+            .addOnSuccessListener {
+                Log.v(FIRE_STORE_LOG_TAG, "message sent")
+            }
+            .addOnFailureListener {
+                Log.v(FIRE_STORE_LOG_TAG, "error sending message ${it.message}")
+            }
+
+        chatMessageBox.text.clear()
+        chatView.scrollToPosition(apdater.itemCount - 1)
+
+        /*val receiverId = if (intent.getStringExtra(CHAT_EMAIL) == user?.email) {
             "customerCare@glaidDriver.com"
         } else {
             intent.getStringExtra(CHAT_EMAIL)!!
@@ -152,8 +185,7 @@ class ChatActivity : AppCompatActivity() {
                 Log.w(TAG, "Error adding document", e)
             }
 
-        //scrool recycler to new message
-        chatView.scrollToPosition(apdater.itemCount - 1)
+        //scrool recycler to new message*/
     }
 
 }

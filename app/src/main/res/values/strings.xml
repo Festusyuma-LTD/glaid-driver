@@ -176,6 +176,9 @@
     <string name="fs_pending_orders">Pending Orders</string>
     <string name="fs_pending_orders_driver_id">driverId</string>
     <string name="fs_pending_orders_status">status</string>
+    <string name="fs_chat_rooms">Chat Rooms</string>
+    <string name="fs_order_messages">messages</string>
+    <string name="fs_support_messages">support_messages</string>
     <string name="from_the_nearest_fuel_station">From the nearest fuel station</string>
     <string name="order_details">Order Details</string>
     <string name="view_invoice">View Invoice</string>

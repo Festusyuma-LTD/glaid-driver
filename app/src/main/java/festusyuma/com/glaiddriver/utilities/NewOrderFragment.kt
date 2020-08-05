@@ -18,8 +18,10 @@ import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.Order
+import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.request.OrderRequests
+import festusyuma.com.glaiddriver.requestdto.Chat
 import festusyuma.com.glaiddriver.services.LocationService
 
 class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
@@ -36,12 +38,19 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     private lateinit var quantity: TextView
     private lateinit var gasType: TextView
     private lateinit var failedPayment: Button
+    private lateinit var user: User
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         dataPref = requireActivity().getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
         livePendingOrder = ViewModelProvider(requireActivity()).get(PendingOrder::class.java)
+
+        val userJson = dataPref.getString(getString(R.string.sh_user_details), "null")
+        if (userJson != null) {
+            user = gson.fromJson(userJson, User::class.java)
+        }else requireActivity().supportFragmentManager.popBackStackImmediate()
+
         initLivePendingOrder()
         initElem()
     }
@@ -51,6 +60,7 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
             val orderJson = dataPref.getString(getString(R.string.sh_pending_order), null)
             if (orderJson != null) {
                 order = gson.fromJson(orderJson, Order::class.java)
+                livePendingOrder.id.value = order.id
                 livePendingOrder.amount.value = order.amount
                 livePendingOrder.gasType.value = order.gasType
                 livePendingOrder.gasUnit.value = order.gasUnit
@@ -116,10 +126,17 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     private fun chat() {
         val chatEmail = livePendingOrder.customer.value?.email
         val chatName = livePendingOrder.customer.value?.fullName
+
+        val chatId = livePendingOrder.id.value?: return
+        val sender = user.email
+        val recipient = livePendingOrder.customer.value?.email?: return
+        val chat = Chat(chatId.toString(), sender, recipient, true)
+
         if (chatEmail != null && chatName != null) {
             val intent = Intent(requireActivity(), ChatActivity::class.java)
             intent.putExtra(CHAT_NAME, chatName)
             intent.putExtra(CHAT_EMAIL, chatEmail)
+            intent.putExtra(CHAT, gson.toJson(chat))
             startActivity(intent)
         }
     }
