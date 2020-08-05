@@ -134,12 +134,12 @@ class ChatActivity : AppCompatActivity() {
         val chatMessage = FSChatMessage(chat.sender, message)
 
         db.collection(getString(R.string.fs_chat_rooms))
-            .document(chat.chatRoomId)
-            .collection(
+            .document(
                 if (chat.isOrder) {
                     getString(R.string.fs_order_messages)
                 } else getString(R.string.fs_support_messages)
             )
+            .collection(getString(R.string.fs_messages))
             .add(chatMessage)
             .addOnSuccessListener {
                 Log.v(FIRE_STORE_LOG_TAG, "message sent")
