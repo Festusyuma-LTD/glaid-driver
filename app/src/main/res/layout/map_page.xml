@@ -7,23 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".controller.MapsActivity">
 
-    <Button
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/button"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        
-        android:layout_marginTop="40dp"
-        android:background="@drawable/h_hamburger"
+        android:layout_marginTop="50dp"
         android:elevation="1dp"
         android:onClick="toggleDrawerClick"
-        android:scaleX="0.8"
-        android:scaleY="0.8"
+        android:src="@drawable/h_hamburger"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/map"
-        tools:context=".controller.MapsActivity"
-        tools:ignore="UnusedAttribute" />
+        tools:context=".controller.MapsActivity" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
@@ -42,10 +37,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
-    </FrameLayout>
+        app:layout_constraintVertical_bias="1.0" />
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/userLocationBtn"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -54,9 +48,9 @@
         android:clickable="true"
         android:contentDescription="@string/todo"
         android:focusable="true"
+        android:src="@drawable/ic_user_location"
         app:layout_constraintBottom_toTopOf="@+id/frameLayoutId"
-        app:layout_constraintEnd_toEndOf="@+id/frameLayoutId"
-        app:srcCompat="@drawable/ic_user_location" />
+        app:layout_constraintEnd_toEndOf="@+id/frameLayoutId" />
 
     <include layout="@layout/loading" />
 

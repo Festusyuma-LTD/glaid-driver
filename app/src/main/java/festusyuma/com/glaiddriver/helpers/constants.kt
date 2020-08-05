@@ -1,11 +1,14 @@
 package festusyuma.com.glaiddriver.helpers
 
+import android.content.Context
 import android.view.animation.AlphaAnimation
 import com.android.volley.DefaultRetryPolicy
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.gson.Gson
+import festusyuma.com.glaiddriver.R
+import festusyuma.com.glaiddriver.models.User
 
 
 /**
@@ -84,4 +87,16 @@ class PaymentType {
             return listOf(CARD, WALLET, CASH)
         }
     }
+}
+
+fun initDriverDetails(context: Context): User? {
+    val dataPref = context.getSharedPreferences(
+        context.getString(R.string.cached_data),
+        Context.MODE_PRIVATE
+    )
+    val userJson = dataPref?.getString(context.getString(R.string.sh_user_details), "null")
+    if (userJson != null) {
+        return gson.fromJson(userJson, User::class.java)
+    }
+    return null
 }

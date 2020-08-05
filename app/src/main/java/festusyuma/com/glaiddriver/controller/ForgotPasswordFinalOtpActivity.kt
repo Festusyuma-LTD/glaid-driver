@@ -16,6 +16,7 @@ import com.android.volley.toolbox.Volley
 import com.wang.avi.AVLoadingIndicatorView
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.Api
+import festusyuma.com.glaiddriver.helpers.buttonClickAnim
 import festusyuma.com.glaiddriver.helpers.gson
 import festusyuma.com.glaiddriver.requestdto.PasswordResetRequest
 import org.json.JSONObject
@@ -47,6 +48,7 @@ class ForgotPasswordFinalOtpActivity : AppCompatActivity() {
     }
 
     fun resendOtpClick(view: View) {
+        view.startAnimation(buttonClickAnim)
         if (!operationRunning) {
             setLoading(true)
 
@@ -62,6 +64,7 @@ class ForgotPasswordFinalOtpActivity : AppCompatActivity() {
     }
 
     fun resetPasswordMethod(view: View){
+        view.startAnimation(buttonClickAnim)
         if (!operationRunning) {
             setLoading(true)
 

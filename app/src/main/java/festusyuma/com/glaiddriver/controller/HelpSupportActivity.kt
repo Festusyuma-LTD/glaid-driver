@@ -1,6 +1,5 @@
 package festusyuma.com.glaiddriver.controller
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -13,7 +12,7 @@ import festusyuma.com.glaiddriver.adapters.HelpSupportAdapter
 import festusyuma.com.glaiddriver.helpers.CHAT_EMAIL
 import festusyuma.com.glaiddriver.helpers.CHAT_NAME
 import festusyuma.com.glaiddriver.helpers.buttonClickAnim
-import festusyuma.com.glaiddriver.helpers.gson
+import festusyuma.com.glaiddriver.helpers.initDriverDetails
 import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.services.DataServices
 import kotlinx.android.synthetic.main.activity_help_support.*
@@ -21,13 +20,11 @@ import kotlinx.android.synthetic.main.activity_help_support.*
 class HelpSupportActivity : AppCompatActivity() {
     lateinit var topQuestionAdapter: HelpSupportAdapter
     lateinit var paymentAdapter: HelpSupportAdapter
-    lateinit var user: User
+    private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = ContextCompat.getColor(this, R.color.white)
-            window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
-        }
+        window.statusBarColor = ContextCompat.getColor(this, R.color.white)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 window.decorView.systemUiVisibility =
@@ -36,7 +33,7 @@ class HelpSupportActivity : AppCompatActivity() {
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_help_support)
-        initDriverDetails()
+        user = initDriverDetails(this)
         // defining an adapter using a custom recycler view
         topQuestionAdapter = HelpSupportAdapter(this, DataServices.questions) {
             val productPageLink = Intent(this, SupportFullPageActivity::class.java)
@@ -67,22 +64,13 @@ class HelpSupportActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun initDriverDetails() {
-        val dataPref = this.getSharedPreferences(
-            getString(R.string.cached_data),
-            Context.MODE_PRIVATE
-        )
-        val userJson = dataPref?.getString(getString(R.string.sh_user_details), "null")
-        if (userJson != null) {
-            user = gson.fromJson(userJson, User::class.java)
-        }
-    }
-
     fun liveChatClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        val intent = Intent(this, ChatActivity::class.java)
-        intent.putExtra(CHAT_NAME, user.fullName)
-        intent.putExtra(CHAT_EMAIL, user.email)
-        startActivity(intent)
+        if (user != null) {
+            val intent = Intent(this, ChatActivity::class.java)
+            intent.putExtra(CHAT_NAME, user!!.fullName)
+            intent.putExtra(CHAT_EMAIL, user!!.email)
+            startActivity(intent)
+        }
     }
 }
