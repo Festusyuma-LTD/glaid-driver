@@ -27,7 +27,6 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        
         android:onClick="backClick"
         app:layout_constraintBottom_toBottomOf="@+id/orderDetailText"
         app:layout_constraintEnd_toStartOf="@+id/orderDetailText"
