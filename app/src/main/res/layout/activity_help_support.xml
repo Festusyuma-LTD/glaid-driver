@@ -27,7 +27,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
-        
+
         android:onClick="helpBackClick"
         app:layout_constraintBottom_toBottomOf="@+id/editProfileTitle"
         app:layout_constraintEnd_toStartOf="@+id/editProfileTitle"
@@ -49,45 +49,35 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/primaryCons"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/paymentQuestionsCover"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfileTitle"
-        app:layout_constraintVertical_bias="0.0">
-
-
-        <View
-            android:id="@+id/grayBox1"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="20dp"
-            android:background="#f6f6f6"
-            app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/editProfileTitle">
 
         <TextView
-            android:id="@+id/textgrayBox1"
-            android:layout_width="wrap_content"
+            android:id="@+id/topQuestionsTxt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            
+            android:padding="20dp"
+            android:background="#f6f6f6"
             android:text="@string/top_questions"
             android:textColor="#808080"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/grayBox1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/grayBox1" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:id="@+id/topQuestionScroll"
-            android:layout_width="0dp"
-            android:layout_height="250dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/grayBox1">
+            app:layout_constraintTop_toBottomOf="@+id/topQuestionsTxt">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/topQuestionRecycler"
@@ -98,39 +88,38 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <View
-            android:id="@+id/grayBox2"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="#f6f6f6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/topQuestionScroll" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/paymentQuestionsCover"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/liveChatCover"
+        app:layout_constraintTop_toBottomOf="@+id/primaryCons">
 
         <TextView
-            android:id="@+id/textgrayBox2"
-            android:layout_width="wrap_content"
+            android:id="@+id/paymentQuestionsTxt"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            
+            android:padding="20dp"
+            android:background="#f6f6f6"
             android:text="@string/payment"
             android:textColor="#808080"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/grayBox2"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/grayBox2" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:id="@+id/paymentScroll"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/grayBox3"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/grayBox2"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@+id/paymentQuestionsTxt">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/paymentRecycler"
@@ -142,56 +131,49 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </ScrollView>
 
-        <View
-            android:id="@+id/grayBox3"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginBottom="5dp"
-            android:background="#f6f6f6"
-            app:layout_constraintBottom_toTopOf="@+id/contactUsBtn"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/liveChatCover"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
-            android:id="@+id/textgrayBox3"
-            android:layout_width="wrap_content"
+            android:id="@+id/contactUsText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            
+            android:padding="20dp"
             android:text="@string/contact_us"
             android:textColor="#808080"
+            android:background="#f6f6f6"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/grayBox3"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/grayBox3" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/contactUsBtn"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp"
-            android:height="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingHorizontal="20dp"
             android:background="#FFFFFF"
             android:drawableEnd="@drawable/ic_chevron_dark"
-            
             android:gravity="center|start"
             android:maxLength="45"
             android:maxLines="1"
             android:onClick="liveChatClick"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:text="@string/start_a_live_chat"
             android:textAllCaps="false"
             android:textColor="#333333"
             android:textSize="16sp"
             app:layout_constraintBottom_toTopOf="@+id/divider5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/contactUsText"/>
 
         <View
             android:id="@+id/divider5"
