@@ -99,7 +99,7 @@
     <string name="sign_up">Sign up</string>
     <string name="did_not_receive_an_otp">Did not receive an OTP?</string>
     <string name="resend">Resend</string>
-    <string name="chat_with_henry">Chat With Henry</string>
+    <string name="chat_with">Chat With Henry</string>
     <string name="type_a_message">Type a message</string>
     <string name="send_otp">Send OTP</string>
     <string name="send_mail">Send Mail</string>
@@ -176,6 +176,10 @@
     <string name="fs_pending_orders">Pending Orders</string>
     <string name="fs_pending_orders_driver_id">driverId</string>
     <string name="fs_pending_orders_status">status</string>
+    <string name="fs_chat_rooms">Chat Rooms</string>
+    <string name="fs_messages">messages</string>
+    <string name="fs_order_messages">Order Messages</string>
+    <string name="fs_support_messages">Support Messages</string>
     <string name="from_the_nearest_fuel_station">From the nearest fuel station</string>
     <string name="order_details">Order Details</string>
     <string name="view_invoice">View Invoice</string>

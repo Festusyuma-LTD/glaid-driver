@@ -11,8 +11,6 @@ import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.User
 
 class SupportFullPageActivity : AppCompatActivity() {
-    private var user: User? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
@@ -25,7 +23,6 @@ class SupportFullPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_support_full_page)
         intent.getStringExtra(EXTRA_QUESTION)
-        user = initDriverDetails(this)
     }
 
 
@@ -33,16 +30,5 @@ class SupportFullPageActivity : AppCompatActivity() {
         view.startAnimation(buttonClickAnim)
         val intent = Intent(this, HelpSupportActivity::class.java)
         startActivity(intent)
-    }
-
-    fun startChatClick(view: View) {
-        view.startAnimation(buttonClickAnim)
-        if (user != null) {
-            val intent = Intent(this, ChatActivity::class.java)
-            intent.putExtra(CHAT_NAME, user!!.fullName)
-            intent.putExtra(CHAT_EMAIL, user!!.email)
-            startActivity(intent)
-
-        }
     }
 }

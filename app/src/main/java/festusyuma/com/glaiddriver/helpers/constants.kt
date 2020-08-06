@@ -57,6 +57,7 @@ val defaultRetryPolicy = DefaultRetryPolicy(
 )
 const val CHAT_EMAIL = "CHAT_EMAIL"
 const val CHAT_NAME = "CHAT_NAME"
+const val CHAT = "chat"
 
 class OrderStatusCode {
     companion object {

@@ -1,5 +1,8 @@
 package festusyuma.com.glaiddriver.helpers
 
+import com.google.firebase.Timestamp
+import org.threeten.bp.LocalDateTime
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.pow
 import kotlin.math.round
@@ -20,4 +23,9 @@ fun String.addCountryCode(): String {
 fun Double.round(round: Int): Double {
     val multiplier = 10.0.pow(round)
     return round(this * multiplier) / multiplier
+}
+
+fun Timestamp.appFormat(): String {
+    val format = SimpleDateFormat("hh:mm a", Locale.getDefault())
+    return format.format(this.toDate())
 }

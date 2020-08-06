@@ -1,6 +1,8 @@
 package festusyuma.com.glaiddriver.controller
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -9,18 +11,18 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.adapters.HelpSupportAdapter
-import festusyuma.com.glaiddriver.helpers.CHAT_EMAIL
-import festusyuma.com.glaiddriver.helpers.CHAT_NAME
-import festusyuma.com.glaiddriver.helpers.buttonClickAnim
-import festusyuma.com.glaiddriver.helpers.initDriverDetails
+import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.User
+import festusyuma.com.glaiddriver.requestdto.Chat
 import festusyuma.com.glaiddriver.services.DataServices
 import kotlinx.android.synthetic.main.activity_help_support.*
 
 class HelpSupportActivity : AppCompatActivity() {
-    lateinit var topQuestionAdapter: HelpSupportAdapter
-    lateinit var paymentAdapter: HelpSupportAdapter
-    private var user: User? = null
+    private lateinit var topQuestionAdapter: HelpSupportAdapter
+    private lateinit var paymentAdapter: HelpSupportAdapter
+    private lateinit var user: User
+
+    private lateinit var dataPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         window.statusBarColor = ContextCompat.getColor(this, R.color.white)
@@ -33,28 +35,30 @@ class HelpSupportActivity : AppCompatActivity() {
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_help_support)
-        user = initDriverDetails(this)
+
+        dataPref = getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
+        val userJson = dataPref.getString(getString(R.string.sh_user_details), "null")
+        if (userJson != null) {
+            user = gson.fromJson(userJson, User::class.java)
+        }else finish()
+
         // defining an adapter using a custom recycler view
         topQuestionAdapter = HelpSupportAdapter(this, DataServices.questions) {
             val productPageLink = Intent(this, SupportFullPageActivity::class.java)
-//            productPageLink.putExtra(EXTRA_QUESTION, it.title)
             startActivity(productPageLink)
         }
         paymentAdapter = HelpSupportAdapter(this, DataServices.questions) {
             val productPageLink = Intent(this, SupportFullPageActivity::class.java)
-//            productPageLink.putExtra(EXTRA_QUESTION, it.title)
             startActivity(productPageLink)
         }
-        val topQuestionlayoutManager = LinearLayoutManager(this)
-        val paymentlayoutManager = LinearLayoutManager(this)
-        topQuestionRecycler.layoutManager = topQuestionlayoutManager
-        topQuestionRecycler.adapter = topQuestionAdapter
-        // for performance when we know the layout sizes wont be changing
-        topQuestionRecycler.setHasFixedSize(true)
+        val topQuestionLayoutManager = LinearLayoutManager(this)
+        val paymentLayoutManager = LinearLayoutManager(this)
 
-        paymentRecycler.layoutManager = paymentlayoutManager
+        topQuestionRecycler.layoutManager = topQuestionLayoutManager
+        topQuestionRecycler.adapter = topQuestionAdapter
+        topQuestionRecycler.setHasFixedSize(true)
+        paymentRecycler.layoutManager = paymentLayoutManager
         paymentRecycler.adapter = paymentAdapter
-        // for performance when we know the layout sizes wont be changing
         paymentRecycler.setHasFixedSize(true)
     }
 
@@ -66,11 +70,25 @@ class HelpSupportActivity : AppCompatActivity() {
 
     fun liveChatClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        if (user != null) {
-            val intent = Intent(this, ChatActivity::class.java)
-            intent.putExtra(CHAT_NAME, user!!.fullName)
-            intent.putExtra(CHAT_EMAIL, user!!.email)
-            startActivity(intent)
-        }
+
+        val chatId = auth.uid?: return
+        val sender = user.email
+        val senderName = user.fullName.capitalizeWords()
+        val recipient = "Support"
+        val recipientName = "Support"
+        val chat = Chat(
+            chatId,
+            sender,
+            senderName,
+            recipient,
+            recipientName
+        )
+
+        val intent = Intent(this, ChatActivity::class.java)
+        intent.putExtra(CHAT_NAME, user.fullName)
+        intent.putExtra(CHAT_EMAIL, user.email)
+        intent.putExtra(CHAT, gson.toJson(chat))
+
+        startActivity(intent)
     }
 }

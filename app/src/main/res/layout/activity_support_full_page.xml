@@ -127,50 +127,6 @@
                 app:layout_constraintTop_toBottomOf="@+id/qestionImg"
                 app:lineHeight="19sp" />
 
-            <View
-                android:id="@+id/fAssistanceTab"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:background="#f6f6f6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/questionAnswer2" />
-
-            <TextView
-                android:id="@+id/need_futhertextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                
-                android:text="@string/need_futher_assistance"
-                android:textColor="#808080"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@+id/fAssistanceTab"
-                app:layout_constraintStart_toStartOf="@+id/fAssistanceTab"
-                app:layout_constraintTop_toTopOf="@+id/fAssistanceTab" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:background="@color/white"
-                android:drawableEnd="@drawable/ic_chevron_dark"
-                
-                android:gravity="center|start"
-                android:onClick="startChatClick"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="@string/start_a_live_chat"
-                android:textAllCaps="false"
-                android:textColor="#333333"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/fAssistanceTab" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
