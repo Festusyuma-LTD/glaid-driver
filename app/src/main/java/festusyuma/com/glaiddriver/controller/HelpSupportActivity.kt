@@ -13,7 +13,7 @@ import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.adapters.HelpSupportAdapter
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.User
-import festusyuma.com.glaiddriver.requestdto.Chat
+import festusyuma.com.glaiddriver.models.Chat
 import festusyuma.com.glaiddriver.services.DataServices
 import kotlinx.android.synthetic.main.activity_help_support.*
 
@@ -85,10 +85,7 @@ class HelpSupportActivity : AppCompatActivity() {
         )
 
         val intent = Intent(this, ChatActivity::class.java)
-        intent.putExtra(CHAT_NAME, user.fullName)
-        intent.putExtra(CHAT_EMAIL, user.email)
         intent.putExtra(CHAT, gson.toJson(chat))
-
         startActivity(intent)
     }
 }
