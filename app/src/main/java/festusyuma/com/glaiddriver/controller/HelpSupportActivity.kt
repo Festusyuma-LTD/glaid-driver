@@ -64,8 +64,7 @@ class HelpSupportActivity : AppCompatActivity() {
 
     fun helpBackClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        val intent = Intent(this, MapsActivity::class.java)
-        startActivity(intent)
+        finish()
     }
 
     fun liveChatClick(view: View) {
