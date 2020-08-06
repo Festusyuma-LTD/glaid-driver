@@ -1,6 +1,5 @@
 package festusyuma.com.glaiddriver.controller
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -22,7 +21,7 @@ import festusyuma.com.glaiddriver.adapters.ChatSendItem
 import festusyuma.com.glaiddriver.helpers.*
 import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.fs.FSChatMessage
-import festusyuma.com.glaiddriver.requestdto.Chat
+import festusyuma.com.glaiddriver.models.Chat
 
 class ChatActivity : AppCompatActivity() {
 
@@ -104,9 +103,7 @@ class ChatActivity : AppCompatActivity() {
 
     fun editBackBtnClick(view: View) {
         view.startAnimation(buttonClickAnim)
-        val intent = Intent(this, MapsActivity::class.java)
-        startActivity(intent)
-
+        finish()
     }
 
     fun sendMessageClick(view: View) {

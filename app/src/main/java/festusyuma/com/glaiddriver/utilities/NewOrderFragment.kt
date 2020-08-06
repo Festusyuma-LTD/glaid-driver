@@ -6,11 +6,9 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startForegroundService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.reflect.TypeToken
@@ -21,7 +19,7 @@ import festusyuma.com.glaiddriver.models.Order
 import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.request.OrderRequests
-import festusyuma.com.glaiddriver.requestdto.Chat
+import festusyuma.com.glaiddriver.models.Chat
 import festusyuma.com.glaiddriver.services.LocationService
 
 class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
