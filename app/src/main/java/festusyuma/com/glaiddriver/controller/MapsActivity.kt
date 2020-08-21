@@ -442,7 +442,6 @@ class MapsActivity :
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
             .replace(R.id.frameLayoutId, NewOrderFragment())
-            .addToBackStack(null)
             .commit()
     }
 
