@@ -1,6 +1,8 @@
 package festusyuma.com.glaiddriver.utilities
 
+import android.app.ActivityManager
 import android.content.Context
+import android.content.Context.ACTIVITY_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
@@ -15,11 +17,11 @@ import com.google.gson.reflect.TypeToken
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.ChatActivity
 import festusyuma.com.glaiddriver.helpers.*
+import festusyuma.com.glaiddriver.models.Chat
 import festusyuma.com.glaiddriver.models.Order
 import festusyuma.com.glaiddriver.models.User
 import festusyuma.com.glaiddriver.models.live.PendingOrder
 import festusyuma.com.glaiddriver.request.OrderRequests
-import festusyuma.com.glaiddriver.models.Chat
 import festusyuma.com.glaiddriver.services.LocationService
 
 class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
@@ -41,7 +43,10 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        dataPref = requireActivity().getSharedPreferences(getString(R.string.cached_data), Context.MODE_PRIVATE)
+        dataPref = requireActivity().getSharedPreferences(
+            getString(R.string.cached_data),
+            Context.MODE_PRIVATE
+        )
         livePendingOrder = ViewModelProvider(requireActivity()).get(PendingOrder::class.java)
 
         val userJson = dataPref.getString(getString(R.string.sh_user_details), "null")
@@ -97,7 +102,8 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
 
         when (livePendingOrder.statusId.value) {
             OrderStatusCode.DRIVER_ASSIGNED -> deliverButton.setOnClickListener { startTrip() }
-            OrderStatusCode.DELIVERED -> {
+            OrderStatusCode.ON_THE_WAY -> {
+                startLocationService()
                 deliverButton.text = getString(R.string.complete_delivery)
                 mainOrderMessage.text = getString(R.string.starting_delivery)
                 deliverButton.setOnClickListener { completeTrip() }
@@ -116,7 +122,10 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     private fun callCustomer() {
         val tel = livePendingOrder.customer.value?.tel
         if (tel != null) {
-            val intent = Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", tel.addCountryCode(), null))
+            val intent = Intent(
+                Intent.ACTION_DIAL,
+                Uri.fromParts("tel", tel.addCountryCode(), null)
+            )
             startActivity(intent)
         }
     }
@@ -196,7 +205,12 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
         clearLivePendingOrder()
 
         requireActivity().supportFragmentManager.beginTransaction()
-            .setCustomAnimations(R.anim.slide_up, R.anim.slide_down, R.anim.slide_up, R.anim.slide_down)
+            .setCustomAnimations(
+                R.anim.slide_up,
+                R.anim.slide_down,
+                R.anim.slide_up,
+                R.anim.slide_down
+            )
             .replace(R.id.frameLayoutId, DashboardFragment())
             .commit()
     }
@@ -250,6 +264,18 @@ class NewOrderFragment : Fragment(R.layout.fragment_new_order) {
     }
 
     private fun locationServiceRunning(): Boolean {
+
+        val manager = requireActivity().getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (LocationService::class.java.name == service.service.className) {
+                return true
+            }
+        }
         return false
+    }
+
+    override fun onStop() {
+        super.onStop()
+        stopLocationService()
     }
 }

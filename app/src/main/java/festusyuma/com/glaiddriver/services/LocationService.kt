@@ -24,8 +24,8 @@ import kotlin.concurrent.timer
 class LocationService: Service() {
 
     private val ongoingNotificationId = 1
-    private val updateInterval =  1000L
-    private val fastestInterval = 500L
+    private val updateInterval =  4000L
+    private val fastestInterval = 400L
     private val channelId = "locationServiceChannel"
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
