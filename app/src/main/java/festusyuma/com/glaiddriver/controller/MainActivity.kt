@@ -13,10 +13,12 @@ import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.cloudinary.android.MediaManager
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.helpers.Api
 import festusyuma.com.glaiddriver.helpers.Dashboard
 import org.json.JSONObject
+import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +28,12 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        try {
+            MediaManager.get()
+        }catch (e: Exception) {
+            MediaManager.init(this)
+        }
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

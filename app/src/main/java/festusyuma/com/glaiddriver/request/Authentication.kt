@@ -4,12 +4,15 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.Volley
 import festusyuma.com.glaiddriver.R
 import festusyuma.com.glaiddriver.controller.GetStartedActivity
 import festusyuma.com.glaiddriver.helpers.auth
 
 open class Authentication(private val c: Activity) : LoadingAndErrorHandler(c) {
 
+    val queue: RequestQueue = Volley.newRequestQueue(c)
     private lateinit var authPref: SharedPreferences
 
     fun getAuthentication(callback: (authentication: MutableMap<String, String>) -> Unit) {

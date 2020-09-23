@@ -5,5 +5,6 @@ data class User (
     var fullName: String,
     var tel: String,
     var id: Long? = null,
-    var rating: Double? = 0.0
+    var rating: Double? = 0.0,
+    var profileImage: String? = null
 )

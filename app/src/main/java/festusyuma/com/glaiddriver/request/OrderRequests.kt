@@ -11,8 +11,6 @@ import org.json.JSONObject
 
 class OrderRequests(private val c: Activity): Authentication(c) {
 
-    private val queue = Volley.newRequestQueue(c)
-
     fun getOrderDetails(orderId: Long, callback: (response: JSONObject) -> Unit) {
         getAuthentication { authorization ->
             val req = object : JsonObjectRequest(
